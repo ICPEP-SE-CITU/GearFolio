@@ -1,0 +1,3 @@
+{
+  "/(routes)/profile/page": "app/(routes)/profile/page.js"
+}
