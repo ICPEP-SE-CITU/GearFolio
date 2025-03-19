@@ -1,3 +1,6 @@
+# FILE STRUCTURE FOR NEXT.JS APP ROUTER
+
+```
 my-nextjs-app/
 │
 ├── public/                 # Static assets served directly by Next.js
@@ -44,8 +47,10 @@ my-nextjs-app/
 │   ├── lib/                # Utility functions and services
 │   │   ├── utils.js        # General utility functions
 │   │   ├── hooks/          # Custom React hooks
-│   │   │   ├── useAuth.js      # Authentication-related hook
-│   │   │   └── useForm.js      # Form handling hook
+│   │   │   ├── useAuth.js      # Authentication-related hook (integrates with BaaS)
+│   │   │   ├── useDatabase.js  # Hook for interacting with the database
+│   │   │   └── useStorage.js   # Hook for handling file storage
+│   │   │
 │   │   └── services/       # External service integrations
 │   │       ├── appwrite.js  # Appwrite setup & API calls
 │   │       ├── api.js      # Generic API call helpers/configurations
@@ -54,6 +59,8 @@ my-nextjs-app/
 │   ├── state/              # Global state management (contexts & stores)
 │   │   ├── AuthContext.js  # Authentication state management
 │   │   ├── ThemeContext.js # Theme/appearance state management
+│   │   ├── useStore.js     # Zustand store for global state
+│   │   └── store.js        # Redux store (if using Redux)
 │   │
 │   ├── styles/             # Styling resources
 │   │   ├── globals.css     # Global CSS styles
@@ -65,3 +72,4 @@ my-nextjs-app/
 ├── tailwind.config.js      # Tailwind CSS configuration
 ├── postcss.config.js       # PostCSS configuration for Tailwind
 └── package.json            # Project dependencies and scripts
+```
