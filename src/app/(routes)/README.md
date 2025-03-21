@@ -20,6 +20,7 @@ ADD LAYOUT.JS FILE IF LAHI JUD IMO LAYOUT PERO USUALLY ANG ROOT LAYOUT (./app/la
 AS FOR LINKING ANG IMO GI CALL IS ANG FOLDEDRE NAME SO /dashboard, /login_signup, /portfolio, /profile  
 
 sample code:
+```
 <Link
    href="/dashboard"
 >
@@ -32,3 +33,4 @@ sample code:
 <Link
    href="/profile"
 >
+```
