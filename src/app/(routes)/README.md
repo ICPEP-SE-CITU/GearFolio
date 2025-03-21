@@ -18,3 +18,17 @@ ADD MORE FOLDERS FOR MORE PAGES
 NAG ADD KOG PORTFOLIO AND LOGIN_SIGNUP PAGE AWA SA FOLDER  
 ADD LAYOUT.JS FILE IF LAHI JUD IMO LAYOUT PERO USUALLY ANG ROOT LAYOUT (./app/layout.js) IS ENOUGH SO NO NEED MOST OF THE TIME  
 AS FOR LINKING ANG IMO GI CALL IS ANG FOLDEDRE NAME SO /dashboard, /login_signup, /portfolio, /profile  
+
+sample code:
+<Link
+   href="/dashboard"
+>
+<Link
+   href="/login_singup"
+>
+<Link
+   href="/portfolio"
+>
+<Link
+   href="/profile"
+>
