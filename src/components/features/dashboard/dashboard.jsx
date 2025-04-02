@@ -14,6 +14,7 @@ const Dashboard = () => {
         setAnalytics({
           portfolioCompletion: response.portfolioCompletion,
           aiSuggestionsApplied: response.aiSuggestionsApplied,
+          textFormat: response.textFormat,
         });
       } catch (error) {
         console.error("Error fetching document:", error);
@@ -61,17 +62,28 @@ const Dashboard = () => {
         <div className="bg-white p-4 shadow-md rounded-md">
           <h2 className="text-lg font-semibold text-black">Portfolio Views</h2>
           <div className="mt-4 flex justify-around">
+            {/* Portfolio Completion */}
             <div className="text-center">
               <div className="w-16 h-16 border-4 border-blue-500 rounded-full flex items-center justify-center text-lg font-bold text-black">
                 {analytics.portfolioCompletion}%
               </div>
               <p className="text-black">Completed</p>
             </div>
+
+            {/* AI Suggestions Applied */}
             <div className="text-center">
               <div className="w-16 h-16 border-4 border-blue-300 rounded-full flex items-center justify-center text-lg font-bold text-black">
                 {analytics.aiSuggestionsApplied}%
               </div>
               <p className="text-black">Completed</p>
+            </div>
+
+            {/* Text Formatting */}
+            <div className="text-center">
+              <div className="w-16 h-16 border-4 border-blue-200 rounded-full flex items-center justify-center text-lg font-bold text-black">
+                {analytics.textFormat}%
+              </div>
+              <p className="text-black">Text Formatting</p>
             </div>
           </div>
         </div>
@@ -79,19 +91,39 @@ const Dashboard = () => {
         {/* Suggestions and Reminders */}
         <div className="bg-white p-4 shadow-md rounded-md">
           <h2 className="text-lg font-semibold text-black">Suggestions and Reminders</h2>
-          <p className="text-sm text-gray-600 text-black">Revisit your uncompleted sections.</p>
-          <div className="w-full bg-gray-200 h-2 rounded-md mt-2">
-            <div
-              className="bg-blue-500 h-2 rounded-md"
-              style={{ width: `${analytics.portfolioCompletion}%` }}
-            ></div>
+          <p className="text-sm text-gray-600 text-black">Revisit your uncompleted sections, and review AI feedback.</p>
+
+          {/* Add More Projects */}
+          <div className="flex items-center mt-4">
+            <span className="text-black w-1/3">➕ Add More Projects</span>
+            <div className="w-2/3 bg-gray-200 h-2 rounded-md">
+              <div
+                className="bg-blue-900 h-2 rounded-md"
+                style={{ width: `${analytics.portfolioCompletion}%` }}
+              ></div>
+            </div>
           </div>
-          <p className="text-sm text-gray-600 mt-2 text-black">Apply AI Suggestions</p>
-          <div className="w-full bg-gray-200 h-2 rounded-md mt-2">
-            <div
-              className="bg-blue-300 h-2 rounded-md"
-              style={{ width: `${analytics.aiSuggestionsApplied}%` }}
-            ></div>
+
+          {/* Apply AI Suggestions */}
+          <div className="flex items-center mt-4">
+            <span className="text-black w-1/3">💡 Apply AI Suggestions</span>
+            <div className="w-2/3 bg-gray-200 h-2 rounded-md">
+              <div
+                className="bg-blue-500 h-2 rounded-md"
+                style={{ width: `${analytics.aiSuggestionsApplied}%` }}
+              ></div>
+            </div>
+          </div>
+
+          {/* Revise Text Formatting */}
+          <div className="flex items-center mt-4">
+            <span className="text-black w-1/3">✍️ Revise text formatting and wordings</span>
+            <div className="w-2/3 bg-gray-200 h-2 rounded-md">
+              <div
+                className="bg-blue-300 h-2 rounded-md"
+                style={{ width: `${analytics.textFormat}%` }}
+              ></div>
+            </div>
           </div>
         </div>
 
