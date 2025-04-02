@@ -22,7 +22,7 @@ function PortfolioCreationPage() {
         }, 500);
         return () => clearInterval(caretInterval);
       }
-    }, 100); // Adjust typing speed here
+    }, 50); // Adjust typing speed here
 
     return () => clearInterval(typingInterval);
   }, []);
