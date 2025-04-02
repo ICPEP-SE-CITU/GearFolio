@@ -44,12 +44,12 @@ function PortfolioCreationPage() {
         right: '0px',
       }}>
         <img 
-          src="/gear.png" 
+          src="/gear.svg" 
           alt="Gear Logo"
           className="absolute w-full h-full animate-[spin_20s_linear_infinite] opacity-40"
         />
         <img 
-          src="/G.png" 
+          src="/G.svg" 
           alt="Gear G"
           className="absolute w-full h-full opacity-50"
         />
