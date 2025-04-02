@@ -1,7 +1,7 @@
 function PortfolioCreationPage() {
   return (
-    <div className="min-h-screen flex items-center justify-between bg-gray-50 p-8 md:p-16 overflow-hidden">
-      <div className="max-w-2xl" style={{ marginTop: '-125px', marginRight: '-100px' }}>
+    <div className="h-screen flex items-center justify-between bg-gray-50 p-8 md:p-16 overflow-hidden">
+      <div className="max-w-2xl" style={{ marginRight: '-100px' }}>
         <h1 className="text-5xl md:text-6xl lg:text-8xl font-bold text-gray-800 mb-4">
           Create your
           <br />
@@ -36,10 +36,12 @@ function PortfolioCreationPage() {
       </div>
       
       <div className="relative hidden lg:block" style={{ 
-        width: '1000px', 
-        height: '1000px', 
+        width: '1100px', 
+        height: '1100px', 
         flexShrink: 0, 
-        top: '-100px' 
+        top: '-50px',
+        position: 'fixed',
+        right: '0px',
       }}>
         <img 
           src="/gear.png" 
