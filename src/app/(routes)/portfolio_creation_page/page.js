@@ -1,4 +1,32 @@
+"use client";
+
+import { useEffect, useState } from 'react';
+
 function PortfolioCreationPage() {
+  const [typedText, setTypedText] = useState('');
+  const [showCaret, setShowCaret] = useState(true);
+  const fullText = "Create your own AI-enhanced portfolio with ease.";
+
+  useEffect(() => {
+    // Typing animation
+    let i = 0;
+    const typingInterval = setInterval(() => {
+      if (i < fullText.length) {
+        setTypedText(fullText.substring(0, i + 1));
+        i++;
+      } else {
+        clearInterval(typingInterval);
+        // Start blinking caret animation after typing completes
+        const caretInterval = setInterval(() => {
+          setShowCaret(prev => !prev);
+        }, 500);
+        return () => clearInterval(caretInterval);
+      }
+    }, 100); // Adjust typing speed here
+
+    return () => clearInterval(typingInterval);
+  }, []);
+
   return (
     <div className="h-screen flex items-center justify-between bg-gray-50 p-8 md:p-16 overflow-hidden">
       <div className="max-w-2xl" style={{ marginRight: '-100px' }}>
@@ -8,8 +36,9 @@ function PortfolioCreationPage() {
           <span className="text-blue-600">Portfolio</span>
         </h1>
         
-        <p className="text-lg text-gray-600 mb-8">
-          Create your own AI-enhanced portfolio with ease.
+        <p className="text-2xl text-gray-600 mb-8 h-10">
+          {typedText}
+          <span className={`inline-block w-1 h-7 bg-blue-500 align-middle ${showCaret ? 'opacity-100' : 'opacity-0'}`}></span>
         </p>
         
         <button className="
