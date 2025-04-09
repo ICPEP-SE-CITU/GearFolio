@@ -50,10 +50,38 @@
     border-radius: 20px;
 }
 
+
+
 .porfoliodescription {
     background-color: green;
     width: calc(1195px - 30px * 2); 
     height: calc(3421px - 30px * 2); 
-    padding: 30px;
     border-radius: 20px;
+    overflow: hidden;
   }
+.descriptiondiv{
+    height: 213px;
+    width: 100%;
+    background-color: grey;
+}
+.biginfodiv{
+    height: 81px;
+    width: 100%;
+    background-color: violet;
+}
+.educationdiv{
+    width: 100%;
+    height: 380px;
+    background-color: red;
+    border-radius: 15px;
+}
+.projectdiv{
+    width: 100%;
+    height: 1732px;
+    background-color: blue;
+}
+.certdiv{
+    width: 100%;
+    height: 847px;
+    background-color: pink;
+}

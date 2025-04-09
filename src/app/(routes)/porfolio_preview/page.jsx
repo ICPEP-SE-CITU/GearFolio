@@ -50,11 +50,43 @@ function PortfolioCreationPage() {
         </div>
         {/* END OF SKILLS INFO  DIV */}
 
-
       </div>
 
       <div className={styles.porfoliodescription}>
+        {/* DESCRIPTION DIV */}
+        <div className={styles.descriptiondiv}>
 
+        </div>
+        {/* END OF DESCRIPTION DIV */}
+
+        {/* EDUCATION DIV */}
+        <div className={styles.biginfodiv}>
+
+        </div>
+
+        <div className={styles.educationdiv}>
+
+        </div>
+        {/* END OF Education DIV */}
+
+        {/* PROJECT DIV */}
+        <div className={styles.biginfodiv}>
+
+        </div>
+
+        <div className={styles.projectdiv}>
+
+        </div>
+        {/* END OF PROJECT DIV */}
+
+        {/* CERTIFICATE DIV */}
+        <div className={styles.biginfodiv}>
+
+        </div>
+        <div className={styles.certdiv}>
+
+        </div>
+        {/* END OF CERTIFICATE DIV */}
       </div>
 
     </div>
