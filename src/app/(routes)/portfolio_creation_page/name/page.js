@@ -106,7 +106,9 @@ export default function NameInputPage() {
 
       {/* Header with title and progress */}
       <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Create your Portfolio</h1>
+      <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]"> {/* Text shadow for better visibility */}
+        Create your Portfolio
+      </h1>
         <div className="max-w-3xl mx-auto relative">
           
           {/* Progress bar container */}
