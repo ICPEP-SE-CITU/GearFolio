@@ -1,6 +1,14 @@
+'use client';  // This tells Next.js that this is a client-side component
 import styles from './porfoliopreview.module.css';
+import React from 'react';
+
 
 function PortfolioCreationPage() {
+   // Function to handle the click event
+   const handleClick = () => {
+    // Redirect to the YouTube video by changing the window location
+    window.location.href = 'https://www.youtube.com/watch?v=UxTVemz_InI';
+  };
   return (
     <div className={styles.container}>
 
@@ -8,7 +16,15 @@ function PortfolioCreationPage() {
 
         {/* Profile DIV */}
         <div className={styles.profilediv}>
+          <div onClick={handleClick} className={styles.profilecircle} >
 
+          </div>
+          <div className={styles.profilename}>
+
+          </div>
+          <div>
+
+          </div>
         </div>
         {/* END of Profile DIV */}
 
@@ -51,6 +67,9 @@ function PortfolioCreationPage() {
         {/* END OF SKILLS INFO  DIV */}
 
       </div>
+
+
+
 
       <div className={styles.porfoliodescription}>
         {/* DESCRIPTION DIV */}
