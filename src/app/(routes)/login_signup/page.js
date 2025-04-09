@@ -3,14 +3,14 @@ import { useState } from "react";
 
 // Icons extracted for cleanliness
 const EyeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-7.5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
   </svg>
 );
 
 const EyeOffIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-7.5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.02.152-2.007.438-2.938M9.88 9.88a3 3 0 114.242 4.242M15 12a3 3 0 00-3-3M3 3l18 18" />
   </svg>
 );
@@ -166,13 +166,13 @@ function Signup() {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+            className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition mt-4 mb-4"
           >
             Sign Up
           </button>
 
           {/* OR Divider */}
-          <div className="flex items-center my-6">
+          <div className="flex items-center my-8 mt-4">
             <hr className="flex-grow border-gray-300" />
             <span className="mx-3 text-gray-500 font-['Geist']">or</span>
             <hr className="flex-grow border-gray-300" />
