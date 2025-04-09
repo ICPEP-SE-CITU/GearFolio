@@ -10,11 +10,6 @@ function PortfolioCreationPage() {
     window.location.href = 'https://www.youtube.com/watch?v=UxTVemz_InI';
   };
   
-  const divCount = 20; // Total number of divs
-  const divs = Array.from({ length: divCount }, (_, index) => (
-    <div key={index} className={styles[`div${index + 1}`]}></div>
-  ));
-
   return (
     <div className={styles.container}>
 
@@ -126,7 +121,30 @@ function PortfolioCreationPage() {
         </div>
 
         <div className={styles.projectdiv}>
-        {divs}
+        <div className={styles.div1}>
+          <div>
+            
+          </div>
+        </div>
+        <div className={styles.div2}></div>
+        <div className={styles.div3}></div>
+        <div className={styles.div4}></div>
+        <div className={styles.div5}></div>
+        <div className={styles.div6}></div>
+        <div className={styles.div7}></div>
+        <div className={styles.div8}></div>
+        <div className={styles.div9}></div>
+        <div className={styles.div10}></div>
+        <div className={styles.div11}></div>
+        <div className={styles.div12}></div>
+        <div className={styles.div13}></div>
+        <div className={styles.div14}></div>
+        <div className={styles.div15}></div>
+        <div className={styles.div16}></div>
+        <div className={styles.div17}></div>
+        <div className={styles.div18}></div>
+        <div className={styles.div19}></div>
+        <div className={styles.div20}></div>
         </div>
         {/* END OF PROJECT DIV */}
 

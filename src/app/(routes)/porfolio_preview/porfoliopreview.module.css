@@ -181,11 +181,13 @@
     height: 1732px;
     padding: 10px;
     display: grid;
-    grid-template-columns: repeat(2, 511px) repeat(3, 1fr);
+    grid-template-columns: repeat(2, 511px);
     grid-template-rows: repeat(10, 370px);
-    grid-column-gap: 70px;
+    grid-column-gap: 10px;
     grid-row-gap: 50px;
     background-color: rgba(244, 240, 240, 0.5);
+    scrollbar-width: auto;
+    overflow: scroll;
   }
   
 .div1, .div2, .div3, .div4, .div5, .div6,
