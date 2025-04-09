@@ -90,7 +90,7 @@ export default function NameInputPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
       {/* Background logo - now positioned as page background */}
-      <div className="fixed inset-0 z-0 opacity-50 flex items-center justify-center pointer-events-none">
+      <div className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none">
         <div className="w-[937px] h-[937px] flex-shrink-0 aspect-square">
           <Image 
             src="/gear_folio_logo.svg" 
