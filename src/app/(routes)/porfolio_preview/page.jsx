@@ -1,4 +1,4 @@
-import styles from './porfoliocreation.module.css';
+import styles from './porfoliopreview.module.css';
 
 function PortfolioCreationPage() {
   return (
