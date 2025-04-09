@@ -3,6 +3,7 @@
     height: 3421px;
     width: 100%;
     display: flex;
+    justify-content: center;
     gap: 30px; 
     padding: 30px;
     box-sizing: border-box;
@@ -18,7 +19,6 @@
 }
 .profilediv{
     height: 681px;
-    background-color: gray;
     width: 100%;
     border-radius: 20px;
     display: flex;
@@ -38,6 +38,14 @@
     height: 57px;
     background-color: white;
     border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profiletext{
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: blue;
 }
 
 .infodiv{
@@ -45,6 +53,13 @@
     width: 100%;
     background-color: #12518A;
     border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 36px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    padding-left: 35px;
 }
 .contactinfo{
     height: 360px;
@@ -71,33 +86,118 @@
 
 
 .porfoliodescription {
-    background-color: green;
     width: calc(1195px - 30px * 2); 
     height: calc(3421px - 30px * 2); 
     border-radius: 20px;
     overflow: hidden;
+    border-width: 1px;
+    border-color: black;
   }
 .descriptiondiv{
     height: 213px;
     width: 100%;
-    background-color: grey;
+    background-color: rgba(244, 240, 240, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .biginfodiv{
     height: 81px;
     width: 100%;
-    background-color: violet;
+    background-color: #FFFFFF;
+    padding-left: 51px;
+    display: flex;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    color: black;
+    font-weight: bold;
+    border-width: 1px;
+    border-color: black;
 }
 .educationdiv{
     width: 100%;
     height: 380px;
-    background-color: red;
+    background-color: rgba(244, 240, 240, 0.5);
     border-radius: 15px;
+    border-width: 1px;
+    border-color: black;
+    display: flex;
+    overflow: hidden;
 }
-.projectdiv{
+.buttons1, .buttons2{
+    width: 8%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+.button{
+    width: 50px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.educationcontent{
+    width: 84%;
+    height: 100%;
+    display: flex;
+}
+.educationlevel{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 64px;
+    font-weight: bold;
+}
+.educational{
+    width: 60%;
+    height: 100%;
+    display: flexbox;
+}
+.firstbox,.secondbox {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    padding-left: 10px;
+}
+
+
+.projectdiv {
     width: 100%;
     height: 1732px;
-    background-color: blue;
-}
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 511px) repeat(3, 1fr);
+    grid-template-rows: repeat(10, 370px);
+    grid-column-gap: 70px;
+    grid-row-gap: 50px;
+    background-color: rgba(244, 240, 240, 0.5);
+  }
+  
+.div1, .div2, .div3, .div4, .div5, .div6,
+.div7, .div8, .div9, .div10, .div11, .div12,
+.div13, .div14, .div15, .div16, .div17, .div18,
+.div19, .div20 {
+    background-color: #FFFFFF;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    border-radius: 20px;
+  }
+  
 .certdiv{
     width: 100%;
     height: 847px;
