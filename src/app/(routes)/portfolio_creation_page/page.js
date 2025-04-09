@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Link from "next/link";
 
 function PortfolioCreationPage() {
   const [typedText, setTypedText] = useState('');
