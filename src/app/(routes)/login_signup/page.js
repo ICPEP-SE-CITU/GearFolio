@@ -1,10 +1,203 @@
-function LoginSignUp() {
+"use client";
+import { useState } from "react";
+
+// Icons extracted for cleanliness
+const EyeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
+  </svg>
+);
+
+const EyeOffIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.02.152-2.007.438-2.938M9.88 9.88a3 3 0 114.242 4.242M15 12a3 3 0 00-3-3M3 3l18 18" />
+  </svg>
+);
+
+const GoogleIcon = () => (
+  <svg className="w-5 h-5 mr-3" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg">
+    <path d="M533.5 278.4c0-18.2-1.6-36-4.7-53.2H272v100.8h146.9c-6.3 34-25.1 62.8-53.4 82l86.2 66.7c50.3-46.4 81.8-114.8 81.8-196.3z" fill="#4285F4" />
+    <path d="M272 544.3c72.6 0 133.7-24.1 178.2-65.6l-86.2-66.7c-24 16.1-54.7 25.6-92 25.6-70.8 0-130.8-47.8-152.4-112.1H30.7v70.6C74.5 480.9 167.5 544.3 272 544.3z" fill="#34A853" />
+    <path d="M119.6 325.5c-10.1-30-10.1-62.1 0-92.1V162.7H30.7c-36.4 71.6-36.4 157.4 0 229l88.9-66.2z" fill="#FBBC04" />
+    <path d="M272 107.7c39.5-.6 77.6 14.3 106.4 41.5l79.4-79.4C404.7 24.1 343.6 0 272 0 167.5 0 74.5 63.4 30.7 162.7l88.9 70.7c21.6-64.3 81.6-112.1 152.4-112.1z" fill="#EA4335" />
+  </svg>
+);
+
+function Signup() {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!username.trim()) {
+      newErrors.username = "Username is required.";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required.";
+    }
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password.";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      alert("Form submitted successfully!");
+      // Submit the form or send the data
+    }
+  };
+
   return (
-    <div>
-      <h1>Login/Signup</h1>
-      <p>Welcome to Login/Signup</p>
+    <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-b from-blue-100 to-white">
+      <div className="w-full max-w-2xl p-8 bg-white rounded-2xl shadow-md border border-gray-300">
+        <h2 className="text-center text-4xl sm:text-5xl font-bold text-blue-900 font-['Geist'] mt-2">
+          Create Account
+        </h2>
+
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6 mx-auto max-w-md">
+
+          {/* Username */}
+          <div>
+            <label className="block text-lg font-semibold text-blue-900 font-['Geist']">
+              Username
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-3 mt-1 bg-white border border-zinc-300 rounded-md outline-none focus:ring-2 focus:ring-blue-300"
+            />
+            {errors.username && (
+              <p className="text-red-500 text-sm mt-1">{errors.username}</p>
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-lg font-semibold text-blue-900 font-['Geist']">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-3 mt-1 bg-white border border-zinc-300 rounded-md outline-none focus:ring-2 focus:ring-blue-300"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
+          </div>
+
+          {/* Password */}
+          <div className="relative">
+            <label className="block text-lg font-semibold text-blue-900 font-['Geist']">
+              Password
+            </label>
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-3 mt-1 bg-white border border-zinc-300 rounded-md outline-none focus:ring-2 focus:ring-blue-300"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-10 right-4"
+            >
+              {showPassword ? (
+                <EyeOffIcon />
+              ) : (
+                <EyeIcon />
+              )}
+            </button>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          <div className="relative">
+            <label className="block text-lg font-semibold text-blue-900 font-['Geist']">
+              Confirm Password
+            </label>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-4 py-3 mt-1 bg-white border border-zinc-300 rounded-md outline-none focus:ring-2 focus:ring-blue-300"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute top-10 right-4"
+            >
+              {showConfirmPassword ? (
+                <EyeOffIcon />
+              ) : (
+                <EyeIcon />
+              )}
+            </button>
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+          >
+            Sign Up
+          </button>
+
+          {/* OR Divider */}
+          <div className="flex items-center my-6">
+            <hr className="flex-grow border-gray-300" />
+            <span className="mx-3 text-gray-500 font-['Geist']">or</span>
+            <hr className="flex-grow border-gray-300" />
+          </div>
+
+          {/* Google Signup Button */}
+          <button
+            type="button"
+            className="w-full flex items-center justify-center py-3 border border-gray-300 rounded-md hover:bg-gray-100 transition"
+          >
+            <GoogleIcon />
+            <span className="text-gray-600 text-lg font-['Geist']">Sign up with Google</span>
+          </button>
+        </form>
+
+        {/* Already have an account */}
+        <p className="mt-6 text-center text-gray-600 text-lg font-['Geist']">
+          Already have an account?{" "}
+          <a href="/signin" className="text-blue-600 font-bold">
+            Sign In
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
 
-export default LoginSignUp;
+export default Signup;
