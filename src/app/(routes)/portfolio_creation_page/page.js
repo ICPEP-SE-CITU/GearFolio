@@ -41,10 +41,7 @@ function PortfolioCreationPage() {
           <span className={`inline-block w-1 h-7 bg-blue-500 align-middle ${showCaret ? 'opacity-100' : 'opacity-0'}`}></span>
         </p>
         
-<<<<<<< Updated upstream
-=======
         <Link href="/portfolio_creation_page/name">
->>>>>>> Stashed changes
         <button className="
           bg-blue-600 
           hover:bg-blue-700 
@@ -66,10 +63,7 @@ function PortfolioCreationPage() {
         ">
           Get started
         </button>
-<<<<<<< Updated upstream
-=======
         </Link>
->>>>>>> Stashed changes
       </div>
       
       <div className="relative hidden lg:block" style={{ 
