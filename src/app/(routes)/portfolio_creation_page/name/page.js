@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react"; // Import React hooks for s
 import Link from "next/link"; // Import Link from Next.js for navigation
 import Image from "next/image"; // Import Image from Next.js for optimized image handling
 import { Progress } from "@/components/ui/progress"; // Import custom Progress component
+import { IoIosPerson } from "react-icons/io"; // Import icon for user profile
 
 export default function NameInputPage() {
   const [userImage, setUserImage] = useState(null);
@@ -156,8 +157,7 @@ export default function NameInputPage() {
               {/* Profile Image Upload */}
               <div className="col-span-1">
                 <div 
-                  className="w-full aspect-square border border-blue-100 rounded-lg mb-2 overflow-hidden flex items-center justify-center bg-white bg-opacity-60 cursor-pointer"
-                  onClick={handleUploadClick}
+                  className="w-full aspect-square border border-blue-100 rounded-lg mb-2 overflow-hidden flex items-center justify-center bg-white bg-opacity-60"
                   style={{
                     boxShadow: '0 4px 16px rgba(0, 65, 255, 0.05)'
                   }}
@@ -171,11 +171,13 @@ export default function NameInputPage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="text-gray-400 text-4xl">👤</div>
+                    <div className="w-full h-full flex items-center justify-center">
+                      <IoIosPerson className="w-1/2 h-1/2 fill-blue-600" /> {/* Adjust size as needed */}
+                    </div>
                   )}
                 </div>
                 <button 
-                  className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors duration-200"
+                  className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors duration-200 cursor-pointer"
                   onClick={handleUploadClick}
                 >
                   Upload
