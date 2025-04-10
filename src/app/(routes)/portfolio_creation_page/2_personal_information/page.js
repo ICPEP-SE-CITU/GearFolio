@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { FaFacebook, FaLinkedin, FaInstagram, FaPlus, FaTwitter } from "react-icons/fa";
 import { FcBriefcase, FcLeft } from "react-icons/fc";
 
-export default function PersonalInformation() {
+export default function PersonalInformationPage() {
   const [email, setEmail] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [socials, setSocials] = useState([{ platform: "", url: "" }]);
