@@ -259,7 +259,7 @@ export default function NameInputPage() {
         {/* Next button outside the container in the lower right */}
         <div className="absolute -bottom-12 right-0">
           <Link
-            href="/portfolio_creation_page/next-step"
+            href="/portfolio_creation_page/2_personal_information"
             className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
               canProceed
               ? "bg-blue-600 text-white hover:bg-blue-700" 
