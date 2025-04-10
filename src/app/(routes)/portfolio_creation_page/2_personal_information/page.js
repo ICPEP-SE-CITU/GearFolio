@@ -110,7 +110,7 @@ export default function PersonalInformation() {
       {/* Header with title and progress */}
       <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
         <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]">
-          Personal Information
+          Create your Portfolio
         </h1>
         <div className="max-w-3xl mx-auto relative">
           {/* Progress bar container */}
@@ -151,7 +151,7 @@ export default function PersonalInformation() {
           }}
         >
           <div className="p-10 h-full relative">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-8">Contact Details</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-8">Personal Information</h2>
             
             <div className="space-y-6">
               {/* Email */}
