@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { FaFacebook, FaLinkedin, FaInstagram, FaPlus, FaTwitter } from "react-icons/fa";
-import { FcBriefcase } from "react-icons/fc";
+import { FcBriefcase, FcLeft } from "react-icons/fc";
 
 export default function PersonalInformation() {
   const [email, setEmail] = useState("");
@@ -271,13 +271,15 @@ export default function PersonalInformation() {
         </div>
 
         {/* Navigation buttons */}
-        <div className="absolute -bottom-12 right-0 flex gap-4">
+        <div className="absolute -bottom-14 left-0 flex gap-4">
           <Link
-            href="/portfolio_creation_page/name"
-            className="py-2 px-6 font-medium rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all duration-200"
+            href="/portfolio_creation_page/1_name"
+            className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group"
           >
-            Back
+            <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
           </Link>
+        </div>
+        <div className="absolute -bottom-14 right-0 flex gap-4">
           <Link
             href="/portfolio_creation_page/next-step"
             className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
