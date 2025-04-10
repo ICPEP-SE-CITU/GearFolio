@@ -44,6 +44,8 @@ export default function PersonalInformation() {
   }, [email, contactNumber, socials, urlErrors]);
 
   // Animate progress towards target
+  //Please continue the code from here until the progress bar is complete - for Frontend
+  //or you can ask Backend to complete the code for you
   useEffect(() => {
     if (Math.abs(progress - targetProgress) < 0.1) {
       setProgress(targetProgress);
@@ -58,12 +60,12 @@ export default function PersonalInformation() {
     
     return () => cancelAnimationFrame(animationFrame);
   }, [progress, targetProgress]);
-
+// Function to add a new social media field
   const addSocialField = () => {
     setSocials([...socials, { platform: "", url: "" }]);
     setUrlErrors([...urlErrors, false]);
   };
-
+// Function to remove a social media field
   const removeSocialField = (index) => {
     const newSocials = [...socials];
     newSocials.splice(index, 1);
@@ -73,13 +75,15 @@ export default function PersonalInformation() {
     newErrors.splice(index, 1);
     setUrlErrors(newErrors);
   };
-
+// Function to handle changes in social media fields
   const handleSocialChange = (index, field, value) => {
     const newSocials = [...socials];
     newSocials[index][field] = value;
     setSocials(newSocials);
   };
 
+  // Function to get the icon based on the platform
+  // This function returns the appropriate icon based on the platform selected
   const getPlatformIcon = (platform) => {
     switch (platform) {
       case 'facebook': return <FaFacebook className="text-blue-600" />;
@@ -94,6 +98,7 @@ export default function PersonalInformation() {
   const canProceed = email.trim() && contactNumber.trim() && 
     socials.every((s, i) => !s.url || (s.url && !urlErrors[i]));
 
+    // render the personal information form
   return (
 <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
       {/* Background logo */}
@@ -287,7 +292,9 @@ export default function PersonalInformation() {
         </div>
       </div>
 
+      {/* Initial UI for AI*/}
       {/* UI for AI Mascot */}
+      {/* Frontend, just copy this code every page. akoa pani himoan og UI component */}
       <div className="absolute top-4 right-4 z-20">
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>

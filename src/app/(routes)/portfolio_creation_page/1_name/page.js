@@ -273,6 +273,7 @@ export default function NameInputPage() {
       </div>
 
       {/* UI for AI Mascot Here. Note:This just an code representation */}
+       {/* Frontend, just copy this code every page. akoa pani himoan og UI component */}
       <div className="absolute top-4 right-4 z-20">
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
