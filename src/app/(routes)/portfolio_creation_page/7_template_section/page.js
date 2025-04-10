@@ -26,7 +26,7 @@ export default function TemplatePage() {
         </div>
         <div className="absolute -mt-120 right-160 flex gap-4">
           <Link
-            href="/portfolio_creation_page/8_generate_porfolio"
+            href="/portfolio_creation_page/8_generate_portfolio"
             className='text-xl hover:scale-115 transition-transform duration-300'>
             Next
           </Link>
