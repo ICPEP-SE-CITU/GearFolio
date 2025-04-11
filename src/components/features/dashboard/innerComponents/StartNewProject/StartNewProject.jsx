@@ -23,7 +23,7 @@ const StartNewProject = () => {
 
   // Style for the div acting as a button
    const buttonStyle = {
-      width: 195, height: 48, left: 124, top: 159, position: 'absolute',
+      width: 195, height: 48, left: 124, top: 179, position: 'absolute',
       background: 'var(--Color-Primary-Primary---600, #156AB4)',
       borderRadius: 25,
       display: 'flex', // Added for centering text

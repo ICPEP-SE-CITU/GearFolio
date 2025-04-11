@@ -1,6 +1,6 @@
 // components/features/dashboard/SquareContainer.jsx
 import React from 'react';
-import styles from '../styles-components/SquareContainer.module.css';
+import styles from './SquareContainer.module.css';
 import PortfolioViews from "@/components/features/dashboard/innerComponents/PortfolioViews/PortfolioViews.jsx";
 import QuickStats from "@/components/features/dashboard/innerComponents/QuickStats/QuickStats.jsx";
 import StartNewProject from "@/components/features/dashboard/innerComponents/StartNewProject/StartNewProject.jsx";

@@ -1,6 +1,6 @@
 // components/features/dashboard/searchbar-component/SearchBar.jsx
 import React from 'react';
-import styles from '../styles-components/searchbr-component.module.css';
+import styles from './searchbr-component.module.css';
 
 function SearchBar() {
   return (

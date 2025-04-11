@@ -1,0 +1,18 @@
+/* components/features/dashboard/background/DashboardBackground.module.css */
+.background {
+    background-color: #f7f7ff; /* Same background color as before */
+    min-height: 220vh; /* Ensure the container takes up at least the full viewport height */
+    height: auto; /* Allow the height to grow with content */
+    width: 100%; /* Full width */
+    z-index: 0; /* Adjust z-index to avoid hiding content (changed from -1) */
+    display: flex; /* Use flexbox to control the layout */
+    flex-direction: column; /* Stack children vertically */
+  }
+  
+  .background > main {
+    flex: 1 0 auto; /* Make the <main> element grow to fill available space, pushing the footer down */
+  }
+  
+  .background > footer {
+    flex-shrink: 0; /* Prevent the footer from shrinking */
+  }

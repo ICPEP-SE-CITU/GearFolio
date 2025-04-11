@@ -1,9 +1,10 @@
-
+// components/features/dashboard/background/DashboardBackground.jsx
 import React from 'react';
+import styles from './DashboardBackground.module.css'; // Import the CSS module
 
 function DashboardBackground({ children }) {
   return (
-    <div style={{ backgroundColor: '#f7f7ff', minHeight: '100vh', width: '100%', zIndex: -1 }}>
+    <div className={styles.background}>
       {children}
     </div>
   );
