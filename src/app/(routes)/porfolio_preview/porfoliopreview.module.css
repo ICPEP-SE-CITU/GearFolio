@@ -27,12 +27,22 @@
     align-items: center;
     gap:7px;
 }
-.profilecircle{
+.profilecircle {
     width: 502px;
     height: 473px;
     background-color: black;
-    border-radius: 220.5px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+.profilecircle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
 }
+
 .profilename{
     width: 378px;
     height: 57px;
@@ -45,7 +55,7 @@
 .profiletext{
     font-size: 32px;
     font-family: Arial, Helvetica, sans-serif;
-    color: blue;
+    color: #12518A;
 }
 
 .infodiv{
@@ -64,26 +74,74 @@
 .contactinfo{
     height: 360px;
     width: 100%;
-    background-color: red;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
 }
+.contactinfobox{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.contactmedia, .contactmedialink{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+.contactmedia{
+    padding-left: 20px;
+}
+.contactmedialink{
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 40px;
+}
+
 .addressinfo{
     height: 344px;
     width: 100%;
-    background-color: beige;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
 }
+
 .workinfo{
     height: 330px;
     width: 100%;
-    background-color: blue;
+    padding: 10px;
+    gap: 10px;
+    flex-direction: column;
+    display: flex;
 }
+.workinfobox{
+    height: 80px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding-left: 20px;
+}
+
 .skillsinfo{
     height: 1389px;
     width: 100%;
-    background-color: violet;
     border-radius: 20px;
+    padding: 10px;
+    gap: 10px;
+    flex-direction: column;
+    display: flex;
 }
-
-
 
 .porfoliodescription {
     width: calc(1195px - 30px * 2); 
@@ -103,6 +161,8 @@
     align-items: center;
     font-size: 36px;
     font-family: Arial, Helvetica, sans-serif;
+    border-bottom: 1px solid black;
+
 }
 .biginfodiv{
     height: 81px;
@@ -181,14 +241,14 @@
     height: 1732px;
     padding: 10px;
     display: grid;
-    grid-template-columns: repeat(2, 511px);
-    grid-template-rows: repeat(10, 370px);
-    grid-column-gap: 10px;
-    grid-row-gap: 50px;
+    grid-template-columns: repeat(2, 49%);
+    grid-template-rows: repeat(10, 350px);
+    grid-column-gap: 2%;
+    grid-row-gap: 15px;
     background-color: rgba(244, 240, 240, 0.5);
     scrollbar-width: auto;
-    overflow: scroll;
-  }
+    overflow: auto;
+}
   
 .div1, .div2, .div3, .div4, .div5, .div6,
 .div7, .div8, .div9, .div10, .div11, .div12,
@@ -198,10 +258,105 @@
     box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
     border-radius: 20px;
+    padding: 5px;
+    display: flexbox;
+    overflow: hidden;
   }
-  
-.certdiv{
+
+.parentprojectdiv{
+    width: 100%;
+    height: 80%;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.projectimage{
+    height: 90%;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    object-fit: contain;
+}
+
+
+.projectname, .projectlink{
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+}
+.projectlink{
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.certdiv {
     width: 100%;
     height: 847px;
-    background-color: pink;
+    background-color: rgba(244, 240, 240, 0.5);
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    scrollbar-width: auto;
+    align-items: center;
+}
+
+.certificatebox{
+    width: 100%;
+    height: 360px;
+    background-color: #FFFFFF;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    border-radius: 20px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    gap:10px;
+    padding: 10px;
+}
+
+.certificateimagediv, .certificateinfodiv {
+    width: 50%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  
+.certimagecontainer {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+  
+.certimagecontainer img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.certificateinfodiv{
+    display: flex;
+    flex-direction: column;
+}
+.certificatetitle, .certificaterole{
+    height: auto;
+    width: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24;
+    font-weight: bold;
+}
+.certificaterole{
+    font-weight: normal;
 }
