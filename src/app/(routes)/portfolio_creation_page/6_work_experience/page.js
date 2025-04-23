@@ -322,7 +322,7 @@ export default function WorkExperiencePage() {
         </div>
         <div className="absolute -bottom-14 right-0 flex gap-4">
           <Link
-            href="/portfolio_creation_page/3_address"
+            href="/portfolio_creation_page/7_template_section"
             className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
               canProceed
                 ? "bg-blue-600 text-white hover:bg-blue-700" 
