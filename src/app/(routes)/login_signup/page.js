@@ -70,13 +70,33 @@ function Signup() {
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-b from-blue-100 to-white">
-      <div className="w-full max-w-2xl p-8 bg-white rounded-2xl shadow-md border border-gray-300">
+      <div className="w-full max-w-2xl p-8 bg-white rounded-2xl shadow-md border border-gray-300 relative">
+        {/* Close Button */}
+        <button
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          onClick={() => alert("Close button clicked!")}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
         <h2 className="text-center text-4xl sm:text-5xl font-bold text-blue-900 font-['Geist'] mt-2">
           Create Account
         </h2>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6 mx-auto max-w-md">
-
           {/* Username */}
           <div>
             <label className="block text-lg font-semibold text-blue-900 font-['Geist']">
@@ -125,11 +145,7 @@ function Signup() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute top-10 right-4"
             >
-              {showPassword ? (
-                <EyeOffIcon />
-              ) : (
-                <EyeIcon />
-              )}
+              {showPassword ? <EyeOffIcon /> : <EyeIcon />}
             </button>
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -152,11 +168,7 @@ function Signup() {
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute top-10 right-4"
             >
-              {showConfirmPassword ? (
-                <EyeOffIcon />
-              ) : (
-                <EyeIcon />
-              )}
+              {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
             </button>
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
