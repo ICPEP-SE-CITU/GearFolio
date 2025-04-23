@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../styles/globals.css';
+import AiRecommButton from '../components/features/aiRecomm/aiRecommButton'; // Note: capitalization
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -20,9 +21,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased relative`}
       >
         {children}
+        <div className="fixed bottom-4 right-4">
+          <AiRecommButton />
+        </div>
       </body>
     </html>
   );
