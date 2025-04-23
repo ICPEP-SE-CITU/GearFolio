@@ -139,7 +139,7 @@ export default function WorkExperiencePage() {
       </div>
 
       {/* Form */}
-      <div className="w-full max-w-5xl mx-auto relative z-10">
+      <div className="w-full max-w-5xl mx-auto relative z-10 mb-20">
         <div 
           className="w-full min-h-[553px] rounded-lg relative overflow-hidden shadow-lg"
           style={{ 
@@ -151,7 +151,7 @@ export default function WorkExperiencePage() {
         >
           <div className="p-10 h-full relative">
             <h2 className="text-2xl font-semibold text-gray-800 mb-8">Work Experience</h2>
-            <div className="space-y-8">
+            <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4">
               
               {/* Jobs */}
               <div>
@@ -314,16 +314,14 @@ export default function WorkExperiencePage() {
         </div>
 
         {/* Navigation */}
-        <div className="absolute -bottom-14 left-0 flex gap-4">
+        <div className="flex justify-between mt-6">
           <Link href="/portfolio_creation_page/5_upload_certificates"
           className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group">
             <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
           </Link>
-        </div>
-        <div className="absolute -bottom-14 right-0 flex gap-4">
           <Link
             href="/portfolio_creation_page/7_template_section"
-            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
+            className={`py-4 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
               canProceed
                 ? "bg-blue-600 text-white hover:bg-blue-700" 
                 : "bg-gray-400 text-gray-100 cursor-not-allowed"
