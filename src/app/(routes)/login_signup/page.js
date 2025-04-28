@@ -1,14 +1,7 @@
-<<<<<<< Updated upstream
-function LoginSignUp() {
-  return (
-    <div>
-      <h1>Login/Signup</h1>
-      <p>Welcome to Login/Signup</p>
-=======
 "use client";
 import { useState } from "react";
 
-// Icons
+// Icons (existing icons remain the same)
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-7.5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -38,7 +31,8 @@ const CloseIcon = () => (
 );
 
 function AuthForm() {
-  const [isSignUp, setIsSignUp] = useState(true); // Toggle between sign up and sign in
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,6 +40,7 @@ function AuthForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [resetEmailSent, setResetEmailSent] = useState(false);
 
   const validate = () => {
     const newErrors = {};
@@ -76,36 +71,123 @@ function AuthForm() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const validateForgotPassword = () => {
+    const newErrors = {};
+    
+    if (!email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+      newErrors.email = "Enter a valid email address.";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
       alert(isSignUp ? "Sign up successful!" : "Sign in successful!");
-      // Submit the form or send the data
     }
   };
+
+  const handleForgotPasswordSubmit = (e) => {
+    e.preventDefault();
+    if (validateForgotPassword()) {
+      // Simulate sending reset email
+      setResetEmailSent(true);
+      setTimeout(() => {
+        setShowForgotPassword(false);
+        setResetEmailSent(false);
+      }, 3000);
+    }
+  };
+
+  const handleCloseForgotPassword = () => {
+    setShowForgotPassword(false);
+    setErrors({});
+    setEmail("");
+  };
+
+  if (showForgotPassword) {
+    return (
+      <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-b from-blue-100 to-white">
+        <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-md border border-gray-300 relative">
+          <button
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            onClick={handleCloseForgotPassword}
+          >
+            <CloseIcon />
+          </button>
+
+          <h2 className="text-center text-4xl sm:text-5xl font-bold text-blue-900 font-['Geist'] mt-2">
+            Reset Your Password
+          </h2>
+
+          {resetEmailSent ? (
+            <div className="mt-8 text-center">
+              <p className="text-lg text-gray-700">
+                We've sent a password reset link to <span className="font-semibold">{email}</span>.
+              </p>
+              <p className="mt-4 text-gray-600">
+                Please check your email and follow the instructions to reset your password.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleForgotPasswordSubmit} className="mt-8 space-y-6 mx-auto">
+              <div>
+                <label className="block text-lg font-semibold text-blue-900 font-['Geist']">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full px-4 py-3 mt-1 bg-white border border-zinc-300 rounded-md outline-none focus:ring-2 focus:ring-blue-300"
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
+              </div>
+
+              <p className="text-gray-600 text-center">
+                Enter the email address associated with your account and we'll send you a link to reset your password.
+              </p>
+
+              <button
+                type="submit"
+                className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition mt-4 mb-4"
+              >
+                Send Reset Link
+              </button>
+
+              <div className="text-center mt-4">
+                <button
+                  onClick={() => {
+                    setShowForgotPassword(false);
+                    setIsSignUp(false);
+                  }}
+                  className="text-blue-600 hover:underline"
+                >
+                  Remember your password? Sign in
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-b from-blue-100 to-white">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-md border border-gray-300 relative">
-        {/* Close Button */}
         <button
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
           onClick={() => alert("Close button clicked!")}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <CloseIcon />
         </button>
 
         <h2 className="text-center text-4xl sm:text-5xl font-bold text-blue-900 font-['Geist'] mt-2">
@@ -198,9 +280,12 @@ function AuthForm() {
           {/* Forgot Password - Only shown in Sign In */}
           {!isSignUp && (
             <div className="text-right">
-              <a href="/forgot-password" className="text-blue-600 hover:underline">
+              <button 
+                onClick={() => setShowForgotPassword(true)}
+                className="text-blue-600 hover:underline"
+              >
                 Forgot Password?
-              </a>
+              </button>
             </div>
           )}
 
@@ -242,13 +327,8 @@ function AuthForm() {
           </button>
         </p>
       </div>
->>>>>>> Stashed changes
     </div>
   );
 }
 
-<<<<<<< Updated upstream
-export default LoginSignUp;
-=======
 export default AuthForm;
->>>>>>> Stashed changes
