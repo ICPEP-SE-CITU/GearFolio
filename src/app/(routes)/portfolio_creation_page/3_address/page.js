@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Progress } from "@/components/ui/progress"; // Assuming you have a Progress component
+import { Progress } from "@/components/ui/progress"; 
 import Image from "next/image";
 import { FcLeft } from "react-icons/fc";
 
