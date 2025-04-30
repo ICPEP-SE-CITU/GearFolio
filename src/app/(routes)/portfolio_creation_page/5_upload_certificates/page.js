@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FcLeft } from "react-icons/fc";
 import { FaTrashAlt } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function CertificatesPage() {
   const [progress, setProgress] = useState(55);
@@ -14,14 +15,11 @@ export default function CertificatesPage() {
   const [description, setDescription] = useState("");
   const [stagedFiles, setStagedFiles] = useState([]);
   const fileInputRef = useRef(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   // States for Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-
-  /*const handleRemoveCertificate = (indexToRemove) => {
-    setCertificates((prev) => prev.filter((_, index) => index !== indexToRemove));
-  };*/
 
   useEffect(() => {
     const baseProgress = 55;
@@ -44,30 +42,25 @@ export default function CertificatesPage() {
   }, [certificates]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      // Using a simple step-increment animation
-      if (Math.abs(progress - targetProgress) > 0.5) { // Add tolerance
-        setProgress((prev) => {
-          const step = 0.5 * Math.sign(targetProgress - prev); // Control step size
-          // Ensure not to overshoot target
-          return Math.abs(targetProgress - (prev + step)) < Math.abs(targetProgress - prev)
-            ? prev + step
-            : targetProgress;
-        });
-      } else if (progress !== targetProgress) {
-        setProgress(targetProgress); // Snap to target when close
-      }
-    }, 30); // Adjust timing for smoother/faster animation if needed
-    return () => clearTimeout(timer);
-  }, [progress, targetProgress]);
+    if (Math.abs(progress - targetProgress) < 0.1) {
+      setProgress(targetProgress);
+      return;
+    }
 
+    const animationFrame = requestAnimationFrame(() => {
+      const diff = targetProgress - progress;
+      const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
+      setProgress(prev => Math.round((prev + step) * 10) / 10);
+    });
+
+    return () => cancelAnimationFrame(animationFrame);
+  }, [progress, targetProgress]);
 
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
     setStagedFiles(files);
   };
 
-  // ADDED: Function to handle the explicit upload confirmation
   const handleUploadConfirm = () => {
     if (stagedFiles.length === 0) {
       alert("Please choose a file.");
@@ -86,7 +79,7 @@ export default function CertificatesPage() {
     setStagedFiles([]);
     setDescription("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = null; // Reset the file input
+      fileInputRef.current.value = null;
     }
   };
 
@@ -106,6 +99,14 @@ export default function CertificatesPage() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
+  };
+
+  const handleNext = (e) => {
+    if (!canProceed) {
+      e.preventDefault();
+      return;
+    }
+    setIsAnimating(true);
   };
 
   return (
@@ -143,9 +144,12 @@ export default function CertificatesPage() {
                 marginLeft: "-4px",
               }}
             >
-              <div className="animate-spin">
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              >
                 <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
-              </div>
+              </motion.div>
             </div>
           </div>
           <div className="flex items-center justify-center mt-4">
@@ -158,7 +162,7 @@ export default function CertificatesPage() {
       <div className="w-full max-w-5xl mx-auto relative z-10">
         {/* Main glass container */}
         <div
-          className="w-full rounded-lg relative overflow-visible shadow-lg"
+          className="w-full rounded-lg relative overflow-hidden shadow-lg"
           style={{
             background: "rgba(235, 245, 255, 0.5)",
             backdropFilter: "blur(12px)",
@@ -167,98 +171,111 @@ export default function CertificatesPage() {
             minHeight: "480px",
           }}
         >
-          <div className="p-8 flex flex-col h-full">
-            <h2 className="text-xl font-semibold mb-4">Certificates</h2>
-            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center mb-4 flex-wrap">
-              <div className="flex items-center gap-2">
-                <label className="font-medium">Upload Certificate:</label>
-                <label className="bg-blue-600 text-white px-4 py-1 rounded-2xl cursor-pointer -ml-1">
-                  Choose File
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="certificates-content"
+              className="p-8 flex flex-col h-full"
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <h2 className="text-xl font-semibold mb-4">Certificates</h2>
+              <div className="flex flex-col md:flex-row gap-4 items-start md:items-center mb-4 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <label className="font-medium">Upload Certificate:</label>
+                  <label className="bg-blue-600 text-white px-4 py-1 rounded-2xl cursor-pointer -ml-1">
+                    Choose File
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      onChange={handleFileSelect}
+                      multiple
+                      className="hidden"
+                      accept="image/*,.pdf"
+                    />
+                  </label>
+                  {/* Display number of staged files */}
+                  {stagedFiles.length > 0 && (
+                    <span className="text-sm text-gray-600">{stagedFiles.length} file selected</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 flex-1 min-w-[250px]">
+                  <label className="font-medium whitespace-nowrap">Description:</label>
                   <input
-                    ref={fileInputRef}
-                    type="file"
-                    onChange={handleFileSelect}
-                    multiple
-                    className="hidden"
-                    accept="image/*,.pdf"
+                    type="text"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder={stagedFiles.length === 0 ? "Please Select File" : "Enter description for selected file"}
+                    className="flex-grow border p-1 px-3 py-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={stagedFiles.length === 0}
                   />
-                </label>
-                {/* Display number of staged files */}
-                {stagedFiles.length > 0 && (
-                  <span className="text-sm text-gray-600">{stagedFiles.length} file selected</span>
-                )}
-              </div>
-              <div className="flex items-center gap-2 flex-1 min-w-[250px]"> {/* Ensure wrapping works */}
-                <label className="font-medium whitespace-nowrap">Description:</label>
-                <input
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  // CHANGED: Placeholder and disabled condition
-                  placeholder={stagedFiles.length === 0 ? "Please Select File" : "Enter description for selected file"}
-                  className="flex-grow border p-1 px-3 py-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={stagedFiles.length === 0} // Disable if no files are staged
-                />
+                </div>
+
+                <button
+                  onClick={handleUploadConfirm}
+                  disabled={stagedFiles.length === 0}
+                  className="bg-blue-600 text-white px-5 py-1.5 rounded-2xl cursor-pointer hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                >
+                  Upload Certificate
+                </button>
               </div>
 
-              <button
-                onClick={handleUploadConfirm}
-                disabled={stagedFiles.length === 0}
-                className="bg-blue-600 text-white px-5 py-1.5 rounded-2xl cursor-pointer hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-              >
-                Upload Certificate
-              </button>
-            </div>
-
-            <div className="w-full flex-grow bg-white border rounded overflow-auto p-5 mt-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {certificates.length === 0 ? (
-                  // CHANGED: Centering and spanning
-                  <div className="col-span-full flex flex-col items-center justify-center text-center h-60 text-gray-400">
-                    No certificates uploaded. Upload to preview here.
-                  </div>
-                ) : (
-                  certificates.map((certData, index) => (
-                    <div
-                      key={index}
-                      className="relative flex flex-col items-center border p-3 rounded shadow bg-gray-50"
-                    >
-                      {/* Image Preview Container */}
-                      <div className="w-full h-[150px] bg-white border rounded flex items-center justify-center overflow-hidden mb-2">
-                        {certData.file.type.startsWith("image/") ? (
-                          <Image
-                            src={URL.createObjectURL(certData.file)}
-                            alt={`Certificate ${index + 1}`}
-                            width={150}
-                            height={150}
-                            className="object-contain max-w-full max-h-full"
-                          />
-                        ) : (
-                          <span className="text-gray-500 text-center text-sm p-2">Preview not available ({certData.file.type})</span>
-                        )}
-                      </div>
-                      {/* File Name */}
-                      <p className="font-semibold text-center text-sm truncate w-full px-1" title={certData.file.name}>
-                        {certData.file.name}
-                      </p>
-                      {/* ADDED: Description Display */}
-                      <p className="text-xs text-gray-600 text-center mt-1 px-1 break-words w-full" title={certData.description || "No description"}>
-                        {certData.description || "(No description)"}
-                      </p>
-                      {/* ADDED: Remove Button */}
-                      <button
-                        onClick={() => handleRemoveCertificate(index)}
-                        className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors text-xs"
-                        aria-label="Remove certificate"
-                      >
-                        <FaTrashAlt />
-                      </button>
+              <div className="w-full flex-grow bg-white border rounded overflow-auto p-5 mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {certificates.length === 0 ? (
+                    <div className="col-span-full flex flex-col items-center justify-center text-center h-60 text-gray-400">
+                      No certificates uploaded. Upload to preview here.
                     </div>
-                  ))
-                )}
+                  ) : (
+                    certificates.map((certData, index) => (
+                      <motion.div
+                        key={index}
+                        className="relative flex flex-col items-center border p-3 rounded shadow bg-gray-50"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {/* Image Preview Container */}
+                        <div 
+                          className="w-full h-[150px] bg-white border rounded flex items-center justify-center overflow-hidden mb-2 cursor-pointer"
+                          onClick={() => openModal(certData)}
+                        >
+                          {certData.file.type.startsWith("image/") ? (
+                            <Image
+                              src={URL.createObjectURL(certData.file)}
+                              alt={`Certificate ${index + 1}`}
+                              width={150}
+                              height={150}
+                              className="object-contain max-w-full max-h-full"
+                            />
+                          ) : (
+                            <span className="text-gray-500 text-center text-sm p-2">Preview not available ({certData.file.type})</span>
+                          )}
+                        </div>
+                        {/* File Name */}
+                        <p className="font-semibold text-center text-sm truncate w-full px-1" title={certData.file.name}>
+                          {certData.file.name}
+                        </p>
+                        {/* Description Display */}
+                        <p className="text-xs text-gray-600 text-center mt-1 px-1 break-words w-full" title={certData.description || "No description"}>
+                          {certData.description || "(No description)"}
+                        </p>
+                        {/* Remove Button */}
+                        <button
+                          onClick={() => handleRemoveCertificate(index)}
+                          className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors text-xs"
+                          aria-label="Remove certificate"
+                        >
+                          <FaTrashAlt />
+                        </button>
+                      </motion.div>
+                    ))
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Navigation Buttons */}
           <div className="absolute -bottom-14 left-0 flex gap-4">
@@ -266,29 +283,49 @@ export default function CertificatesPage() {
               href="/portfolio_creation_page/4_education"
               className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group"
             >
-              <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <FcLeft className="text-4xl" />
+              </motion.div>
             </Link>
           </div>
-          <div className="absolute -bottom-12 right-0">
+          <div className="absolute -bottom-14 right-0 flex gap-4">
             <Link
               href="/portfolio_creation_page/6_work_experience"
-              className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
-                  ? "bg-blue-600 text-white hover:bg-blue-700"
-                  : "bg-gray-400 text-gray-100 cursor-not-allowed"
-                }`}
-              onClick={(e) => !canProceed && e.preventDefault()}
+              passHref
             >
-              Next
+              <motion.button
+                className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                  canProceed
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-gray-400 text-gray-100 cursor-not-allowed"
+                }`}
+                onClick={handleNext}
+                whileHover={canProceed ? { y: -2, boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)" } : {}}
+                whileTap={canProceed ? { scale: 0.95 } : {}}
+                disabled={!canProceed}
+              >
+                Next
+              </motion.button>
             </Link>
           </div>
         </div>
       </div>
-      {/* AI Mascot Placeholder */}
-      <div className="absolute top-4 right-4 z-20">
+
+      {/* AI Mascot */}
+      <motion.div 
+        className="absolute top-4 right-4 z-20"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        whileHover={{ rotate: [0, 10, -10, 0] }}
+      >
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
