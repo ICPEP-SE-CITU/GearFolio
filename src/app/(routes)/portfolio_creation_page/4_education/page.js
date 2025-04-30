@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { FcLeft } from "react-icons/fc";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function PortfolioCreationPage() {
   const [progress, setProgress] = useState(43);
@@ -17,15 +18,14 @@ export default function PortfolioCreationPage() {
     masters: { checked: false, university: "" },
     doctoral: { checked: false, university: "" }
   });
+  const [isAnimating, setIsAnimating] = useState(false);
 
-  // Check if all required fields are filled
   useEffect(() => {
     const baseProgress = 43;
     const maxProgress = 55;
     const progressPerSection = 3;
     let addedProgress = 0;
 
-    
     if (elementary.trim() !== "") {
       addedProgress += progressPerSection;
     }
@@ -48,11 +48,9 @@ export default function PortfolioCreationPage() {
     }
 
     const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
-
     setTargetProgress(newTargetProgress);
   }, [elementary, juniorHigh, seniorHigh, degreeLevel]);
 
-  // Progress animation
   useEffect(() => {
     if (Math.abs(progress - targetProgress) < 0.1) {
       setProgress(targetProgress);
@@ -62,17 +60,12 @@ export default function PortfolioCreationPage() {
     const animationFrame = requestAnimationFrame(() => {
       const diff = targetProgress - progress;
       const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-
-      setProgress(prevProgress => {
-        const newProgress = prevProgress + step;
-        return Math.round(newProgress * 10) / 10;
-      });
+      setProgress(prev => Math.round((prev + step) * 10) / 10);
     });
 
     return () => cancelAnimationFrame(animationFrame);
   }, [progress, targetProgress]);
 
-  // Determine if user can proceed
   const canProceed =
     elementary.trim() !== "" &&
     juniorHigh.trim() !== "" &&
@@ -105,8 +98,17 @@ export default function PortfolioCreationPage() {
     }));
   };
 
+  const handleNext = (e) => {
+    if (!canProceed) {
+      e.preventDefault();
+      return;
+    }
+    setIsAnimating(true);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
+      {/* Background logo (static) */}
       <div className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none">
         <div className="w-[937px] h-[937px] flex-shrink-0 aspect-square">
           <Image
@@ -120,7 +122,7 @@ export default function PortfolioCreationPage() {
         </div>
       </div>
 
-      {/* Page Header */}
+      {/* Header with title and progress (static) */}
       <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
         <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]">
           Create your Portfolio
@@ -130,7 +132,6 @@ export default function PortfolioCreationPage() {
             <div className="bg-blue-100 rounded-full overflow-hidden h-2">
               <Progress value={progress} className="h-2 transition-all duration-300 ease-out" />
             </div>
-
             <div
               className="absolute top-0 z-20 transition-all duration-300 ease-out"
               style={{
@@ -140,9 +141,12 @@ export default function PortfolioCreationPage() {
                 marginLeft: "-4px"
               }}
             >
-              <div className="animate-spin">
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              >
                 <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
-              </div>
+              </motion.div>
             </div>
           </div>
           <div className="flex items-center justify-center mt-4">
@@ -151,10 +155,10 @@ export default function PortfolioCreationPage() {
         </div>
       </div>
 
-      {/* Form Section */}
+      {/* Glass container with animated content */}
       <div className="w-full max-w-5xl mx-auto relative z-10">
         <div
-          className="w-full rounded-lg relative overflow-hidden shadow-lg"
+          className="w-full h-[553px] rounded-lg relative overflow-hidden shadow-lg"
           style={{
             background: 'rgba(235, 245, 255, 0.5)',
             backdropFilter: 'blur(12px)',
@@ -162,140 +166,206 @@ export default function PortfolioCreationPage() {
             border: '1px solid rgba(255, 255, 255, 0.18)'
           }}
         >
-          <div className="p-10 relative max-h-[70vh] overflow-y-auto">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Education</h2>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="education-info"
+              className="p-10 h-full relative overflow-y-auto"
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Education</h2>
 
-            <div className="space-y-6">
-              {/* Elementary */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Elementary:
-                </label>
-                <input
-                  type="text"
-                  value={elementary}
-                  onChange={(e) => setElementary(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                  required
-                />
-              </div>
-
-              {/* Junior High */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Junior High School:
-                </label>
-                <input
-                  type="text"
-                  value={juniorHigh}
-                  onChange={(e) => setJuniorHigh(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                  required
-                />
-              </div>
-
-              {/* Senior High */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Senior High School:
-                </label>
-                <input
-                  type="text"
-                  value={seniorHigh}
-                  onChange={(e) => setSeniorHigh(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                  required
-                />
-              </div>
-
-              {/* College Header */}
-              <h2 className="text-2xl font-semibold text-gray-800 mt-8 mb-4">College</h2>
-
-              {/* Degree Checkboxes with University Inputs */}
-              <div className="space-y-4">
-                {/* Undergraduate */}
-                <div className="w-full border border-gray-300 rounded-md bg-white p-3 space-y-2">
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      checked={degreeLevel.undergraduate.checked}
-                      onChange={() => handleDegreeChange('undergraduate')}
-                      className="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <span className="text-gray-700">Undergraduate</span>
+              <div className="space-y-6">
+                {/* Elementary */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Elementary:
                   </label>
-                  {degreeLevel.undergraduate.checked && (
-                    <div className="pl-9">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        University:
-                      </label>
-                      <input
-                        type="text"
-                        value={degreeLevel.undergraduate.university}
-                        onChange={(e) => handleUniversityChange('undergraduate', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                        required
-                      />
-                    </div>
-                  )}
-                </div>
+                  <input
+                    type="text"
+                    value={elementary}
+                    onChange={(e) => setElementary(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                    required
+                  />
+                </motion.div>
 
-                {/* Masters */}
-                <div className="w-full border border-gray-300 rounded-md bg-white p-3 space-y-2">
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      checked={degreeLevel.masters.checked}
-                      onChange={() => handleDegreeChange('masters')}
-                      className="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <span className="text-gray-700">Master's Program</span>
+                {/* Junior High */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Junior High School:
                   </label>
-                  {degreeLevel.masters.checked && (
-                    <div className="pl-9">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        University:
-                      </label>
-                      <input
-                        type="text"
-                        value={degreeLevel.masters.university}
-                        onChange={(e) => handleUniversityChange('masters', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                        required
-                      />
-                    </div>
-                  )}
-                </div>
+                  <input
+                    type="text"
+                    value={juniorHigh}
+                    onChange={(e) => setJuniorHigh(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                    required
+                  />
+                </motion.div>
 
-                {/* Doctoral */}
-                <div className="w-full border border-gray-300 rounded-md bg-white p-3 space-y-2">
-                  <label className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      checked={degreeLevel.doctoral.checked}
-                      onChange={() => handleDegreeChange('doctoral')}
-                      className="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <span className="text-gray-700">Doctoral</span>
+                {/* Senior High */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Senior High School:
                   </label>
-                  {degreeLevel.doctoral.checked && (
-                    <div className="pl-9">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        University:
-                      </label>
+                  <input
+                    type="text"
+                    value={seniorHigh}
+                    onChange={(e) => setSeniorHigh(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                    required
+                  />
+                </motion.div>
+
+                {/* College Header */}
+                <motion.h2 
+                  className="text-2xl font-semibold text-gray-800 mt-8 mb-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  College
+                </motion.h2>
+
+                {/* Degree Checkboxes with University Inputs */}
+                <motion.div 
+                  className="space-y-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  {/* Undergraduate */}
+                  <motion.div 
+                    className="w-full border border-gray-300 rounded-md bg-white p-3 space-y-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <label className="flex items-center space-x-3">
                       <input
-                        type="text"
-                        value={degreeLevel.doctoral.university}
-                        onChange={(e) => handleUniversityChange('doctoral', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                        required
+                        type="checkbox"
+                        checked={degreeLevel.undergraduate.checked}
+                        onChange={() => handleDegreeChange('undergraduate')}
+                        className="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                       />
-                    </div>
-                  )}
-                </div>
+                      <span className="text-gray-700">Undergraduate</span>
+                    </label>
+                    {degreeLevel.undergraduate.checked && (
+                      <motion.div 
+                        className="pl-9"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          University:
+                        </label>
+                        <input
+                          type="text"
+                          value={degreeLevel.undergraduate.university}
+                          onChange={(e) => handleUniversityChange('undergraduate', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          required
+                        />
+                      </motion.div>
+                    )}
+                  </motion.div>
+
+                  {/* Masters */}
+                  <motion.div 
+                    className="w-full border border-gray-300 rounded-md bg-white p-3 space-y-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <label className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        checked={degreeLevel.masters.checked}
+                        onChange={() => handleDegreeChange('masters')}
+                        className="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                      <span className="text-gray-700">Master's Program</span>
+                    </label>
+                    {degreeLevel.masters.checked && (
+                      <motion.div 
+                        className="pl-9"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          University:
+                        </label>
+                        <input
+                          type="text"
+                          value={degreeLevel.masters.university}
+                          onChange={(e) => handleUniversityChange('masters', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          required
+                        />
+                      </motion.div>
+                    )}
+                  </motion.div>
+
+                  {/* Doctoral */}
+                  <motion.div 
+                    className="w-full border border-gray-300 rounded-md bg-white p-3 space-y-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <label className="flex items-center space-x-3">
+                      <input
+                        type="checkbox"
+                        checked={degreeLevel.doctoral.checked}
+                        onChange={() => handleDegreeChange('doctoral')}
+                        className="h-6 w-6 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                      <span className="text-gray-700">Doctoral</span>
+                    </label>
+                    {degreeLevel.doctoral.checked && (
+                      <motion.div 
+                        className="pl-9"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          University:
+                        </label>
+                        <input
+                          type="text"
+                          value={degreeLevel.doctoral.university}
+                          onChange={(e) => handleUniversityChange('doctoral', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          required
+                        />
+                      </motion.div>
+                    )}
+                  </motion.div>
+                </motion.div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Navigation buttons */}
@@ -304,32 +374,48 @@ export default function PortfolioCreationPage() {
             href="/portfolio_creation_page/3_address"
             className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group"
           >
-            <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <FcLeft className="text-4xl" />
+            </motion.div>
           </Link>
         </div>
-        <div className="absolute -bottom-12 right-0">
+        <div className="absolute -bottom-14 right-0 flex gap-4">
           <Link
             href="/portfolio_creation_page/5_upload_certificates"
-            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-400 text-gray-100 cursor-not-allowed"
-              }`}
-            onClick={(e) => {
-              if (!canProceed) {
-                e.preventDefault();
-              }
-            }}
+            passHref
           >
-            Next
+            <motion.button
+              className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                canProceed
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-400 text-gray-100 cursor-not-allowed"
+              }`}
+              onClick={handleNext}
+              whileHover={canProceed ? { y: -2, boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)" } : {}}
+              whileTap={canProceed ? { scale: 0.95 } : {}}
+              disabled={!canProceed}
+            >
+              Next
+            </motion.button>
           </Link>
         </div>
       </div>
 
-      <div className="absolute top-4 right-4 z-20">
+      {/* AI Mascot */}
+      <motion.div 
+        className="absolute top-4 right-4 z-20"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        whileHover={{ rotate: [0, 10, -10, 0] }}
+      >
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
