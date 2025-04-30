@@ -188,24 +188,25 @@ export default function WorkExperiencePage() {
         >
           <div className="p-10 relative max-h-[70vh] overflow-y-auto">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Work Experience</h2>
-            <div className="space-y-6">
+            <div className="space-y-8"> {/* Increased spacing between sections */}
               {/* Jobs */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Job:</label>
+              <div className="space-y-4"> {/* Added container with spacing */}
+                <label className="block text-sm font-medium text-gray-700 mb-2">Job:</label>
                 {jobs.map((job, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="flex items-center gap-2">
+                  <div key={index} className="space-y-3"> {/* Increased spacing between job entries */}
+                    <div className="flex items-center gap-3"> {/* Increased gap between input and button */}
                       <input
                         type="text"
                         value={job}
                         onChange={(e) => updateJob(index, e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                        placeholder="Enter job title and company"
                       />
                       {index > 0 && (
                         <button
                           type="button"
                           onClick={() => removeJob(index)}
-                          className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
+                          className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                         >
                           Remove
                         </button>
@@ -215,10 +216,10 @@ export default function WorkExperiencePage() {
                       <button
                         type="button"
                         onClick={addJob}
-                        className="text-xs text-blue-600 hover:bg-blue-50 rounded flex items-center gap-1 px-2 py-1 -ml-1"
+                        className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
                       >
-                        <span>Add job</span>
-                        <FaPlus size={10} />
+                        <FaPlus size={12} />
+                        <span>Add another job</span>
                       </button>
                     )}
                   </div>
@@ -226,23 +227,24 @@ export default function WorkExperiencePage() {
               </div>
 
               {/* Skills */}
-              <div>
+              <div className="space-y-4"> {/* Added container with spacing */}
                 <label className="block text-sm font-medium text-gray-700 mb-2">Skill:</label>
                 <div className="space-y-3">
                   {skills.map((skill, index) => (
                     <div key={index} className="space-y-2">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3"> {/* Increased gap between input and button */}
                         <input
                           type="text"
                           value={skill}
                           onChange={(e) => updateSkill(index, e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          placeholder="Enter a skill"
                         />
                         {index > 0 && (
                           <button
                             type="button"
                             onClick={() => removeSkill(index)}
-                            className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
+                            className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                           >
                             Remove
                           </button>
@@ -252,10 +254,10 @@ export default function WorkExperiencePage() {
                         <button
                           type="button"
                           onClick={addSkill}
-                          className="text-xs text-blue-600 hover:bg-blue-50 rounded flex items-center gap-1 px-2 py-1 -ml-1"
+                          className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
                         >
-                          <span>Add skill</span>
-                          <FaPlus size={10} />
+                          <FaPlus size={12} />
+                          <span>Add another skill</span>
                         </button>
                       )}
                     </div>
@@ -264,11 +266,11 @@ export default function WorkExperiencePage() {
               </div>
 
               {/* Projects */}
-              <div>
-                <h2 className="text-2xl font-semibold text-gray-800 mb-8">Projects</h2>
-                <div className="space-y-4">
+              <div className="space-y-6"> {/* Increased spacing */}
+                <h2 className="text-2xl font-semibold text-gray-800 mb-6">Projects</h2>
+                <div className="space-y-6"> {/* Increased spacing between projects */}
                   {projects.map((project, index) => (
-                    <div key={index} className="space-y-3 border-b pb-4 last:border-b-0">
+                    <div key={index} className="space-y-4 border-b pb-6 last:border-b-0"> {/* Increased spacing and padding */}
                       <div className="flex items-center gap-4">
                         <div className="w-full">
                           <label className="block text-sm font-medium text-gray-700 mb-2">Project Name:</label>
@@ -276,41 +278,37 @@ export default function WorkExperiencePage() {
                             type="text"
                             value={project.name}
                             onChange={(e) => updateProject(index, 'name', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                           />
                         </div>
                         <div className="w-full">
                           <label className="block text-sm font-medium text-gray-700 mb-2">Logo:</label>
-                          <div className="flex items-center gap-2 w-full"> {/* Parent flex container */}
+                          <div className="flex items-center gap-3 w-full"> {/* Increased gap */}
                             <input
                               type="file"
                               onChange={(e) => updateProject(index, 'logo', e.target.files[0])}
                               className="hidden"
                               id={`project-logo-upload-${index}`}
-                              accept="image/*" // Example: accept only images
+                              accept="image/*"
                             />
-                            {/* CHANGED: Label styled as button, FIXED text, intrinsic width */}
                             <label
                               htmlFor={`project-logo-upload-${index}`}
-                              className="w-fit px-4 py-1.5 bg-blue-600 text-white text-center rounded-2xl cursor-pointer hover:bg-blue-700 transition-colors whitespace-nowrap" // CHANGED: w-fit, whitespace-nowrap; REMOVED: flex-grow, truncate
+                              className="w-fit px-4 py-2 bg-blue-600 text-white text-center rounded-2xl cursor-pointer hover:bg-blue-700 transition-colors whitespace-nowrap"
                             >
-                              {project.logo ? "Choose Image" : "Choose Image"}
+                              {project.logo ? "Change Image" : "Choose Image"}
                             </label>
 
-                            {/* ADDED: Conditionally display filename next to button */}
                             {project.logo && (
                               <span className="text-sm text-gray-700 truncate flex-1 min-w-0" title={project.logo.name}>
                                 {project.logo.name}
                               </span>
                             )}
 
-                            {/* Clear button appears after filename if logo exists */}
                             {project.logo && (
                               <button
                                 type="button"
                                 onClick={() => updateProject(index, 'logo', null)}
-                                // Optional: Slightly improved styling for clear button
-                                className="px-2 py-1 text-xs bg-gray-100 text-red-700 hover:bg-gray-200 rounded-md transition-colors flex-shrink-0"
+                                className="px-3 py-1.5 text-sm bg-gray-100 text-red-700 hover:bg-gray-200 rounded-md transition-colors flex-shrink-0"
                                 title="Clear selected logo"
                               >
                                 Clear
@@ -324,38 +322,37 @@ export default function WorkExperiencePage() {
                         <textarea
                           value={project.description}
                           onChange={(e) => updateProject(index, 'description', e.target.value)}
-                          className="w-full max-w-5xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 h-24 resize-none"
+                          className="w-full max-w-5xl px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 h-24 resize-none"
                         />
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="w-full">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Link:</label> {/* Reduced mb */}
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Link:</label>
                           <input
                             type="url"
                             value={project.link}
                             onChange={(e) => updateProject(index, 'link', e.target.value)}
-                            className={`w-[919px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900
+                            className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 bg-white text-gray-900
                               ${projectLinkErrors[index]
-                                ? 'border-red-500 focus:ring-red-500 focus:border-red-500' // Red border/ring on error
-                                : 'focus:outline-none focus:ring-2 focus:ring-blue-500' // Default border/ring
+                                ? 'border-red-500 focus:ring-red-500'
+                                : 'focus:ring-blue-500'
                               }`}
                             placeholder="https://example.com"
-                            pattern="https://.*" // Keep pattern for browser hints/validation
-                            title="Link must start with https://" // Updated title
+                            pattern="https://.*"
+                            title="Link must start with https://"
                           />
-                          {/* ADDED: Conditional warning message */}
                           {projectLinkErrors[index] && (
-                            <p className="text-xs text-red-600 mt-1">
+                            <p className="text-sm text-red-600 mt-1"> {/* Increased text size */}
                               Warning: Link must start with "https://"
                             </p>
                           )}
                         </div>
-                        <div className="flex gap-1 ml-4 mt-5">
+                        <div className="flex gap-2 ml-4 mt-6"> {/* Increased gap and margin */}
                           {index > 0 && (
                             <button
                               type="button"
                               onClick={() => removeProject(index)}
-                              className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
+                              className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                             >
                               Remove Project
                             </button>
@@ -366,10 +363,10 @@ export default function WorkExperiencePage() {
                         <button
                           type="button"
                           onClick={addProject}
-                          className="text-xs text-blue-600 hover:bg-blue-50 rounded flex items-center gap-1 px-2 py-1 -ml-1"
+                          className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
                         >
-                          <span>Add project</span>
-                          <FaPlus size={10} />
+                          <FaPlus size={12} />
+                          <span>Add another project</span>
                         </button>
                       )}
                     </div>
@@ -381,14 +378,14 @@ export default function WorkExperiencePage() {
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between mt-6">
+        <div className="flex justify-between mt-8"> {/* Increased margin top */}
           <Link href="/portfolio_creation_page/5_upload_certificates"
             className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group">
             <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
           </Link>
           <Link
             href="/portfolio_creation_page/7_template_section"
-            className={`py-4 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
+            className={`py-3 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
               ? "bg-blue-600 text-white hover:bg-blue-700"
               : "bg-gray-400 text-gray-100 cursor-not-allowed"
               }`}
