@@ -94,7 +94,7 @@ export default function CertificatesPage() {
     setCertificates(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  //const canProceed = certificates.length > 0 && description.trim().length > 0;
+  const canProceed = certificates.length > 0;
 
   // Function to open the modal and set the selected image
   const openModal = (cert) => {
@@ -272,7 +272,11 @@ export default function CertificatesPage() {
           <div className="absolute -bottom-12 right-0">
             <Link
               href="/portfolio_creation_page/6_work_experience"
-              className="py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 bg-blue-600 text-white hover:bg-blue-700"
+              className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-400 text-gray-100 cursor-not-allowed"
+                }`}
+              onClick={(e) => !canProceed && e.preventDefault()}
             >
               Next
             </Link>

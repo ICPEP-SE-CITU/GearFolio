@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useState, useRef, useEffect } from "react"; // Import React hooks for state and lifecycle management
 import Link from "next/link";
 import { FcLeft } from "react-icons/fc";
@@ -8,33 +7,26 @@ import Image from "next/image"; // Import Image from Next.js for optimized image
 import { Progress } from "@/components/ui/progress"; // Import custom Progress component
 
 export default function TemplatePage() {
-  const [selectedTemplates, setSelectedTemplates] = useState([]);
-  const [progress, setProgress] = useState(30);
-  const [targetProgress, setTargetProgress] = useState(30);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [progress, setProgress] = useState(83);
+  const [targetProgress, setTargetProgress] = useState(83);
 
-  const MAX_PAGE_PROGRESS = 10;
-
-  const toggleTemplate = (template) => {
-    setSelectedTemplates((prev) => {
-      if (prev.includes(template)) {
-        // If the template is already selected, remove it
-        return prev.filter((item) => item !== template);
-      } else {
-        // If the template is not selected, add it
-        return [...prev, template];
+  const handleTemplateSelect = (templateId) => {
+    setSelectedTemplate(prevSelected => {
+      if (prevSelected === templateId) {
+        return null;
       }
+      return templateId;
     });
   };
 
   useEffect(() => {
-    if (selectedTemplates.length > 0) {
-      setProgress(40);
-      setTargetProgress(40);
+    if (selectedTemplate !== null) {
+      setTargetProgress(100);
     } else {
-      setProgress(30);
-      setTargetProgress(30);
+      setTargetProgress(83);
     }
-  }, [selectedTemplates]);
+  }, [selectedTemplate]);
 
   useEffect(() => {
     if (Math.abs(progress - targetProgress) < 0.1) {
@@ -52,7 +44,7 @@ export default function TemplatePage() {
     return () => cancelAnimationFrame(animationFrame);
   }, [progress, targetProgress]);
 
-  const canProceed = selectedTemplates.length > 0;
+  const canProceed = selectedTemplate != null;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-12 flex flex-col items-center justify-center">
@@ -81,13 +73,12 @@ export default function TemplatePage() {
             {/* Progress bar */}
             <div className="bg-blue-100 rounded-full overflow-hidden h-2">
               {/* progress bar */}
-
+              <Progress value={progress} className="h-2 transition-all duration-300 ease-out"/>
               {/* Gear positioned on top of progress bar */}
               <div
                 className="absolute top-0 z-20 transition-all duration-300 ease-out"
                 style={{
-                  /* kuwang pa */
-                  left: { progress },
+                  left: `${progress}%`,
                   transform: 'translate(-50%, -50%)',
                   marginTop: "4px",
                   marginLeft: "-4px"
@@ -123,15 +114,14 @@ export default function TemplatePage() {
               {[1, 2, 3].map((template) => (
                 <div
                   key={template}
-                  onClick={() => toggleTemplate(template)}
-                  className={`border rounded-lg h-90 flex items-center justify-center text-lg font-medium cursor-pointer transition 
-                      ${selectedTemplates.includes(template)
+                  onClick={() => handleTemplateSelect(template)}
+                  className={`border rounded-lg h-90 flex items-center justify-center text-lg font-medium cursor-pointer transition
+                    ${selectedTemplate === template
                       ? "bg-blue-200 border-blue-400 text-blue-800 shadow-lg"
                       : "text-gray-700 hover:shadow-lg"
                     }`}
                 >
                   Template {template}
-
                 </div>
               ))}
             </div>

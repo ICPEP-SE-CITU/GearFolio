@@ -15,18 +15,35 @@ export default function WorkExperiencePage() {
     description: "",
     link: ""
   }]);
-  const [progress, setProgress] = useState(15);
-  const [targetProgress, setTargetProgress] = useState(15);
+  const [progress, setProgress] = useState(69);
+  const [targetProgress, setTargetProgress] = useState(69);
+  const [projectLinkErrors, setProjectLinkErrors] = useState([false]);
 
   useEffect(() => {
-    let newProgress = 15;
+    const baseProgress = 69; // Progress starts at 69%
+    const maxProgress = 83;  // Progress ends at 83%
+    let addedProgress = 0;
+    const progressForJobs = 5;
+    const progressForSkills = 4;
+    const progressForProjects = 5;
 
-    if (jobs.some(j => j.trim())) newProgress += 10;
-    if (skills.some(s => s.trim())) newProgress += 10;
-    if (projects.some(p => p.name.trim())) newProgress += 10;
+    // Add progress if at least one job exists with content
+    if (jobs.some(j => j.trim() !== "")) {
+      addedProgress += progressForJobs;
+    }
+    // Add progress if at least one skill exists with content
+    if (skills.some(s => s.trim() !== "")) {
+      addedProgress += progressForSkills;
+    }
+    // Add progress if at least one project exists with a name
+    // (Could add more checks for logo/desc/link if needed for progress)
+    if (projects.some(p => p.name.trim() !== "")) {
+      addedProgress += progressForProjects;
+    }
 
-    newProgress = Math.min(45, newProgress);
-    setTargetProgress(newProgress);
+    // Calculate the final target progress
+    const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+    setTargetProgress(newTargetProgress);
   }, [jobs, skills, projects]);
 
   useEffect(() => {
@@ -64,6 +81,7 @@ export default function WorkExperiencePage() {
     newSkills[index] = value;
     setSkills(newSkills);
   };
+
   const removeSkill = (index) => {
     if (skills.length > 1) {
       const newSkills = [...skills];
@@ -79,25 +97,44 @@ export default function WorkExperiencePage() {
       description: "",
       link: ""
     }]);
+    setProjectLinkErrors(prevErrors => [...prevErrors, false]);
   };
 
   const updateProject = (index, field, value) => {
     const newProjects = [...projects];
     newProjects[index][field] = value;
     setProjects(newProjects);
+
+    if (field === 'link') {
+      const isValid = !value || value.startsWith("https://");
+      const newErrors = [...projectLinkErrors];
+      newErrors[index] = !isValid; //Error flag to true if NOT valid
+      setProjectLinkErrors(newErrors);
+    }
   };
 
   const removeProject = (index) => {
     if (projects.length > 1) {
-      const newProjects = [...projects];
-      newProjects.splice(index, 1);
+      const newProjects = projects.filter((_, i) => i !== index);
       setProjects(newProjects);
+
+      const newErrors = projectLinkErrors.filter((_, i) => i !== index);
+      setProjectLinkErrors(newErrors);
     }
   };
 
-  const canProceed = jobs.some(j => j.trim()) && 
-                    skills.some(s => s.trim()) && 
-                    projects.some(p => p.name.trim());
+  const canProceed =
+    // Must have at least one non-empty job entry
+    jobs.some(job => job.trim()) &&
+    // Must have at least one non-empty skill entry
+    skills.some(skill => skill.trim()) &&
+    // CHANGED: Must have at least one project where logo, description, AND a valid link are present
+    projects.some(project =>
+      project.logo !== null &&                     // Check if logo file object exists
+      project.description.trim() !== "" &&       // Check if description is non-empty
+      project.link.startsWith("https://")        // Check if link starts with https://
+      && project.name.trim() !== ""
+    );
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
@@ -118,10 +155,10 @@ export default function WorkExperiencePage() {
             <div className="bg-blue-100 rounded-full overflow-hidden h-2">
               <Progress value={progress} className="h-2 transition-all duration-300 ease-out" />
             </div>
-            <div 
+            <div
               className="absolute top-0 z-20 transition-all duration-300 ease-out"
-              style={{ 
-                left: `${progress}%`, 
+              style={{
+                left: `${progress}%`,
                 transform: 'translate(-50%, -50%)',
                 marginTop: "4px",
                 marginLeft: "-4px"
@@ -140,9 +177,9 @@ export default function WorkExperiencePage() {
 
       {/* Form */}
       <div className="w-full max-w-5xl mx-auto relative z-10 mb-20">
-        <div 
+        <div
           className="w-full min-h-[553px] rounded-lg relative overflow-hidden shadow-lg"
-          style={{ 
+          style={{
             background: 'rgba(235, 245, 255, 0.5)',
             backdropFilter: 'blur(12px)',
             boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
@@ -152,7 +189,7 @@ export default function WorkExperiencePage() {
           <div className="p-10 h-full relative">
             <h2 className="text-2xl font-semibold text-gray-800 mb-8">Work Experience</h2>
             <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4">
-              
+
               {/* Jobs */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Job:</label>
@@ -164,15 +201,15 @@ export default function WorkExperiencePage() {
                           type="text"
                           value={job}
                           onChange={(e) => updateJob(index, e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900"
                         />
                         {index > 0 && (
                           <button
                             type="button"
                             onClick={() => removeJob(index)}
-                            className="px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded"
+                            className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                           >
-                            ×
+                            Remove
                           </button>
                         )}
                       </div>
@@ -202,15 +239,15 @@ export default function WorkExperiencePage() {
                           type="text"
                           value={skill}
                           onChange={(e) => updateSkill(index, e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900"
                         />
                         {index > 0 && (
                           <button
                             type="button"
                             onClick={() => removeSkill(index)}
-                            className="px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded"
+                            className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                           >
-                            ×
+                            Remove
                           </button>
                         )}
                       </div>
@@ -242,24 +279,46 @@ export default function WorkExperiencePage() {
                             type="text"
                             value={project.name}
                             onChange={(e) => updateProject(index, 'name', e.target.value)}
-                            className="w-full max-w-lg px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                            className="w-full max-w-lg px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900"
                           />
                         </div>
                         <div className="w-full">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Upload logo:</label>
-                          <div className="flex items-center gap-2 w-full">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Logo:</label>
+                          <div className="flex items-center gap-2 w-full"> {/* Parent flex container */}
                             <input
                               type="file"
                               onChange={(e) => updateProject(index, 'logo', e.target.files[0])}
                               className="hidden"
-                              id={`file-upload-${index}`}
+                              id={`project-logo-upload-${index}`}
+                              accept="image/*" // Example: accept only images
                             />
-                            <label 
-                              htmlFor={`file-upload-${index}`}
-                              className="w-full max-w-[26rem] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 cursor-pointer"
+                            {/* CHANGED: Label styled as button, FIXED text, intrinsic width */}
+                            <label
+                              htmlFor={`project-logo-upload-${index}`}
+                              className="w-fit px-4 py-1.5 bg-blue-600 text-white text-center rounded-2xl cursor-pointer hover:bg-blue-700 transition-colors whitespace-nowrap" // CHANGED: w-fit, whitespace-nowrap; REMOVED: flex-grow, truncate
                             >
-                              Choose file
+                              {project.logo ? "Choose Image" : "Choose Image"}
                             </label>
+
+                            {/* ADDED: Conditionally display filename next to button */}
+                            {project.logo && (
+                              <span className="text-sm text-gray-700 truncate flex-1 min-w-0" title={project.logo.name}>
+                                {project.logo.name}
+                              </span>
+                            )}
+
+                            {/* Clear button appears after filename if logo exists */}
+                            {project.logo && (
+                              <button
+                                type="button"
+                                onClick={() => updateProject(index, 'logo', null)}
+                                // Optional: Slightly improved styling for clear button
+                                className="px-2 py-1 text-xs bg-gray-100 text-red-700 hover:bg-gray-200 rounded-md transition-colors flex-shrink-0"
+                                title="Clear selected logo"
+                              >
+                                Clear
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -268,28 +327,39 @@ export default function WorkExperiencePage() {
                         <textarea
                           value={project.description}
                           onChange={(e) => updateProject(index, 'description', e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                          rows={2}
+                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900 h-24 resize-none"
                         />
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="w-full">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Link:</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Link:</label> {/* Reduced mb */}
                           <input
                             type="url"
                             value={project.link}
                             onChange={(e) => updateProject(index, 'link', e.target.value)}
-                            className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                            className={`w-full max-w-4xl px-3 py-2 border rounded-md focus:outline-none bg-white text-gray-900 ${projectLinkErrors[index]
+                              ? 'border-red-500 focus:ring-red-500 focus:border-red-500' // Red border/ring on error
+                              : 'focus:outline-none' // Default border/ring
+                              }`}
+                            placeholder="https://example.com"
+                            pattern="https://.*" // Keep pattern for browser hints/validation
+                            title="Link must start with https://" // Updated title
                           />
+                          {/* ADDED: Conditional warning message */}
+                          {projectLinkErrors[index] && (
+                            <p className="text-xs text-red-600 mt-1">
+                              Warning: Link must start with "https://"
+                            </p>
+                          )}
                         </div>
                         <div className="flex gap-1 ml-4 mt-5">
                           {index > 0 && (
                             <button
                               type="button"
                               onClick={() => removeProject(index)}
-                              className="px-2 py-1 text-xs text-red-600 hover:bg-red-50 rounded"
+                              className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                             >
-                              ×
+                              Remove Project
                             </button>
                           )}
                         </div>
@@ -316,16 +386,15 @@ export default function WorkExperiencePage() {
         {/* Navigation */}
         <div className="flex justify-between mt-6">
           <Link href="/portfolio_creation_page/5_upload_certificates"
-          className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group">
+            className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group">
             <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
           </Link>
           <Link
             href="/portfolio_creation_page/7_template_section"
-            className={`py-4 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
-              canProceed
-                ? "bg-blue-600 text-white hover:bg-blue-700" 
-                : "bg-gray-400 text-gray-100 cursor-not-allowed"
-            }`}
+            className={`py-4 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-gray-400 text-gray-100 cursor-not-allowed"
+              }`}
             onClick={(e) => !canProceed && e.preventDefault()}
           >
             Next
