@@ -138,7 +138,7 @@ export default function GeneratePortfolioPage() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <h1 className="text-3xl font-bold text-gray-800">Profile Generated</h1>
+              <h1 className="text-3xl font-bold text-blue-700">Profile Generated</h1>
               <Link
                 href="/profile"
                 className="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:opacity-90 transition-opacity duration-300 text-lg font-medium shadow-lg"
