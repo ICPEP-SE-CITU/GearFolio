@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Progress } from "@/components/ui/progress"; 
+import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { FcLeft } from "react-icons/fc";
 
 export default function PortfolioCreationPage() {
-  const [progress, setProgress] = useState(25);
-  const [targetProgress, setTargetProgress] = useState(25);
+  const [progress, setProgress] = useState(43);
+  const [targetProgress, setTargetProgress] = useState(43);
   const [elementary, setElementary] = useState("");
   const [juniorHigh, setJuniorHigh] = useState("");
   const [seniorHigh, setSeniorHigh] = useState("");
@@ -17,22 +17,39 @@ export default function PortfolioCreationPage() {
     masters: { checked: false, university: "" },
     doctoral: { checked: false, university: "" }
   });
-  
+
   // Check if all required fields are filled
   useEffect(() => {
-    const allFieldsFilled =
-      elementary.trim() !== "" &&
-      juniorHigh.trim() !== "" &&
-      seniorHigh.trim() !== "" &&
-      (degreeLevel.undergraduate.checked || 
-       degreeLevel.masters.checked || 
-       degreeLevel.doctoral.checked) &&
-      (degreeLevel.undergraduate.checked ? degreeLevel.undergraduate.university.trim() !== "" : true) &&
-      (degreeLevel.masters.checked ? degreeLevel.masters.university.trim() !== "" : true) &&
-      (degreeLevel.doctoral.checked ? degreeLevel.doctoral.university.trim() !== "" : true);
+    const baseProgress = 43;
+    const maxProgress = 55;
+    const progressPerSection = 3;
+    let addedProgress = 0;
 
-    const newProgress = allFieldsFilled ? 31 : 25;
-    setTargetProgress(newProgress);
+    
+    if (elementary.trim() !== "") {
+      addedProgress += progressPerSection;
+    }
+    
+    if (juniorHigh.trim() !== "") {
+      addedProgress += progressPerSection;
+    }
+    
+    if (seniorHigh.trim() !== "") {
+      addedProgress += progressPerSection;
+    }
+
+    const isAnyDegreeLevelComplete =
+      (degreeLevel.undergraduate.checked && degreeLevel.undergraduate.university.trim() !== "") ||
+      (degreeLevel.masters.checked && degreeLevel.masters.university.trim() !== "") ||
+      (degreeLevel.doctoral.checked && degreeLevel.doctoral.university.trim() !== "");
+
+    if (isAnyDegreeLevelComplete) {
+      addedProgress += progressPerSection;
+    }
+
+    const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+
+    setTargetProgress(newTargetProgress);
   }, [elementary, juniorHigh, seniorHigh, degreeLevel]);
 
   // Progress animation
@@ -41,28 +58,28 @@ export default function PortfolioCreationPage() {
       setProgress(targetProgress);
       return;
     }
-    
+
     const animationFrame = requestAnimationFrame(() => {
       const diff = targetProgress - progress;
       const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-      
+
       setProgress(prevProgress => {
         const newProgress = prevProgress + step;
         return Math.round(newProgress * 10) / 10;
       });
     });
-    
+
     return () => cancelAnimationFrame(animationFrame);
   }, [progress, targetProgress]);
 
   // Determine if user can proceed
-  const canProceed = 
-    elementary.trim() !== "" && 
-    juniorHigh.trim() !== "" && 
-    seniorHigh.trim() !== "" && 
-    (degreeLevel.undergraduate.checked || 
-     degreeLevel.masters.checked || 
-     degreeLevel.doctoral.checked) &&
+  const canProceed =
+    elementary.trim() !== "" &&
+    juniorHigh.trim() !== "" &&
+    seniorHigh.trim() !== "" &&
+    (degreeLevel.undergraduate.checked ||
+      degreeLevel.masters.checked ||
+      degreeLevel.doctoral.checked) &&
     (degreeLevel.undergraduate.checked ? degreeLevel.undergraduate.university.trim() !== "" : true) &&
     (degreeLevel.masters.checked ? degreeLevel.masters.university.trim() !== "" : true) &&
     (degreeLevel.doctoral.checked ? degreeLevel.doctoral.university.trim() !== "" : true);
@@ -88,12 +105,12 @@ export default function PortfolioCreationPage() {
     }));
   };
 
-  return (  
+  return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
       <div className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none">
         <div className="w-[937px] h-[937px] flex-shrink-0 aspect-square">
-          <Image 
-            src="/gear_folio_logo.svg" 
+          <Image
+            src="/gear_folio_logo.svg"
             width={937}
             height={937}
             alt="Background logo"
@@ -102,7 +119,7 @@ export default function PortfolioCreationPage() {
           />
         </div>
       </div>
-      
+
       {/* Page Header */}
       <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
         <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]">
@@ -113,11 +130,11 @@ export default function PortfolioCreationPage() {
             <div className="bg-blue-100 rounded-full overflow-hidden h-2">
               <Progress value={progress} className="h-2 transition-all duration-300 ease-out" />
             </div>
-            
-            <div 
+
+            <div
               className="absolute top-0 z-20 transition-all duration-300 ease-out"
-              style={{ 
-                left: `${progress}%`, 
+              style={{
+                left: `${progress}%`,
                 transform: 'translate(-50%, -50%)',
                 marginTop: "4px",
                 marginLeft: "-4px"
@@ -133,12 +150,12 @@ export default function PortfolioCreationPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Form Section */}
       <div className="w-full max-w-5xl mx-auto relative z-10">
-        <div 
+        <div
           className="w-full rounded-lg relative overflow-hidden shadow-lg"
-          style={{ 
+          style={{
             background: 'rgba(235, 245, 255, 0.5)',
             backdropFilter: 'blur(12px)',
             boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
@@ -147,7 +164,7 @@ export default function PortfolioCreationPage() {
         >
           <div className="p-10 relative max-h-[70vh] overflow-y-auto">
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">Education</h2>
-            
+
             <div className="space-y-6">
               {/* Elementary */}
               <div>
@@ -293,11 +310,10 @@ export default function PortfolioCreationPage() {
         <div className="absolute -bottom-12 right-0">
           <Link
             href="/portfolio_creation_page/5_upload_certificates"
-            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
-              canProceed
-                ? "bg-blue-600 text-white hover:bg-blue-700" 
+            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
+                ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-gray-400 text-gray-100 cursor-not-allowed"
-            }`}
+              }`}
             onClick={(e) => {
               if (!canProceed) {
                 e.preventDefault();
@@ -313,7 +329,7 @@ export default function PortfolioCreationPage() {
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
         </div>
-      </div>   
+      </div>
     </div>
   );
 }

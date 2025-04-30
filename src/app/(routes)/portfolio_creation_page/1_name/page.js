@@ -17,7 +17,7 @@ export default function NameInputPage() {
   const fileInputRef = useRef(null);
   
   // Constants for progress calculation
-  const MAX_PAGE_PROGRESS = 15; // This page represents 15% of total progress
+  const MAX_PAGE_PROGRESS = 17; // This page represents 17% of total progress
   
   // Handle file upload and set user image
   // This function is triggered when the user selects a file
