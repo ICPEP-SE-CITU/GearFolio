@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FcLeft } from "react-icons/fc";
 import Image from "next/image";
-import styles from '../../../../styles/GeneratePortfolio.module.css';
+import styles from '../../../../styles/GeneratePortfolio.module.css'; // css module for animations
 
 export default function GeneratePortfolioPage() {
   const [isGenerating, setIsGenerating] = useState(true);
