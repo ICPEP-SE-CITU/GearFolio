@@ -1,15 +1,19 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react"; // Import React hooks for state and lifecycle management
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // Add this import
 import { FcLeft } from "react-icons/fc";
-import Image from "next/image"; // Import Image from Next.js for optimized image handling
-import { Progress } from "@/components/ui/progress"; // Import custom Progress component
+import Image from "next/image";
+import { Progress } from "@/components/ui/progress";
+import { motion, AnimatePresence } from "framer-motion"; // Add this import
 
 export default function TemplatePage() {
+  const router = useRouter(); // Initialize router
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [progress, setProgress] = useState(83);
   const [targetProgress, setTargetProgress] = useState(83);
+  const [isNavigating, setIsNavigating] = useState(false); // Add navigation state
 
   const handleTemplateSelect = (templateId) => {
     setSelectedTemplate(prevSelected => {
@@ -18,6 +22,21 @@ export default function TemplatePage() {
       }
       return templateId;
     });
+  };
+
+  const handleNextClick = (e) => {
+    if (!canProceed) {
+      e.preventDefault();
+      return;
+    }
+    
+    setIsNavigating(true);
+    e.preventDefault();
+    
+    // Add a slight delay for the animation to play
+    setTimeout(() => {
+      router.push("/portfolio_creation_page/8_generate_portfolio");
+    }, 500);
   };
 
   useEffect(() => {
@@ -47,9 +66,14 @@ export default function TemplatePage() {
   const canProceed = selectedTemplate != null;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 md:p-12 flex flex-col items-center justify-center">
-
-      {/* Background logo - now positioned as page background */}
+    <motion.div 
+      className="min-h-screen bg-gray-50 p-6 md:p-12 flex flex-col items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Background logo */}
       <div className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none">
         <div className="w-[937px] h-[937px] flex-shrink-0 aspect-square">
           <Image
@@ -62,19 +86,21 @@ export default function TemplatePage() {
           />
         </div>
       </div>
+
       {/* Header with title and progress */}
-      <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]"> {/* Text shadow for better visibility */}
+      <motion.div 
+        className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.3 }}
+      >
+        <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]">
           Create your Portfolio
         </h1>
         <div className="max-w-3xl mx-auto relative">
-          {/* Progress bar container */}
           <div className="relative">
-            {/* Progress bar */}
             <div className="bg-blue-100 rounded-full overflow-hidden h-2">
-              {/* progress bar */}
               <Progress value={progress} className="h-2 transition-all duration-300 ease-out"/>
-              {/* Gear positioned on top of progress bar */}
               <div
                 className="absolute top-0 z-20 transition-all duration-300 ease-out"
                 style={{
@@ -94,11 +120,15 @@ export default function TemplatePage() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Modern glass effect container with subtle blue tint */}
-      <div className="w-full max-w-5xl mx-auto relative z-10">
-        {/* Main glass container */}
+      {/* Main glass container */}
+      <motion.div 
+        className="w-full max-w-5xl mx-auto relative z-10"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.3 }}
+      >
         <div className="w-full h-[553px] rounded-lg relative overflow-hidden shadow-lg"
           style={{
             background: 'rgba(235, 245, 255, 0.5)',
@@ -108,11 +138,10 @@ export default function TemplatePage() {
           }}
         >
           <div className="p-10 h-full relative">
-            {/* Template Section */}
             <h2 className="text-2xl font-semibold text-gray-800 mb-8">Template Selection</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[1, 2, 3].map((template) => (
-                <div
+                <motion.div
                   key={template}
                   onClick={() => handleTemplateSelect(template)}
                   className={`border rounded-lg h-90 flex items-center justify-center text-lg font-medium cursor-pointer transition
@@ -120,17 +149,30 @@ export default function TemplatePage() {
                       ? "bg-blue-200 border-blue-400 text-blue-800 shadow-lg"
                       : "text-gray-700 hover:shadow-lg"
                     }`}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ 
+                    opacity: 1, 
+                    y: 0,
+                    transition: { delay: 0.1 * template }
+                  }}
                 >
                   Template {template}
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Navigation */}
-      < div className="w-full max-w-5xl mx-auto flex justify-between mt-6" >
+      <motion.div 
+        className="w-full max-w-5xl mx-auto flex justify-between mt-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.3 }}
+      >
         <Link
           href="/portfolio_creation_page/6_work_experience"
           className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group"
@@ -138,28 +180,40 @@ export default function TemplatePage() {
           <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
         </Link>
 
-        <Link
-          href="/portfolio_creation_page/8_generate_portfolio"
+        <motion.button
+          onClick={handleNextClick}
           className={`py-4 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
             ? "bg-blue-600 text-white hover:bg-blue-700"
             : "bg-gray-400 text-gray-100 cursor-not-allowed"
             }`}
-          onClick={(e) => !canProceed && e.preventDefault()}
+          whileHover={canProceed ? { scale: 1.05 } : {}}
+          whileTap={canProceed ? { scale: 0.95 } : {}}
+          disabled={!canProceed}
         >
-          Next
-        </Link>
-      </div >
+          {isNavigating ? (
+            <motion.span
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              Loading...
+            </motion.span>
+          ) : (
+            "Next"
+          )}
+        </motion.button>
+      </motion.div>
 
-
-
-
-      {/* UI for AI Mascot Here. Note:This just an code representation */}
-      {/* Frontend, just copy this code every page. akoa pani himoan og UI component */}
-      <div className="absolute top-4 right-4 z-20">
+      {/* AI Mascot */}
+      <motion.div 
+        className="absolute top-4 right-4 z-20"
+        initial={{ x: 20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.3 }}
+      >
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
