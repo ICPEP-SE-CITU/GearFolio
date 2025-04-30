@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { FaPlus } from "react-icons/fa";
 import { FcBriefcase, FcLeft } from "react-icons/fc";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function WorkExperiencePage() {
   const [jobs, setJobs] = useState([""]);
@@ -36,7 +38,6 @@ export default function WorkExperiencePage() {
       addedProgress += progressForSkills;
     }
     // Add progress if at least one project exists with a name
-    // (Could add more checks for logo/desc/link if needed for progress)
     if (projects.some(p => p.name.trim() !== "")) {
       addedProgress += progressForProjects;
     }
@@ -124,16 +125,13 @@ export default function WorkExperiencePage() {
   };
 
   const canProceed =
-    // Must have at least one non-empty job entry
     jobs.some(job => job.trim()) &&
-    // Must have at least one non-empty skill entry
     skills.some(skill => skill.trim()) &&
-    // CHANGED: Must have at least one project where logo, description, AND a valid link are present
     projects.some(project =>
-      project.logo !== null &&                     // Check if logo file object exists
-      project.description.trim() !== "" &&       // Check if description is non-empty
-      project.link.startsWith("https://")        // Check if link starts with https://
-      && project.name.trim() !== ""
+      project.logo !== null &&
+      project.description.trim() !== "" &&
+      project.link.startsWith("https://") &&
+      project.name.trim() !== ""
     );
 
   return (
@@ -141,7 +139,14 @@ export default function WorkExperiencePage() {
       {/* Background logo */}
       <div className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none">
         <div className="w-[937px] h-[937px] flex-shrink-0 aspect-square">
-          <img src="/gear_folio_logo.svg" alt="Background logo" className="w-full h-full object-contain" />
+          <Image
+            src="/gear_folio_logo.svg"
+            width={937}
+            height={937}
+            alt="Background logo"
+            priority
+            className="w-full h-full object-contain"
+          />
         </div>
       </div>
 
@@ -164,9 +169,12 @@ export default function WorkExperiencePage() {
                 marginLeft: "-4px"
               }}
             >
-              <div className="animate-spin">
-                <img src="/gear.svg" width={20} height={20} alt="Progress indicator" />
-              </div>
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              >
+                <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
+              </motion.div>
             </div>
           </div>
           <div className="flex items-center justify-center mt-4">
@@ -183,209 +191,221 @@ export default function WorkExperiencePage() {
             background: 'rgba(235, 245, 255, 0.5)',
             backdropFilter: 'blur(12px)',
             boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
-            border: '1px solid rgba(255, 255, 255, 0.18)'
+            border: '1px solid rgba(255, 255, 255, 0.18)',
+            minHeight: '480px'
           }}
         >
-          <div className="p-10 relative max-h-[70vh] overflow-y-auto">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Work Experience</h2>
-            <div className="space-y-8"> {/* Increased spacing between sections */}
-              {/* Jobs */}
-              <div className="space-y-4"> {/* Added container with spacing */}
-                <label className="block text-sm font-medium text-gray-700 mb-2">Job:</label>
-                {jobs.map((job, index) => (
-                  <div key={index} className="space-y-3"> {/* Increased spacing between job entries */}
-                    <div className="flex items-center gap-3"> {/* Increased gap between input and button */}
-                      <input
-                        type="text"
-                        value={job}
-                        onChange={(e) => updateJob(index, e.target.value)}
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                        placeholder="Enter job title and company"
-                      />
-                      {index > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => removeJob(index)}
-                          className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
-                        >
-                          Remove
-                        </button>
-                      )}
-                    </div>
-                    {index === jobs.length - 1 && (
-                      <button
-                        type="button"
-                        onClick={addJob}
-                        className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
-                      >
-                        <FaPlus size={12} />
-                        <span>Add another job</span>
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              {/* Skills */}
-              <div className="space-y-4"> {/* Added container with spacing */}
-                <label className="block text-sm font-medium text-gray-700 mb-2">Skill:</label>
-                <div className="space-y-3">
-                  {skills.map((skill, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex items-center gap-3"> {/* Increased gap between input and button */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key="work-experience-content"
+              className="p-8 flex flex-col h-full"
+              initial={{ x: 300, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -300, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            >
+              <h2 className="text-2xl font-semibold text-gray-800 mb-6">Work Experience</h2>
+              <div className="space-y-8 max-h-[60vh] overflow-y-auto">
+                {/* Jobs */}
+                <div className="space-y-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Job:</label>
+                  {jobs.map((job, index) => (
+                    <div key={index} className="space-y-3">
+                      <div className="flex items-center gap-3">
                         <input
                           type="text"
-                          value={skill}
-                          onChange={(e) => updateSkill(index, e.target.value)}
+                          value={job}
+                          onChange={(e) => updateJob(index, e.target.value)}
                           className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                          placeholder="Enter a skill"
+                          placeholder="Enter job title and company"
                         />
                         {index > 0 && (
                           <button
                             type="button"
-                            onClick={() => removeSkill(index)}
+                            onClick={() => removeJob(index)}
                             className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                           >
                             Remove
                           </button>
                         )}
                       </div>
-                      {index === skills.length - 1 && (
+                      {index === jobs.length - 1 && (
                         <button
                           type="button"
-                          onClick={addSkill}
+                          onClick={addJob}
                           className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
                         >
                           <FaPlus size={12} />
-                          <span>Add another skill</span>
+                          <span>Add another job</span>
                         </button>
                       )}
                     </div>
                   ))}
                 </div>
-              </div>
 
-              {/* Projects */}
-              <div className="space-y-6"> {/* Increased spacing */}
-                <h2 className="text-2xl font-semibold text-gray-800 mb-6">Projects</h2>
-                <div className="space-y-6"> {/* Increased spacing between projects */}
-                  {projects.map((project, index) => (
-                    <div key={index} className="space-y-4 border-b pb-6 last:border-b-0"> {/* Increased spacing and padding */}
-                      <div className="flex items-center gap-4">
-                        <div className="w-full">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Project Name:</label>
+                {/* Skills */}
+                <div className="space-y-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Skill:</label>
+                  <div className="space-y-3">
+                    {skills.map((skill, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex items-center gap-3">
                           <input
                             type="text"
-                            value={project.name}
-                            onChange={(e) => updateProject(index, 'name', e.target.value)}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                            value={skill}
+                            onChange={(e) => updateSkill(index, e.target.value)}
+                            className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                            placeholder="Enter a skill"
+                          />
+                          {index > 0 && (
+                            <button
+                              type="button"
+                              onClick={() => removeSkill(index)}
+                              className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
+                        {index === skills.length - 1 && (
+                          <button
+                            type="button"
+                            onClick={addSkill}
+                            className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
+                          >
+                            <FaPlus size={12} />
+                            <span>Add another skill</span>
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Projects */}
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-6">Projects</h2>
+                  <div className="space-y-6">
+                    {projects.map((project, index) => (
+                      <div key={index} className="space-y-4 border-b pb-6 last:border-b-0">
+                        <div className="flex items-center gap-4">
+                          <div className="w-full">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Project Name:</label>
+                            <input
+                              type="text"
+                              value={project.name}
+                              onChange={(e) => updateProject(index, 'name', e.target.value)}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                            />
+                          </div>
+                          <div className="w-full">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Logo:</label>
+                            <div className="flex items-center gap-3 w-full">
+                              <input
+                                type="file"
+                                onChange={(e) => updateProject(index, 'logo', e.target.files[0])}
+                                className="hidden"
+                                id={`project-logo-upload-${index}`}
+                                accept="image/*"
+                              />
+                              <label
+                                htmlFor={`project-logo-upload-${index}`}
+                                className="w-fit px-4 py-2 bg-blue-600 text-white text-center rounded-2xl cursor-pointer hover:bg-blue-700 transition-colors whitespace-nowrap"
+                              >
+                                {project.logo ? "Change Image" : "Choose Image"}
+                              </label>
+
+                              {project.logo && (
+                                <span className="text-sm text-gray-700 truncate flex-1 min-w-0" title={project.logo.name}>
+                                  {project.logo.name}
+                                </span>
+                              )}
+
+                              {project.logo && (
+                                <button
+                                  type="button"
+                                  onClick={() => updateProject(index, 'logo', null)}
+                                  className="px-3 py-1.5 text-sm bg-gray-100 text-red-700 hover:bg-gray-200 rounded-md transition-colors flex-shrink-0"
+                                  title="Clear selected logo"
+                                >
+                                  Clear
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Project Description:</label>
+                          <textarea
+                            value={project.description}
+                            onChange={(e) => updateProject(index, 'description', e.target.value)}
+                            className="w-full max-w-5xl px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 h-24 resize-none"
                           />
                         </div>
-                        <div className="w-full">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Logo:</label>
-                          <div className="flex items-center gap-3 w-full"> {/* Increased gap */}
+                        <div className="flex items-center justify-between">
+                          <div className="w-full">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Link:</label>
                             <input
-                              type="file"
-                              onChange={(e) => updateProject(index, 'logo', e.target.files[0])}
-                              className="hidden"
-                              id={`project-logo-upload-${index}`}
-                              accept="image/*"
+                              type="url"
+                              value={project.link}
+                              onChange={(e) => updateProject(index, 'link', e.target.value)}
+                              className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 bg-white text-gray-900
+                                ${projectLinkErrors[index]
+                                  ? 'border-red-500 focus:ring-red-500'
+                                  : 'focus:ring-blue-500'
+                                }`}
+                              placeholder="https://example.com"
+                              pattern="https://.*"
+                              title="Link must start with https://"
                             />
-                            <label
-                              htmlFor={`project-logo-upload-${index}`}
-                              className="w-fit px-4 py-2 bg-blue-600 text-white text-center rounded-2xl cursor-pointer hover:bg-blue-700 transition-colors whitespace-nowrap"
-                            >
-                              {project.logo ? "Change Image" : "Choose Image"}
-                            </label>
-
-                            {project.logo && (
-                              <span className="text-sm text-gray-700 truncate flex-1 min-w-0" title={project.logo.name}>
-                                {project.logo.name}
-                              </span>
+                            {projectLinkErrors[index] && (
+                              <p className="text-sm text-red-600 mt-1">
+                                Warning: Link must start with "https://"
+                              </p>
                             )}
-
-                            {project.logo && (
+                          </div>
+                          <div className="flex gap-2 ml-4 mt-6">
+                            {index > 0 && (
                               <button
                                 type="button"
-                                onClick={() => updateProject(index, 'logo', null)}
-                                className="px-3 py-1.5 text-sm bg-gray-100 text-red-700 hover:bg-gray-200 rounded-md transition-colors flex-shrink-0"
-                                title="Clear selected logo"
+                                onClick={() => removeProject(index)}
+                                className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                               >
-                                Clear
+                                Remove Project
                               </button>
                             )}
                           </div>
                         </div>
+                        {index === projects.length - 1 && (
+                          <button
+                            type="button"
+                            onClick={addProject}
+                            className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
+                          >
+                            <FaPlus size={12} />
+                            <span>Add another project</span>
+                          </button>
+                        )}
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Project Description:</label>
-                        <textarea
-                          value={project.description}
-                          onChange={(e) => updateProject(index, 'description', e.target.value)}
-                          className="w-full max-w-5xl px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 h-24 resize-none"
-                        />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="w-full">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Link:</label>
-                          <input
-                            type="url"
-                            value={project.link}
-                            onChange={(e) => updateProject(index, 'link', e.target.value)}
-                            className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 bg-white text-gray-900
-                              ${projectLinkErrors[index]
-                                ? 'border-red-500 focus:ring-red-500'
-                                : 'focus:ring-blue-500'
-                              }`}
-                            placeholder="https://example.com"
-                            pattern="https://.*"
-                            title="Link must start with https://"
-                          />
-                          {projectLinkErrors[index] && (
-                            <p className="text-sm text-red-600 mt-1"> {/* Increased text size */}
-                              Warning: Link must start with "https://"
-                            </p>
-                          )}
-                        </div>
-                        <div className="flex gap-2 ml-4 mt-6"> {/* Increased gap and margin */}
-                          {index > 0 && (
-                            <button
-                              type="button"
-                              onClick={() => removeProject(index)}
-                              className="px-3 py-1.5 text-sm bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
-                            >
-                              Remove Project
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                      {index === projects.length - 1 && (
-                        <button
-                          type="button"
-                          onClick={addProject}
-                          className="text-sm text-blue-600 hover:bg-blue-50 rounded flex items-center gap-2 px-3 py-1.5 -ml-1 cursor-pointer transition-colors"
-                        >
-                          <FaPlus size={12} />
-                          <span>Add another project</span>
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-between mt-8"> {/* Increased margin top */}
-          <Link href="/portfolio_creation_page/5_upload_certificates"
-            className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group">
+        <div className="flex justify-between items-center mt-6 px-2 sm:px-4">
+          <Link
+            href="/portfolio_creation_page/5_upload_certificates"
+            className="p-2 flex items-center justify-center rounded-md hover:transition-all duration-300 group"
+          >
             <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
           </Link>
           <Link
             href="/portfolio_creation_page/7_template_section"
-            className={`py-3 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
+            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
               ? "bg-blue-600 text-white hover:bg-blue-700"
               : "bg-gray-400 text-gray-100 cursor-not-allowed"
               }`}
