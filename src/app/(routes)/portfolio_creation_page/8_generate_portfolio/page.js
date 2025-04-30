@@ -138,13 +138,51 @@ export default function GeneratePortfolioPage() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <h1 className="text-3xl font-bold text-blue-700">Profile Generated</h1>
-              <Link
-                href="/profile"
-                className="inline-block px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:opacity-90 transition-opacity duration-300 text-lg font-medium shadow-lg"
+              <h1 className="text-4xl font-bold font-serif text-blue-700">Profile Generated</h1>
+              
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                className="inline-block"
               >
-                Click to View Portfolio
-              </Link>
+                <Link
+                  href="/profile"
+                  className="relative inline-block px-8 py-3 text-white rounded-lg text-lg font-medium shadow-lg overflow-hidden group"
+                >
+                  {/* Animated gradient background */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600"
+                    initial={{ backgroundPosition: "0% 50%" }}
+                    animate={{ 
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  />
+                  
+                  {/* Static gradient fallback */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-100 group-hover:opacity-0 transition-opacity duration-300" />
+                  
+                  {/* Text content */}
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    Click to View Portfolio
+                    <motion.span
+                      animate={{ x: [0, 4, 0] }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        repeatDelay: 1,
+                      }}
+                    >
+                      →
+                    </motion.span>
+                  </span>
+                </Link>
+              </motion.div>
             </motion.div>
           </motion.div>
         ) : null}
