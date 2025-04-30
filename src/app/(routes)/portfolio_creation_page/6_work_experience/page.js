@@ -176,9 +176,9 @@ export default function WorkExperiencePage() {
       </div>
 
       {/* Form */}
-      <div className="w-full max-w-5xl mx-auto relative z-10 mb-20">
+      <div className="w-full max-w-5xl mx-auto relative z-10">
         <div
-          className="w-full min-h-[553px] rounded-lg relative overflow-hidden shadow-lg"
+          className="w-full rounded-lg relative overflow-hidden shadow-lg"
           style={{
             background: 'rgba(235, 245, 255, 0.5)',
             backdropFilter: 'blur(12px)',
@@ -186,46 +186,43 @@ export default function WorkExperiencePage() {
             border: '1px solid rgba(255, 255, 255, 0.18)'
           }}
         >
-          <div className="p-10 h-full relative">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-8">Work Experience</h2>
-            <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4">
-
+          <div className="p-10 relative max-h-[70vh] overflow-y-auto">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Work Experience</h2>
+            <div className="space-y-6">
               {/* Jobs */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Job:</label>
-                <div className="space-y-3">
-                  {jobs.map((job, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="text"
-                          value={job}
-                          onChange={(e) => updateJob(index, e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                        />
-                        {index > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => removeJob(index)}
-                            className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
-                          >
-                            Remove
-                          </button>
-                        )}
-                      </div>
-                      {index === jobs.length - 1 && (
+                <label className="block text-sm font-medium text-gray-700 mb-1">Job:</label>
+                {jobs.map((job, index) => (
+                  <div key={index} className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={job}
+                        onChange={(e) => updateJob(index, e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                      />
+                      {index > 0 && (
                         <button
                           type="button"
-                          onClick={addJob}
-                          className="text-xs text-blue-600 hover:bg-blue-50 rounded flex items-center gap-1 px-2 py-1 -ml-1"
+                          onClick={() => removeJob(index)}
+                          className="px-2 py-1 text-xs bg-red-100 text-red-600 hover:bg-red-200 rounded-md transition-colors"
                         >
-                          <span>Add job</span>
-                          <FaPlus size={10} />
+                          Remove
                         </button>
                       )}
                     </div>
-                  ))}
-                </div>
+                    {index === jobs.length - 1 && (
+                      <button
+                        type="button"
+                        onClick={addJob}
+                        className="text-xs text-blue-600 hover:bg-blue-50 rounded flex items-center gap-1 px-2 py-1 -ml-1"
+                      >
+                        <span>Add job</span>
+                        <FaPlus size={10} />
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
 
               {/* Skills */}
@@ -239,7 +236,7 @@ export default function WorkExperiencePage() {
                           type="text"
                           value={skill}
                           onChange={(e) => updateSkill(index, e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                         />
                         {index > 0 && (
                           <button
@@ -279,7 +276,7 @@ export default function WorkExperiencePage() {
                             type="text"
                             value={project.name}
                             onChange={(e) => updateProject(index, 'name', e.target.value)}
-                            className="w-full max-w-lg px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                           />
                         </div>
                         <div className="w-full">
@@ -327,7 +324,7 @@ export default function WorkExperiencePage() {
                         <textarea
                           value={project.description}
                           onChange={(e) => updateProject(index, 'description', e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 h-24 resize-none"
+                          className="w-full max-w-5xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 h-24 resize-none"
                         />
                       </div>
                       <div className="flex items-center justify-between">
@@ -337,9 +334,10 @@ export default function WorkExperiencePage() {
                             type="url"
                             value={project.link}
                             onChange={(e) => updateProject(index, 'link', e.target.value)}
-                            className={`w-full max-w-4xl px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 ${projectLinkErrors[index]
-                              ? 'border-red-500 focus:ring-red-500 focus:border-red-500' // Red border/ring on error
-                              : 'focus:outline-none focus:ring-2 focus:ring-blue-500' // Default border/ring
+                            className={`w-[919px] px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900
+                              ${projectLinkErrors[index]
+                                ? 'border-red-500 focus:ring-red-500 focus:border-red-500' // Red border/ring on error
+                                : 'focus:outline-none focus:ring-2 focus:ring-blue-500' // Default border/ring
                               }`}
                             placeholder="https://example.com"
                             pattern="https://.*" // Keep pattern for browser hints/validation
@@ -378,7 +376,6 @@ export default function WorkExperiencePage() {
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
