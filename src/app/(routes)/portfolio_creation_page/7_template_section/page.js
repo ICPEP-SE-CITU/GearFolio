@@ -2,18 +2,18 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Add this import
+import { useRouter } from "next/navigation";
 import { FcLeft } from "react-icons/fc";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
-import { motion, AnimatePresence } from "framer-motion"; // Add this import
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function TemplatePage() {
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [progress, setProgress] = useState(83);
   const [targetProgress, setTargetProgress] = useState(83);
-  const [isNavigating, setIsNavigating] = useState(false); // Add navigation state
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleTemplateSelect = (templateId) => {
     setSelectedTemplate(prevSelected => {
@@ -33,7 +33,6 @@ export default function TemplatePage() {
     setIsNavigating(true);
     e.preventDefault();
     
-    // Add a slight delay for the animation to play
     setTimeout(() => {
       router.push("/portfolio_creation_page/8_generate_portfolio");
     }, 500);
@@ -66,13 +65,7 @@ export default function TemplatePage() {
   const canProceed = selectedTemplate != null;
 
   return (
-    <motion.div 
-      className="min-h-screen bg-gray-50 p-6 md:p-12 flex flex-col items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-    >
+    <div className="min-h-screen bg-gray-50 p-6 md:p-12 flex flex-col items-center justify-center">
       {/* Background logo */}
       <div className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none">
         <div className="w-[937px] h-[937px] flex-shrink-0 aspect-square">
@@ -88,12 +81,7 @@ export default function TemplatePage() {
       </div>
 
       {/* Header with title and progress */}
-      <motion.div 
-        className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10"
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.3 }}
-      >
+      <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
         <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]">
           Create your Portfolio
         </h1>
@@ -110,9 +98,12 @@ export default function TemplatePage() {
                   marginLeft: "-4px"
                 }}
               >
-                <div className="animate-spin">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                >
                   <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
-                </div>
+                </motion.div>
               </div>
             </div>
             <div className="flex items-center justify-center mt-4">
@@ -120,59 +111,58 @@ export default function TemplatePage() {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
-      {/* Main glass container */}
-      <motion.div 
-        className="w-full max-w-5xl mx-auto relative z-10"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.3 }}
-      >
-        <div className="w-full h-[553px] rounded-lg relative overflow-hidden shadow-lg"
-          style={{
-            background: 'rgba(235, 245, 255, 0.5)',
-            backdropFilter: 'blur(12px)',
-            boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
-            border: '1px solid rgba(255, 255, 255, 0.18)'
-          }}
+      {/* Main glass container with AnimatePresence */}
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key="glass-container"
+          className="w-full max-w-5xl mx-auto relative z-10"
+          initial={{ x: 300, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -300, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
-          <div className="p-10 h-full relative">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-8">Template Selection</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((template) => (
-                <motion.div
-                  key={template}
-                  onClick={() => handleTemplateSelect(template)}
-                  className={`border rounded-lg h-90 flex items-center justify-center text-lg font-medium cursor-pointer transition
-                    ${selectedTemplate === template
-                      ? "bg-blue-200 border-blue-400 text-blue-800 shadow-lg"
-                      : "text-gray-700 hover:shadow-lg"
-                    }`}
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ 
-                    opacity: 1, 
-                    y: 0,
-                    transition: { delay: 0.1 * template }
-                  }}
-                >
-                  Template {template}
-                </motion.div>
-              ))}
+          <div className="w-full h-[553px] rounded-lg relative overflow-hidden shadow-lg"
+            style={{
+              background: 'rgba(235, 245, 255, 0.5)',
+              backdropFilter: 'blur(12px)',
+              boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
+              border: '1px solid rgba(255, 255, 255, 0.18)'
+            }}
+          >
+            <div className="p-10 h-full relative">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-8">Template Selection</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[1, 2, 3].map((template) => (
+                  <motion.div
+                    key={template}
+                    onClick={() => handleTemplateSelect(template)}
+                    className={`border rounded-lg h-90 flex items-center justify-center text-lg font-medium cursor-pointer transition
+                      ${selectedTemplate === template
+                        ? "bg-blue-200 border-blue-400 text-blue-800 shadow-lg"
+                        : "text-gray-700 hover:shadow-lg"
+                      }`}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ 
+                      opacity: 1, 
+                      y: 0,
+                      transition: { delay: 0.1 * template }
+                    }}
+                  >
+                    Template {template}
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Navigation */}
-      <motion.div 
-        className="w-full max-w-5xl mx-auto flex justify-between mt-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.3 }}
-      >
+      <div className="w-full max-w-5xl mx-auto flex justify-between mt-6">
         <Link
           href="/portfolio_creation_page/6_work_experience"
           className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group"
@@ -201,19 +191,14 @@ export default function TemplatePage() {
             "Next"
           )}
         </motion.button>
-      </motion.div>
+      </div>
 
       {/* AI Mascot */}
-      <motion.div 
-        className="absolute top-4 right-4 z-20"
-        initial={{ x: 20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.3 }}
-      >
+      <div className="absolute top-4 right-4 z-20">
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
