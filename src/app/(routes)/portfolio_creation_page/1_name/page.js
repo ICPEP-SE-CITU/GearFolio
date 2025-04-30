@@ -1,10 +1,11 @@
-"use client"; // This component is a client component in Next.js
-
-import { useState, useRef, useEffect } from "react"; // Import React hooks for state and lifecycle management
-import Link from "next/link"; // Import Link from Next.js for navigation
-import Image from "next/image"; // Import Image from Next.js for optimized image handling
-import { Progress } from "@/components/ui/progress"; // Import custom Progress component
-import { IoIosPerson } from "react-icons/io"; // Import icon for user profile
+"use client";
+import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Progress } from "@/components/ui/progress";
+import { IoIosPerson } from "react-icons/io";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function NameInputPage() {
   const [userImage, setUserImage] = useState(null);
@@ -14,54 +15,40 @@ export default function NameInputPage() {
   const [suffix, setSuffix] = useState("");
   const [progress, setProgress] = useState(0);
   const [targetProgress, setTargetProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
+  const router = useRouter();
   
-  // Constants for progress calculation
-  const MAX_PAGE_PROGRESS = 17; // This page represents 17% of total progress
-  
-  // Handle file upload and set user image
-  // This function is triggered when the user selects a file
+  const MAX_PAGE_PROGRESS = 17;
+
   const handleFileChange = (event) => {
+    setIsUploading(true);
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
-      const imageUrl = URL.createObjectURL(file);
-      setUserImage(imageUrl);
+      setTimeout(() => {
+        const imageUrl = URL.createObjectURL(file);
+        setUserImage(imageUrl);
+        setIsUploading(false);
+      }, 800); // Simulate upload delay
     }
   };
   
-  // Trigger file input click
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
 
-  //For Backend this just a UI Logic for the progress bar
-  // Calculate target progress whenever form fields change
   useEffect(() => {
-    // Define required fields (userImage is optional)
     const requiredFields = [firstName, surname];
     const totalRequiredFields = requiredFields.length + (middleName ? 1 : 0);
-    
-    // Count completed required fields
     const completedFields = requiredFields.filter(field => field.trim() !== "").length + 
                           (middleName.trim() !== "" ? 1 : 0);
-    
-    // Calculate percentage within this page (max 90% from form fields)
     const formCompletion = (completedFields / totalRequiredFields) * 0.9;
-    
-    // Add bonus for image (max 10% contribution)
     const imageBonus = userImage ? 0.1 : 0;
-    
-    // Total completion for this page (0 to 1 scale)
     const pageCompletion = Math.min(1, formCompletion + imageBonus);
-    
-    // Convert to overall progress percentage (max 15% of total)
     const overallProgress = pageCompletion * MAX_PAGE_PROGRESS;
-    
-    // Set the target progress
     setTargetProgress(overallProgress);
   }, [firstName, middleName, surname, userImage]);
 
-  // Animate progress towards target
   useEffect(() => {
     if (Math.abs(progress - targetProgress) < 0.1) {
       setProgress(targetProgress);
@@ -69,29 +56,39 @@ export default function NameInputPage() {
     }
     
     const animationFrame = requestAnimationFrame(() => {
-      // Smooth animation by moving a percentage of the remaining distance
       const diff = targetProgress - progress;
       const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-      
-      setProgress(prevProgress => {
-        const newProgress = prevProgress + step;
-        // Round to one decimal place for smoother animation
-        return Math.round(newProgress * 10) / 10;
-      });
+      setProgress(prevProgress => Math.round((prevProgress + step) * 10) / 10);
     });
     
     return () => cancelAnimationFrame(animationFrame);
   }, [progress, targetProgress]);
 
-  // Calculate required fields for next button enablement
-  const canProceed = firstName.trim() !== "" && middleName.trim() !== "" && surname.trim() !== "";
+  const canProceed = firstName.trim() !== "" && surname.trim() !== "";
 
+  const handleNext = (e) => {
+    if (!canProceed) {
+      e.preventDefault();
+      return;
+    }
+    // No need to prevent default, Link will handle it
+  };
 
-  //Render the UI for the page
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
-      {/* Background logo - now positioned as page background */}
-      <div className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden"
+    >
+      {/* Background logo */}
+      <motion.div 
+        className="fixed inset-0 z-0 opacity-45 flex items-center justify-center pointer-events-none"
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.45 }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="w-[937px] h-[937px] flex-shrink-0 aspect-square">
           <Image 
             src="/gear_folio_logo.svg" 
@@ -102,46 +99,63 @@ export default function NameInputPage() {
             className="w-full h-full object-contain"
           />
         </div>
-      </div>
+      </motion.div>
 
-      {/* Header with title and progress */}
+      {/* Header */}
       <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]"> {/* Text shadow for better visibility */}
-        Create your Portfolio
-      </h1>
+        <motion.h1 
+          className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          Create your Portfolio
+        </motion.h1>
+        
         <div className="max-w-3xl mx-auto relative">
-          
-          {/* Progress bar container */}
+          {/* Progress bar */}
           <div className="relative">
-            {/* Progress bar */}
             <div className="bg-blue-100 rounded-full overflow-hidden h-2">
               <Progress value={progress} className="h-2 transition-all duration-300 ease-out" />
             </div>
             
-            {/* Gear positioned on top of progress bar */}
-            <div 
-              className="absolute top-0 z-20 transition-all duration-300 ease-out"
+            <motion.div 
+              className="absolute top-0 z-20"
               style={{ 
                 left: `${progress}%`, 
                 transform: 'translate(-50%, -50%)',
                 marginTop: "4px",
                 marginLeft: "-4px"
               }}
+              animate={{ 
+                rotate: 360,
+                transition: { 
+                  rotate: { duration: 4, repeat: Infinity, ease: "linear" }
+                }
+              }}
             >
-              <div className="animate-spin">
-                <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
-              </div>
-            </div>
+              <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
+            </motion.div>
           </div>
-          <div className="flex items-center justify-center mt-4">
+          
+          <motion.div 
+            className="flex items-center justify-center mt-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             <span className="text-lg text-blue-600 font-bold">{Math.round(progress)}% completed</span>
-          </div>
+          </motion.div>
         </div>
       </div>
 
-      {/* Modern glass effect container with subtle blue tint */}
-      <div className="w-full max-w-5xl mx-auto relative z-10">
-        {/* Main glass container */}
+      {/* Main form container */}
+      <motion.div 
+        className="w-full max-w-5xl mx-auto relative z-10"
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
         <div 
           className="w-full h-[553px] rounded-lg relative overflow-hidden shadow-lg"
           style={{ 
@@ -152,39 +166,84 @@ export default function NameInputPage() {
           }}
         >
           <div className="p-10 h-full relative">
-            {/* Name Section */}
-            <h2 className="text-2xl font-semibold text-gray-800 mb-8">Name</h2>
+            <motion.h2 
+              className="text-2xl font-semibold text-gray-800 mb-8"
+              initial={{ x: -10, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              Name
+            </motion.h2>
             
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {/* Profile Image Upload */}
               <div className="col-span-1">
-                <div 
-                  className="w-full aspect-square border border-blue-100 rounded-lg mb-2 overflow-hidden flex items-center justify-center bg-white bg-opacity-60"
+                <motion.div 
+                  className="w-full aspect-square border border-blue-100 rounded-lg mb-2 overflow-hidden flex items-center justify-center bg-white bg-opacity-60 cursor-pointer"
                   style={{
                     boxShadow: '0 4px 16px rgba(0, 65, 255, 0.05)'
                   }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleUploadClick}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
                 >
-                  {userImage ? (
-                    <Image 
-                      src={userImage} 
-                      width={150} 
-                      height={150} 
-                      alt="User profile" 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <IoIosPerson className="w-1/2 h-1/2 fill-blue-600" /> {/* Adjust size as needed */}
-                    </div>
-                  )}
-                </div>
-                <button 
+                  <AnimatePresence mode="wait">
+                    {isUploading ? (
+                      <motion.div
+                        key="loading"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="w-full h-full flex items-center justify-center"
+                      >
+                        <motion.div
+                          className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                      </motion.div>
+                    ) : userImage ? (
+                      <motion.div
+                        key="image"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="w-full h-full"
+                      >
+                        <Image 
+                          src={userImage} 
+                          width={150} 
+                          height={150} 
+                          alt="User profile" 
+                          className="w-full h-full object-cover"
+                        />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="placeholder"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="w-full h-full flex items-center justify-center"
+                      >
+                        <IoIosPerson className="w-1/2 h-1/2 fill-blue-600" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+                
+                <motion.button 
                   className="w-full py-2 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors duration-200 cursor-pointer"
                   onClick={handleUploadClick}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Upload
-                </button>
-                {/* Hidden file input */}
+                </motion.button>
+                
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -196,89 +255,85 @@ export default function NameInputPage() {
               
               {/* Form Fields */}
               <div className="col-span-3 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="firstName">
-                    First Name:
-                  </label>
-                  <input
-                    id="firstName"
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="middleName">
-                    Middle Name:
-                  </label>
-                  <input
-                    id="middleName"
-                    type="text"
-                    value={middleName}
-                    onChange={(e) => setMiddleName(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="surname">
-                    Surname:
-                  </label>
-                  <input
-                    id="surname"
-                    type="text"
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="suffix">
-                    Suffix:
-                  </label>
-                  <input
-                    id="suffix"
-                    type="text"
-                    value={suffix}
-                    onChange={(e) => setSuffix(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
-                    placeholder="Optional"
-                  />
-                </div>
+                {['firstName', 'middleName', 'surname', 'suffix'].map((field, i) => (
+                  <motion.div
+                    key={field}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
+                  >
+                    <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor={field}>
+                      {field === 'firstName' ? 'First Name:' : 
+                       field === 'middleName' ? 'Middle Name:' : 
+                       field === 'surname' ? 'Surname:' : 'Suffix:'}
+                    </label>
+                    <motion.input
+                      id={field}
+                      type="text"
+                      value={field === 'firstName' ? firstName : 
+                            field === 'middleName' ? middleName : 
+                            field === 'surname' ? surname : suffix}
+                      onChange={(e) => {
+                        if (field === 'firstName') setFirstName(e.target.value);
+                        else if (field === 'middleName') setMiddleName(e.target.value);
+                        else if (field === 'surname') setSurname(e.target.value);
+                        else setSuffix(e.target.value);
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                      required={field !== 'suffix'}
+                      placeholder={field === 'suffix' ? 'Optional' : ''}
+                      whileFocus={{ 
+                        boxShadow: "0 0 0 2px rgba(59, 130, 246, 0.5)",
+                        scale: 1.01
+                      }}
+                    />
+                  </motion.div>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Next button outside the container in the lower right */}
-        <div className="absolute -bottom-12 right-0">
+        {/* Next button */}
+        <motion.div 
+          className="absolute -bottom-12 right-0"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8 }}
+        >
           <Link
             href="/portfolio_creation_page/2_personal_information"
-            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
-              canProceed
-              ? "bg-blue-600 text-white hover:bg-blue-700" 
-              : "bg-gray-400 text-gray-100 cursor-not-allowed"
-            }`}
-            onClick={(e) => !canProceed && e.preventDefault()}
+            passHref
           >
-            Next
+            <motion.button
+              className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                canProceed
+                ? "bg-blue-600 text-white hover:bg-blue-700" 
+                : "bg-gray-400 text-gray-100 cursor-not-allowed"
+              }`}
+              onClick={handleNext}
+              whileHover={canProceed ? { y: -2, boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)" } : {}}
+              whileTap={canProceed ? { scale: 0.95 } : {}}
+              disabled={!canProceed}
+            >
+              Next
+            </motion.button>
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* UI for AI Mascot Here. Note:This just an code representation */}
-       {/* Frontend, just copy this code every page. akoa pani himoan og UI component */}
-      <div className="absolute top-4 right-4 z-20">
+      {/* AI Mascot */}
+      <motion.div 
+        className="absolute top-4 right-4 z-20"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        whileHover={{ rotate: [0, 10, -10, 0] }}
+      >
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
