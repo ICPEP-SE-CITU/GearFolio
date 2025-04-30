@@ -201,7 +201,7 @@ export default function WorkExperiencePage() {
                           type="text"
                           value={job}
                           onChange={(e) => updateJob(index, e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900"
+                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                         />
                         {index > 0 && (
                           <button
@@ -239,7 +239,7 @@ export default function WorkExperiencePage() {
                           type="text"
                           value={skill}
                           onChange={(e) => updateSkill(index, e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900"
+                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                         />
                         {index > 0 && (
                           <button
@@ -279,7 +279,7 @@ export default function WorkExperiencePage() {
                             type="text"
                             value={project.name}
                             onChange={(e) => updateProject(index, 'name', e.target.value)}
-                            className="w-full max-w-lg px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900"
+                            className="w-full max-w-lg px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
                           />
                         </div>
                         <div className="w-full">
@@ -327,7 +327,7 @@ export default function WorkExperiencePage() {
                         <textarea
                           value={project.description}
                           onChange={(e) => updateProject(index, 'description', e.target.value)}
-                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none bg-white text-gray-900 h-24 resize-none"
+                          className="w-full max-w-4xl px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 h-24 resize-none"
                         />
                       </div>
                       <div className="flex items-center justify-between">
@@ -337,9 +337,9 @@ export default function WorkExperiencePage() {
                             type="url"
                             value={project.link}
                             onChange={(e) => updateProject(index, 'link', e.target.value)}
-                            className={`w-full max-w-4xl px-3 py-2 border rounded-md focus:outline-none bg-white text-gray-900 ${projectLinkErrors[index]
+                            className={`w-full max-w-4xl px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 ${projectLinkErrors[index]
                               ? 'border-red-500 focus:ring-red-500 focus:border-red-500' // Red border/ring on error
-                              : 'focus:outline-none' // Default border/ring
+                              : 'focus:outline-none focus:ring-2 focus:ring-blue-500' // Default border/ring
                               }`}
                             placeholder="https://example.com"
                             pattern="https://.*" // Keep pattern for browser hints/validation
