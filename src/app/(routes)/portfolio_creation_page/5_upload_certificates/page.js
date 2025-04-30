@@ -15,6 +15,14 @@ export default function CertificatesPage() {
   const [stagedFiles, setStagedFiles] = useState([]);
   const fileInputRef = useRef(null);
 
+  // States for Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  /*const handleRemoveCertificate = (indexToRemove) => {
+    setCertificates((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };*/
+
   useEffect(() => {
     const baseProgress = 55;
     const maxProgress = 69;
@@ -87,6 +95,18 @@ export default function CertificatesPage() {
   };
 
   //const canProceed = certificates.length > 0 && description.trim().length > 0;
+
+  // Function to open the modal and set the selected image
+  const openModal = (cert) => {
+    setSelectedImage(cert);
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
