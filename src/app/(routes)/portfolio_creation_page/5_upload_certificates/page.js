@@ -17,7 +17,6 @@ export default function CertificatesPage() {
   const fileInputRef = useRef(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // States for Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -25,15 +24,11 @@ export default function CertificatesPage() {
     const baseProgress = 55;
     const maxProgress = 69;
     let addedProgress = 0;
-    const progressForCerts = 7; // Progress for having at least one cert
-    const progressForDesc = 7;  // Progress for having at least one cert WITH description
 
-    // Add progress if at least one certificate exists
     if (certificates.length > 0) {
-      addedProgress += progressForCerts;
-      // Add further progress only if at least one certificate has a description
+      addedProgress += 7;
       if (certificates.some(cert => cert.description.trim() !== "")) {
-        addedProgress += progressForDesc;
+        addedProgress += 7;
       }
     }
 
@@ -67,15 +62,12 @@ export default function CertificatesPage() {
       return;
     }
 
-    // Create new entries with the current description for all staged files
     const newEntries = stagedFiles.map(file => ({
       file: file,
       description: description
     }));
 
     setCertificates(prev => [...prev, ...newEntries]);
-
-    // Clear the staged files, description input, and file input value
     setStagedFiles([]);
     setDescription("");
     if (fileInputRef.current) {
@@ -89,24 +81,14 @@ export default function CertificatesPage() {
 
   const canProceed = certificates.length > 0;
 
-  // Function to open the modal and set the selected image
   const openModal = (cert) => {
     setSelectedImage(cert);
     setIsModalOpen(true);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedImage(null);
-  };
-
-  const handleNext = (e) => {
-    if (!canProceed) {
-      e.preventDefault();
-      return;
-    }
-    setIsAnimating(true);
   };
 
   return (
@@ -144,7 +126,7 @@ export default function CertificatesPage() {
                 marginLeft: "-4px",
               }}
             >
-              <motion.div 
+              <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
               >
@@ -160,7 +142,6 @@ export default function CertificatesPage() {
 
       {/* Form Section */}
       <div className="w-full max-w-5xl mx-auto relative z-10">
-        {/* Main glass container */}
         <div
           className="w-full rounded-lg relative overflow-hidden shadow-lg"
           style={{
@@ -195,7 +176,6 @@ export default function CertificatesPage() {
                       accept="image/*,.pdf"
                     />
                   </label>
-                  {/* Display number of staged files */}
                   {stagedFiles.length > 0 && (
                     <span className="text-sm text-gray-600">{stagedFiles.length} file selected</span>
                   )}
@@ -211,7 +191,6 @@ export default function CertificatesPage() {
                     disabled={stagedFiles.length === 0}
                   />
                 </div>
-
                 <button
                   onClick={handleUploadConfirm}
                   disabled={stagedFiles.length === 0}
@@ -236,8 +215,7 @@ export default function CertificatesPage() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.3 }}
                       >
-                        {/* Image Preview Container */}
-                        <div 
+                        <div
                           className="w-full h-[150px] bg-white border rounded flex items-center justify-center overflow-hidden mb-2 cursor-pointer"
                           onClick={() => openModal(certData)}
                         >
@@ -250,18 +228,17 @@ export default function CertificatesPage() {
                               className="object-contain max-w-full max-h-full"
                             />
                           ) : (
-                            <span className="text-gray-500 text-center text-sm p-2">Preview not available ({certData.file.type})</span>
+                            <span className="text-gray-500 text-center text-sm p-2">
+                              Preview not available ({certData.file.type})
+                            </span>
                           )}
                         </div>
-                        {/* File Name */}
                         <p className="font-semibold text-center text-sm truncate w-full px-1" title={certData.file.name}>
                           {certData.file.name}
                         </p>
-                        {/* Description Display */}
                         <p className="text-xs text-gray-600 text-center mt-1 px-1 break-words w-full" title={certData.description || "No description"}>
                           {certData.description || "(No description)"}
                         </p>
-                        {/* Remove Button */}
                         <button
                           onClick={() => handleRemoveCertificate(index)}
                           className="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors text-xs"
@@ -276,56 +253,35 @@ export default function CertificatesPage() {
               </div>
             </motion.div>
           </AnimatePresence>
+        </div>
 
-          {/* Navigation Buttons */}
-          <div className="absolute -bottom-14 left-0 flex gap-4">
-            <Link
-              href="/portfolio_creation_page/4_education"
-              className="p-2 flex items-center justify-center rounded-md bg-transparent hover:transition-all duration-300 group"
-            >
-              <motion.div
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FcLeft className="text-4xl" />
-              </motion.div>
-            </Link>
-          </div>
-          <div className="absolute -bottom-14 right-0 flex gap-4">
-            <Link
-              href="/portfolio_creation_page/6_work_experience"
-              passHref
-            >
-              <motion.button
-                className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                  canProceed
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-gray-400 text-gray-100 cursor-not-allowed"
-                }`}
-                onClick={handleNext}
-                whileHover={canProceed ? { y: -2, boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)" } : {}}
-                whileTap={canProceed ? { scale: 0.95 } : {}}
-                disabled={!canProceed}
-              >
-                Next
-              </motion.button>
-            </Link>
-          </div>
+        {/* Navigation Buttons OUTSIDE glass container */}
+        <div className="flex justify-between items-center mt-6 px-2 sm:px-4">
+          <Link
+            href="/portfolio_creation_page/4_education"
+            className="p-2 flex items-center justify-center rounded-md hover:transition-all duration-300 group"
+          >
+            <FcLeft className="text-4xl group-hover:scale-125 transition-transform duration-300" />
+          </Link>
+          <Link
+            href="/portfolio_creation_page/6_work_experience"
+            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
+                ? "bg-blue-600 text-white hover:bg-blue-700"
+                : "bg-gray-400 text-gray-100 cursor-not-allowed"
+              }`}
+            onClick={(e) => !canProceed && e.preventDefault()}
+          >
+            Next
+          </Link>
         </div>
       </div>
 
-      {/* AI Mascot */}
-      <motion.div 
-        className="absolute top-4 right-4 z-20"
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        whileHover={{ rotate: [0, 10, -10, 0] }}
-      >
+      {/* AI Mascot Placeholder */}
+      <div className="absolute top-4 right-4 z-20">
         <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
           <div className="text-2xl">🤖</div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
