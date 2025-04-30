@@ -5,12 +5,21 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import Link from "next/link";
 import { FcLeft } from "react-icons/fc";
+import { FaEye } from "react-icons/fa"; // Importing the eye icon
 
 export default function CertificatesPage() {
   const [progress, setProgress] = useState(43);
   const [targetProgress, setTargetProgress] = useState(43);
   const [certificates, setCertificates] = useState([]);
   const [description, setDescription] = useState("");
+
+  // States for Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleRemoveCertificate = (indexToRemove) => {
+    setCertificates((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
 
   useEffect(() => {
     if (certificates.length > 0 && description.trim().length > 0) {
@@ -36,10 +45,25 @@ export default function CertificatesPage() {
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
-    setCertificates([...certificates, ...files]);
+    setCertificates((prev) => [...prev, ...files]);
+
+    // Reset input value so the same file can be selected again
+    e.target.value = null;
   };
 
   const canProceed = certificates.length > 0 && description.trim().length > 0;
+
+  // Function to open the modal and set the selected image
+  const openModal = (cert) => {
+    setSelectedImage(cert);
+    setIsModalOpen(true);
+  };
+
+  // Function to close the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
@@ -116,18 +140,25 @@ export default function CertificatesPage() {
               />
             </div>
 
-            <div className="w-full h-[320px] bg-white border rounded overflow-auto p-5">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+            <div className="w-full h-[320px] bg-white border rounded overflow-x-auto overflow-y-hidden p-5">
+              <div className="flex gap-4 w-max">
                 {certificates.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center border border-dashed p-8 rounded shadow text-gray-400 text-center col-span-3">
-                    No certificate uploaded yet. Upload to preview here.
+                  <div className="flex w-62 items-center border border-dashed p-8 rounded shadow text-gray-400 text-center h-[260px]">
+                    <span>No certificate uploaded yet. Upload to preview here.</span>
                   </div>
                 ) : (
                   certificates.map((cert, index) => (
                     <div
                       key={index}
-                      className="flex flex-col items-center border p-2 rounded shadow w-[220px] h-[260px] bg-white"
+                      className="relative flex flex-col items-center border p-2 rounded shadow w-[220px] h-[260px] bg-white"
                     >
+                      <button
+                        onClick={() => handleRemoveCertificate(index)}
+                        className="absolute -top-1.5 right-0 text-red-500 hover:text-red-700 text-xl font-bold z-10 cursor-pointer"
+                        aria-label="Remove certificate"
+                      >
+                        &times;
+                      </button>
                       <div className="w-full h-[150px] bg-white border rounded flex items-center justify-center overflow-hidden">
                         <Image
                           src={URL.createObjectURL(cert)}
@@ -139,6 +170,15 @@ export default function CertificatesPage() {
                       </div>
                       <p className="mt-2 font-semibold text-center text-sm truncate w-full">{cert.name}</p>
                       <p className="text-xs text-gray-600">Uploaded File</p>
+
+                      {/* View All Icon (eye icon) */}
+                      <button
+                        className="absolute bottom-2 right-2 text-xl text-blue-500 hover:text-blue-700"
+                        onClick={() => openModal(cert)} // Open the modal and pass the selected image
+                        aria-label="View all"
+                      >
+                        <FaEye />
+                      </button>
                     </div>
                   ))
                 )}
@@ -170,6 +210,29 @@ export default function CertificatesPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal to view the image */}
+      {isModalOpen && selectedImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-4 rounded-lg shadow-lg">
+            <button
+              className="absolute top-2 right-2 text-2xl text-red-500"
+              onClick={closeModal}
+            >
+              &times;
+            </button>
+            <div className="w-[500px] h-[500px] flex items-center justify-center">
+              <Image
+                src={URL.createObjectURL(selectedImage)}
+                alt="Full certificate view"
+                width={500}
+                height={500}
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
