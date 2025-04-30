@@ -102,52 +102,39 @@ export default function NameInputPage() {
       </motion.div>
 
       {/* Header */}
-      <div className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10">
-        <motion.h1 
-          className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+      <motion.div 
+        className="w-full max-w-5xl mx-auto mb-6 text-center relative z-10"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.1, duration: 0.3 }}
+      >
+        <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow:_-1px_-1px_0_white,_1px_-1px_0_white,_-1px_1px_0_white,_1px_1px_0_white]">
           Create your Portfolio
-        </motion.h1>
-        
+        </h1>
         <div className="max-w-3xl mx-auto relative">
-          {/* Progress bar */}
           <div className="relative">
             <div className="bg-blue-100 rounded-full overflow-hidden h-2">
-              <Progress value={progress} className="h-2 transition-all duration-300 ease-out" />
+              <Progress value={progress} className="h-2 transition-all duration-300 ease-out"/>
+              <div
+                className="absolute top-0 z-20 transition-all duration-300 ease-out"
+                style={{
+                  left: `${progress}%`,
+                  transform: 'translate(-50%, -50%)',
+                  marginTop: "4px",
+                  marginLeft: "-4px"
+                }}
+              >
+                <div className="animate-spin">
+                  <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
+                </div>
+              </div>
             </div>
-            
-            <motion.div 
-              className="absolute top-0 z-20"
-              style={{ 
-                left: `${progress}%`, 
-                transform: 'translate(-50%, -50%)',
-                marginTop: "4px",
-                marginLeft: "-4px"
-              }}
-              animate={{ 
-                rotate: 360,
-                transition: { 
-                  rotate: { duration: 4, repeat: Infinity, ease: "linear" }
-                }
-              }}
-            >
-              <Image src="/gear.svg" width={20} height={20} alt="Progress indicator" />
-            </motion.div>
+            <div className="flex items-center justify-center mt-4">
+              <span className="text-lg text-blue-600 font-bold">{Math.round(progress)}% completed</span>
+            </div>
           </div>
-          
-          <motion.div 
-            className="flex items-center justify-center mt-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <span className="text-lg text-blue-600 font-bold">{Math.round(progress)}% completed</span>
-          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main form container */}
       <motion.div 
