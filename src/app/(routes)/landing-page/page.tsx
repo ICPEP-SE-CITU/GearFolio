@@ -1,11 +1,15 @@
-
+// src/app/page.js or wherever your LandingPage component resides
 "use client";
+
+import React from 'react'; // Good practice, though optional for JSX only in newer React/Next.js
+
 
 
 const LandingPage = () => {
     return (
-        <div className="flex flex-col">
-            <Header /> {/* Using the Header component */}
+        // Using min-h-screen ensures the footer is pushed down even on short content pages
+        <div className="flex flex-col min-h-screen">
+            
 
             <main className="flex-grow">
                 {/* Hero Section */}
@@ -17,18 +21,9 @@ const LandingPage = () => {
                         <p className="text-lg text-gray-700 mb-8">
                             Improve the professional achievements of your students by creating an outstanding portfolio.
                         </p>
-                        <div className="flex justify-center w-full max-w-md mx-auto">
-                            <Input
-                                type="text"
-                                placeholder="Search for student portfolios by name or skills..."
-                                className="pr-16" // Make space for the button
-                            />
-                            <Button
-                                variant="outline"
-                                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/20 text-blue-500 hover:bg-white/30"
-                            >
-                                <Search className="w-5 h-5" />
-                            </Button>
+                        {/* Added 'relative' positioning to the container */}
+                        <div className="relative flex justify-center w-full max-w-md mx-auto">
+                            
                         </div>
                     </div>
                 </section>
@@ -42,34 +37,32 @@ const LandingPage = () => {
                             making it easier for students to showcase their work and for
                             educators to assess their achievements.
                         </p>
-                        <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
-                            Try GEARFOLIO
-                        </Button>
+                        
                     </div>
                 </section>
 
                 {/* Why Choose GearFolio? */}
                 <section className="bg-gray-50 py-16 px-4">
                     <div className="container mx-auto text-center">
-                        <h2 className="text-3xl font-semibold text-gray-900 mb-8">Why Choose GearFolio?</h2>
+                        <h2 className="text-3xl font-semibold text-gray-900 mb-12">Why Choose GearFolio?</h2> {/* Added mb-12 for spacing */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {/* Showcase Your Work */}
-                            <div className="flex flex-col items-center">
-                                <Users className="w-12 h-12 text-blue-500 mb-4" />
+                            <div className="flex flex-col items-center p-6"> {/* Added padding */}
+                                
                                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Showcase Your Work</h3>
-                                <p className="text-gray-700">Present your projects in a professional and engaging way.</p>
+                                <p className="text-gray-700 text-center">Present your projects in a professional and engaging way.</p> {/* Added text-center */}
                             </div>
                             {/* Impress Employers */}
-                            <div className="flex flex-col items-center">
-                                <Briefcase className="w-12 h-12 text-blue-500 mb-4" />
+                            <div className="flex flex-col items-center p-6"> {/* Added padding */}
+                                
                                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Impress Employers</h3>
-                                <p className="text-gray-700">Create a portfolio that stands out to potential employers.</p>
+                                <p className="text-gray-700 text-center">Create a portfolio that stands out to potential employers.</p> {/* Added text-center */}
                             </div>
                             {/* Collaborate and Grow */}
-                            <div className="flex flex-col items-center">
-                                 <Folder className="w-12 h-12 text-blue-500 mb-4" />
+                            <div className="flex flex-col items-center p-6"> {/* Added padding */}
+                                
                                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Collaborate and Grow</h3>
-                                <p className="text-gray-700">Connect with peers and expand your professional network.</p>
+                                <p className="text-gray-700 text-center">Connect with peers and expand your professional network.</p> {/* Added text-center */}
                             </div>
                         </div>
                     </div>
@@ -78,7 +71,7 @@ const LandingPage = () => {
                 {/* AI-Powered Portfolio Assistance */}
                 <section className="py-16 px-4">
                     <div className="container mx-auto text-center flex flex-col md:flex-row items-center gap-12">
-                        <div className="md:w-1/2">
+                        <div className="md:w-1/2 md:text-left"> {/* Align text left on medium screens */}
                             <h2 className="text-3xl font-semibold text-gray-900 mb-4">AI-Powered Portfolio Assistance</h2>
                             <p className="text-gray-700">
                                 Create outstanding portfolios with the help of our AI assistant.
@@ -86,8 +79,8 @@ const LandingPage = () => {
                                 shine.
                             </p>
                         </div>
-                        <div className="md:w-1/2">
-                             <BrainCircuit className="w-48 h-48 text-blue-500 mx-auto" />
+                        <div className="md:w-1/2 flex justify-center md:justify-end"> {/* Center icon container */}
+                            
                         </div>
                     </div>
                 </section>
@@ -98,40 +91,38 @@ const LandingPage = () => {
                         <h2 className="text-3xl font-semibold text-gray-900 mb-8">
                             Ready to Take Your Portfolio to the Next Level?
                         </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8"> {/* Adjusted grid columns for responsiveness */}
                             {/* Image 1 */}
-                            <div className="rounded-lg overflow-hidden">
+                            <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"> {/* Added shadow */}
                                 <img
-                                    src="https://placehold.co/400x300/EEE/31343C" // Replace with actual image URLs
-                                    alt="Placeholder 1"
-                                    className="w-full h-auto"
+                                    src="https://placehold.co/400x300/e2e8f0/3b82f6?text=Portfolio+1" // Example placeholder
+                                    alt="Portfolio Example 1"
+                                    className="w-full h-auto object-cover" // Added object-cover
                                 />
                             </div>
                             {/* Image 2 */}
-                            <div className="rounded-lg overflow-hidden">
+                            <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"> {/* Added shadow */}
                                 <img
-                                    src="https://placehold.co/400x300/EEE/31343C"  // Replace with actual image URLs
-                                    alt="Placeholder 2"
-                                    className="w-full h-auto"
+                                    src="https://placehold.co/400x300/dbeafe/1d4ed8?text=Portfolio+2" // Example placeholder
+                                    alt="Portfolio Example 2"
+                                    className="w-full h-auto object-cover" // Added object-cover
                                 />
                             </div>
                             {/* Image 3 */}
-                            <div className="rounded-lg overflow-hidden">
+                            <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"> {/* Added shadow */}
                                 <img
-                                   src="https://placehold.co/400x300/EEE/31343C"  // Replace with actual image URLs
-                                    alt="Placeholder 3"
-                                    className="w-full h-auto"
+                                    src="https://placehold.co/400x300/bfdbfe/2563eb?text=Portfolio+3" // Example placeholder
+                                    alt="Portfolio Example 3"
+                                    className="w-full h-auto object-cover" // Added object-cover
                                 />
                             </div>
                         </div>
-                        <Button variant="default" className="mt-8 bg-blue-600 hover:bg-blue-700 text-white">
-                            GET STARTED!
-                        </Button>
+                        
                     </div>
                 </section>
             </main>
 
-            <Footer /> {/* Using the Footer component */}
+           
         </div>
     );
 };
