@@ -64,7 +64,7 @@ export default function NameInputPage() {
     return () => cancelAnimationFrame(animationFrame);
   }, [progress, targetProgress]);
 
-  const canProceed = firstName.trim() !== "" && surname.trim() !== "";
+  const canProceed = firstName.trim() !== "" && surname.trim() !== "" && userImage !== null;
 
   const handleNext = (e) => {
     if (!canProceed) {
