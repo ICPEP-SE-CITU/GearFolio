@@ -5,19 +5,75 @@ import { Progress } from "@/components/ui/progress";
 import { FaFacebook, FaLinkedin, FaInstagram, FaPlus, FaTwitter } from "react-icons/fa";
 import { FcBriefcase, FcLeft } from "react-icons/fc";
 import { motion, AnimatePresence } from "framer-motion";
+import useFormStore from "@/stores/useFormCreatePortfolio";
 
 export default function PersonalInformationPage() {
-  const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [socials, setSocials] = useState([{ platform: "", url: "" }]);
-  const [progress, setProgress] = useState(17);
-  const [targetProgress, setTargetProgress] = useState(17);
-  const [urlErrors, setUrlErrors] = useState([]);
-  const [isAnimating, setIsAnimating] = useState(false);
+  // const [email, setEmail] = useState("");
+  // const [contactNumber, setContactNumber] = useState("");
+  // const [socials, setSocials] = useState([{ platform: "", url: "" }]);
+  // const [progress, setProgress] = useState(17);
+  // const [targetProgress, setTargetProgress] = useState(17);
+  // const [urlErrors, setUrlErrors] = useState([]);
+  // const [isAnimating, setIsAnimating] = useState(false);
+
+  // // Validate URLs when they change
+  // useEffect(() => {
+  //   const newErrors = socials.map(social => {
+  //     if (!social.url) return false;
+  //     try {
+  //       new URL(social.url);
+  //       return false;
+  //     } catch {
+  //       return true;
+  //     }
+  //   });
+  //   setUrlErrors(newErrors);
+  // }, [socials]);
+
+  // // Calculate target progress
+  // useEffect(() => {
+  //   const baseProgress = 17;
+  //   const maxProgress = 31;
+  //   let addedProgress = 0;
+
+  //   const emailPoints = 5;
+  //   const contactPoints = 5;
+  //   const socialsPoints = 4;
+
+  //   if (email.trim() !== "") {
+  //     addedProgress += emailPoints;
+  //   }
+  //   if (contactNumber.trim() !== "") {
+  //     addedProgress += contactPoints;
+  //   }
+  //   if (socials.some((s, index) => s.platform && s.url.trim() && !urlErrors[index])) {
+  //     addedProgress += socialsPoints;
+  //   }
+
+  //   const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+  //   setTargetProgress(newTargetProgress);
+  // }, [email, contactNumber, socials, urlErrors]);
+  // Use Zustand store for form state
+  const {
+    email,
+    contactNumber,
+    socials,
+    setEmail,
+    setContactNumber,
+    setSocials,
+    addSocialField,
+    removeSocialField,
+    handleSocialChange,
+  } = useFormStore();
+
+  const [progress, setProgress] = useState(17); // Local state for progress animation
+  const [targetProgress, setTargetProgress] = useState(17); // Local state for progress target
+  const [urlErrors, setUrlErrors] = useState([]); // Local state for URL validation errors
+  const [isAnimating, setIsAnimating] = useState(false); // Local state for animation control
 
   // Validate URLs when they change
   useEffect(() => {
-    const newErrors = socials.map(social => {
+    const newErrors = socials.map((social) => {
       if (!social.url) return false;
       try {
         new URL(social.url);
@@ -69,12 +125,12 @@ export default function PersonalInformationPage() {
     return () => cancelAnimationFrame(animationFrame);
   }, [progress, targetProgress]);
 
-  const addSocialField = () => {
+  const addSocialFieldHandler= () => {
     setSocials([...socials, { platform: "", url: "" }]);
     setUrlErrors([...urlErrors, false]);
   };
 
-  const removeSocialField = (index) => {
+  const removeSocialFieldHandler= (index) => {
     const newSocials = [...socials];
     newSocials.splice(index, 1);
     setSocials(newSocials);
@@ -84,7 +140,7 @@ export default function PersonalInformationPage() {
     setUrlErrors(newErrors);
   };
 
-  const handleSocialChange = (index, field, value) => {
+  const handleSocialChangeHandler = (index, field, value) => {
     const newSocials = [...socials];
     newSocials[index][field] = value;
     setSocials(newSocials);
@@ -250,7 +306,7 @@ export default function PersonalInformationPage() {
                           {getPlatformIcon(social.platform)}
                           <select
                             value={social.platform}
-                            onChange={(e) => handleSocialChange(index, 'platform', e.target.value)}
+                            onChange={(e) => handleSocialChangeHandler(index, 'platform', e.target.value)}
                             className="pl-2 pr-8 py-2 focus:outline-none bg-transparent text-gray-900 appearance-none cursor-pointer"
                           >
                             <option value="">-Choose Platform-</option>
@@ -266,7 +322,7 @@ export default function PersonalInformationPage() {
                             type="url"
                             placeholder={social.platform ? "https://example.com/profile" : "Please Select a Platform"} 
                             value={social.url}
-                            onChange={(e) => handleSocialChange(index, 'url', e.target.value)}
+                            onChange={(e) => handleSocialChangeHandler(index, 'url', e.target.value)}
                             className={`w-full px-3 py-2 border ${urlErrors[index] ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed`}
                             pattern="https?://.+"
                             disabled={!social.platform}
@@ -280,7 +336,7 @@ export default function PersonalInformationPage() {
                         {socials.length > 1 && (
                           <button
                             type="button"
-                            onClick={() => removeSocialField(index)}
+                            onClick={() => removeSocialFieldHandler(index)}
                             className="px-3 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition-colors cursor-pointer"
                             aria-label="Remove social link"
                           >

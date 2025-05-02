@@ -6,106 +6,190 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { FcLeft } from "react-icons/fc";
 import { motion, AnimatePresence } from "framer-motion";
+import useFormStore from "@/stores/useFormCreatePortfolio";
 
 export default function PortfolioCreationPage() {
-  const [progress, setProgress] = useState(43);
-  const [targetProgress, setTargetProgress] = useState(43);
-  const [elementary, setElementary] = useState("");
-  const [juniorHigh, setJuniorHigh] = useState("");
-  const [seniorHigh, setSeniorHigh] = useState("");
-  const [degreeLevel, setDegreeLevel] = useState({
-    undergraduate: { checked: false, university: "" },
-    masters: { checked: false, university: "" },
-    doctoral: { checked: false, university: "" }
-  });
-  const [isAnimating, setIsAnimating] = useState(false);
+  // const [progress, setProgress] = useState(43);
+  // const [targetProgress, setTargetProgress] = useState(43);
+  // const [elementary, setElementary] = useState("");
+  // const [juniorHigh, setJuniorHigh] = useState("");
+  // const [seniorHigh, setSeniorHigh] = useState("");
+  // const [degreeLevel, setDegreeLevel] = useState({
+  //   undergraduate: { checked: false, university: "" },
+  //   masters: { checked: false, university: "" },
+  //   doctoral: { checked: false, university: "" }
+  // });
+  // const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    const baseProgress = 43;
-    const maxProgress = 55;
-    const progressPerSection = 3;
-    let addedProgress = 0;
+  // useEffect(() => {
+  //   const baseProgress = 43;
+  //   const maxProgress = 55;
+  //   const progressPerSection = 3;
+  //   let addedProgress = 0;
 
-    if (elementary.trim() !== "") {
-      addedProgress += progressPerSection;
-    }
+  //   if (elementary.trim() !== "") {
+  //     addedProgress += progressPerSection;
+  //   }
     
-    if (juniorHigh.trim() !== "") {
-      addedProgress += progressPerSection;
-    }
+  //   if (juniorHigh.trim() !== "") {
+  //     addedProgress += progressPerSection;
+  //   }
     
-    if (seniorHigh.trim() !== "") {
-      addedProgress += progressPerSection;
-    }
+  //   if (seniorHigh.trim() !== "") {
+  //     addedProgress += progressPerSection;
+  //   }
 
-    const isAnyDegreeLevelComplete =
-      (degreeLevel.undergraduate.checked && degreeLevel.undergraduate.university.trim() !== "") ||
-      (degreeLevel.masters.checked && degreeLevel.masters.university.trim() !== "") ||
-      (degreeLevel.doctoral.checked && degreeLevel.doctoral.university.trim() !== "");
+  //   const isAnyDegreeLevelComplete =
+  //     (degreeLevel.undergraduate.checked && degreeLevel.undergraduate.university.trim() !== "") ||
+  //     (degreeLevel.masters.checked && degreeLevel.masters.university.trim() !== "") ||
+  //     (degreeLevel.doctoral.checked && degreeLevel.doctoral.university.trim() !== "");
 
-    if (isAnyDegreeLevelComplete) {
-      addedProgress += progressPerSection;
-    }
+  //   if (isAnyDegreeLevelComplete) {
+  //     addedProgress += progressPerSection;
+  //   }
 
-    const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
-    setTargetProgress(newTargetProgress);
-  }, [elementary, juniorHigh, seniorHigh, degreeLevel]);
+  //   const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+  //   setTargetProgress(newTargetProgress);
+  // }, [elementary, juniorHigh, seniorHigh, degreeLevel]);
 
-  useEffect(() => {
-    if (Math.abs(progress - targetProgress) < 0.1) {
-      setProgress(targetProgress);
-      return;
-    }
+  // useEffect(() => {
+  //   if (Math.abs(progress - targetProgress) < 0.1) {
+  //     setProgress(targetProgress);
+  //     return;
+  //   }
 
-    const animationFrame = requestAnimationFrame(() => {
-      const diff = targetProgress - progress;
-      const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-      setProgress(prev => Math.round((prev + step) * 10) / 10);
-    });
+  //   const animationFrame = requestAnimationFrame(() => {
+  //     const diff = targetProgress - progress;
+  //     const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
+  //     setProgress(prev => Math.round((prev + step) * 10) / 10);
+  //   });
 
-    return () => cancelAnimationFrame(animationFrame);
-  }, [progress, targetProgress]);
+  //   return () => cancelAnimationFrame(animationFrame);
+  // }, [progress, targetProgress]);
 
-  const canProceed =
-    elementary.trim() !== "" &&
-    juniorHigh.trim() !== "" &&
-    seniorHigh.trim() !== "" &&
-    (degreeLevel.undergraduate.checked ||
-      degreeLevel.masters.checked ||
-      degreeLevel.doctoral.checked) &&
-    (degreeLevel.undergraduate.checked ? degreeLevel.undergraduate.university.trim() !== "" : true) &&
-    (degreeLevel.masters.checked ? degreeLevel.masters.university.trim() !== "" : true) &&
-    (degreeLevel.doctoral.checked ? degreeLevel.doctoral.university.trim() !== "" : true);
+  // const canProceed =
+  //   elementary.trim() !== "" &&
+  //   juniorHigh.trim() !== "" &&
+  //   seniorHigh.trim() !== "" &&
+  //   (degreeLevel.undergraduate.checked ||
+  //     degreeLevel.masters.checked ||
+  //     degreeLevel.doctoral.checked) &&
+  //   (degreeLevel.undergraduate.checked ? degreeLevel.undergraduate.university.trim() !== "" : true) &&
+  //   (degreeLevel.masters.checked ? degreeLevel.masters.university.trim() !== "" : true) &&
+  //   (degreeLevel.doctoral.checked ? degreeLevel.doctoral.university.trim() !== "" : true);
 
+  // const handleDegreeChange = (degree) => {
+  //   setDegreeLevel(prev => ({
+  //     ...prev,
+  //     [degree]: {
+  //       ...prev[degree],
+  //       checked: !prev[degree].checked,
+  //       university: !prev[degree].checked ? "" : prev[degree].university
+  //     }
+  //   }));
+  // };
+
+  // const handleUniversityChange = (degree, value) => {
+  //   setDegreeLevel(prev => ({
+  //     ...prev,
+  //     [degree]: {
+  //       ...prev[degree],
+  //       university: value
+  //     }
+  //   }));
+  // };
+
+  // const handleNext = (e) => {
+  //   if (!canProceed) {
+  //     e.preventDefault();
+  //     return;
+  //   }
+  //   setIsAnimating(true);
+  // };
   const handleDegreeChange = (degree) => {
-    setDegreeLevel(prev => ({
-      ...prev,
-      [degree]: {
-        ...prev[degree],
-        checked: !prev[degree].checked,
-        university: !prev[degree].checked ? "" : prev[degree].university
-      }
-    }));
+    updateDegreeLevel(degree, "checked", !degreeLevel[degree].checked);
+    // Reset university field if unchecked
+    if (!degreeLevel[degree].checked) {
+      updateDegreeLevel(degree, "university", "");
+    }
   };
 
   const handleUniversityChange = (degree, value) => {
-    setDegreeLevel(prev => ({
-      ...prev,
-      [degree]: {
-        ...prev[degree],
-        university: value
-      }
-    }));
+    updateDegreeLevel(degree, "university", value);
   };
+// Use Zustand store for form state
+const {
+  elementary,
+  juniorHigh,
+  seniorHigh,
+  degreeLevel,
+  setElementary,
+  setJuniorHigh,
+  setSeniorHigh,
+  updateDegreeLevel,
+} = useFormStore();
 
-  const handleNext = (e) => {
-    if (!canProceed) {
-      e.preventDefault();
-      return;
-    }
-    setIsAnimating(true);
-  };
+const [progress, setProgress] = useState(43); // Local state for progress animation
+const [targetProgress, setTargetProgress] = useState(43); // Local state for progress target
+const [isAnimating, setIsAnimating] = useState(false); // Local state for animation control
 
+useEffect(() => {
+  const baseProgress = 43;
+  const maxProgress = 57;
+  const progressPerField = 3.5;
+  let addedProgress = 0;
+
+  if (elementary.trim() !== "") {
+    addedProgress += progressPerField;
+  }
+  if (juniorHigh.trim() !== "") {
+    addedProgress += progressPerField;
+  }
+  if (seniorHigh.trim() !== "") {
+    addedProgress += progressPerField;
+  }
+  if (
+    Object.values(degreeLevel).some(
+      (level) => level.checked && level.university.trim() !== ""
+    )
+  ) {
+    addedProgress += progressPerField;
+  }
+
+  const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+  setTargetProgress(newTargetProgress);
+}, [elementary, juniorHigh, seniorHigh, degreeLevel]);
+
+useEffect(() => {
+  if (Math.abs(progress - targetProgress) < 0.1) {
+    setProgress(targetProgress);
+    return;
+  }
+
+  const animationFrame = requestAnimationFrame(() => {
+    const diff = targetProgress - progress;
+    const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
+    setProgress((prev) => Math.round((prev + step) * 10) / 10);
+  });
+
+  return () => cancelAnimationFrame(animationFrame);
+}, [progress, targetProgress]);
+
+const canProceed =
+  elementary.trim() !== "" &&
+  juniorHigh.trim() !== "" &&
+  seniorHigh.trim() !== "" &&
+  Object.values(degreeLevel).some(
+    (level) => level.checked && level.university.trim() !== ""
+  );
+
+const handleNext = (e) => {
+  if (!canProceed) {
+    e.preventDefault();
+    return;
+  }
+  setIsAnimating(true);
+};
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
       {/* Background logo (static) */}
