@@ -1,130 +1,182 @@
-// src/app/page.js or wherever your LandingPage component resides
+
 "use client";
 
-import React from 'react'; // Good practice, though optional for JSX only in newer React/Next.js
-
-
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const LandingPage = () => {
-    return (
-        // Using min-h-screen ensures the footer is pushed down even on short content pages
-        <div className="flex flex-col min-h-screen">
-            
+  return (
+    <div className="min-h-screen bg-[#F7F7FF] relative overflow-hidden">
 
-            <main className="flex-grow">
-                {/* Hero Section */}
-                <section className="bg-gradient-to-br from-blue-100 to-purple-100 text-center py-20 px-4">
-                    <div className="container mx-auto">
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-                            Discover, Build, and Showcase Portfolios with AI Assistance
-                        </h1>
-                        <p className="text-lg text-gray-700 mb-8">
-                            Improve the professional achievements of your students by creating an outstanding portfolio.
-                        </p>
-                        {/* Added 'relative' positioning to the container */}
-                        <div className="relative flex justify-center w-full max-w-md mx-auto">
-                            
-                        </div>
-                    </div>
-                </section>
+      <Image
+        src="/image/Homepage-1.svg"
+        alt="background"
+        width={1920} // <-- Add this prop
+        height={1080} // <-- Add this prop
+        className="absolute inset-0 w-[1920px] h-[1080px] object-cover select-none pointer-events-none z-0"
+      />
 
-                {/* What Makes Our Platform Unique? */}
-                <section className="py-16 px-4">
-                    <div className="container mx-auto text-center">
-                        <h2 className="text-3xl font-semibold text-gray-900 mb-8">What Makes Our Platform Unique?</h2>
-                        <p className="text-gray-700 max-w-2xl mx-auto mb-8">
-                            GearFolio is designed to streamline the portfolio creation process,
-                            making it easier for students to showcase their work and for
-                            educators to assess their achievements.
-                        </p>
-                        
-                    </div>
-                </section>
-
-                {/* Why Choose GearFolio? */}
-                <section className="bg-gray-50 py-16 px-4">
-                    <div className="container mx-auto text-center">
-                        <h2 className="text-3xl font-semibold text-gray-900 mb-12">Why Choose GearFolio?</h2> {/* Added mb-12 for spacing */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            {/* Showcase Your Work */}
-                            <div className="flex flex-col items-center p-6"> {/* Added padding */}
-                                
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">Showcase Your Work</h3>
-                                <p className="text-gray-700 text-center">Present your projects in a professional and engaging way.</p> {/* Added text-center */}
-                            </div>
-                            {/* Impress Employers */}
-                            <div className="flex flex-col items-center p-6"> {/* Added padding */}
-                                
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">Impress Employers</h3>
-                                <p className="text-gray-700 text-center">Create a portfolio that stands out to potential employers.</p> {/* Added text-center */}
-                            </div>
-                            {/* Collaborate and Grow */}
-                            <div className="flex flex-col items-center p-6"> {/* Added padding */}
-                                
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">Collaborate and Grow</h3>
-                                <p className="text-gray-700 text-center">Connect with peers and expand your professional network.</p> {/* Added text-center */}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* AI-Powered Portfolio Assistance */}
-                <section className="py-16 px-4">
-                    <div className="container mx-auto text-center flex flex-col md:flex-row items-center gap-12">
-                        <div className="md:w-1/2 md:text-left"> {/* Align text left on medium screens */}
-                            <h2 className="text-3xl font-semibold text-gray-900 mb-4">AI-Powered Portfolio Assistance</h2>
-                            <p className="text-gray-700">
-                                Create outstanding portfolios with the help of our AI assistant.
-                                Get suggestions, feedback, and design support to make your work
-                                shine.
-                            </p>
-                        </div>
-                        <div className="md:w-1/2 flex justify-center md:justify-end"> {/* Center icon container */}
-                            
-                        </div>
-                    </div>
-                </section>
-
-                {/* Ready to Take Your Portfolio to the Next Level? */}
-                <section className="bg-gray-50 py-16 px-4">
-                    <div className="container mx-auto text-center">
-                        <h2 className="text-3xl font-semibold text-gray-900 mb-8">
-                            Ready to Take Your Portfolio to the Next Level?
-                        </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8"> {/* Adjusted grid columns for responsiveness */}
-                            {/* Image 1 */}
-                            <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"> {/* Added shadow */}
-                                <img
-                                    src="https://placehold.co/400x300/e2e8f0/3b82f6?text=Portfolio+1" // Example placeholder
-                                    alt="Portfolio Example 1"
-                                    className="w-full h-auto object-cover" // Added object-cover
-                                />
-                            </div>
-                            {/* Image 2 */}
-                            <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"> {/* Added shadow */}
-                                <img
-                                    src="https://placehold.co/400x300/dbeafe/1d4ed8?text=Portfolio+2" // Example placeholder
-                                    alt="Portfolio Example 2"
-                                    className="w-full h-auto object-cover" // Added object-cover
-                                />
-                            </div>
-                            {/* Image 3 */}
-                            <div className="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"> {/* Added shadow */}
-                                <img
-                                    src="https://placehold.co/400x300/bfdbfe/2563eb?text=Portfolio+3" // Example placeholder
-                                    alt="Portfolio Example 3"
-                                    className="w-full h-auto object-cover" // Added object-cover
-                                />
-                            </div>
-                        </div>
-                        
-                    </div>
-                </section>
-            </main>
-
-           
+      {/* Content overlay */}
+      <div className="relative z-10">
+        {/* Navigation Bar */}
+        <div className="bg-white/70 mt-[45px] text-gray-800 w-[1800px] ml-[60px] rounded-[20px] p-5 flex  items-center">
+          <div className="flex flex-row gap-[150px] items-center ">
+            <div className="flex items-center">
+              <div className="flex flex-row text-4xl font-Montserrat font-bold items-center text-blue-600">
+                <Image
+                  src="/image/logo.svg"
+                  alt="background"
+                  width={73}
+                  height={73}
+                  className="z-0"
+                />
+                <span className="text-[#145DA0]">GEAR</span><span className="text-[#2E8BC0]">FOLIO</span>
+              </div>
+            </div>
+            <div className="hidden md:flex gap-[85px] font-bold text-2xl">
+              <a>Home</a> {/* Use Link component, href is a prop */}
+              <a>Features</a>
+              <a href="/testimonials">Testimonials</a>
+              <a href="/about-us">About us</a>
+            </div>
+            <div className="ml-[189px]">
+              <a href="/" className="px-1 py-1 text-xl font-regular ">Sign up</a>
+              <a href="/" className="px-[45px] py-[13px] bg-[#2E8BC0] text-xl text-white rounded-[25px]">Login</a>
+            </div>
+          </div>
         </div>
-    );
+
+
+        <div className="py-6 my-[120px] text-center text-white">
+          <h1 className="text-8xl -ml-[125px] md:text-[95px] font-bold mb-4">Discover, Build, and Showcase</h1>
+          <h1 className="text-8xl -ml-[225px] md:text-[95px] font-bold mb-4">Portfolios with AI Assistance</h1>
+          <p className="text-l -ml-[737px] mb-8">Explore the professional achievements of CIT-U students or create your own AI-enhanced portfolio with ease.</p>
+          <div className="flex justify-center mb-12">
+            <div className="relative w-full max-w-2xl">
+              <input
+                type="text"
+                placeholder="Search for student portfolios by name or skills..."
+                className="px-4 -ml-[425px] py-3 w-[1240px] bg-white rounded-md text-gray-800"
+              />
+              <button className="absolute right-1 top-1 bg-blue-700 p-2 rounded-md">
+                <span>🔍</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <section className="bg-white my-[550px] text-gray-800 py-16 px-4 md:px-12 rounded-3xl mx-4 md:mx-12 my-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">What Makes Our Platform Unique?</h2>
+          <p className="text-center max-w-3xl mx-auto mb-8">
+            GearFolio is designed to empower students by showcasing their projects, skills, and achievements in a dynamic, professional portfolio.
+            Whether you are pursuing a job, internship, or further studies, GearFolio helps you stand out in todays competitive tech landscape.
+          </p>
+          <div className="flex justify-center mt-8">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-md flex items-center">
+              Try GEARFOLIO
+              <span className="ml-2">→</span>
+            </button>
+          </div>
+        </section>
+
+        {/* Why Choose GearFolio Section */}
+        <section className="py-16 px-4 md:px-12 max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">Why Choose GearFolio</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-xl text-center text-gray-800">
+              <div className="bg-blue-100 p-4 rounded-xl inline-block mb-4">
+                {/* Briefcase icon placeholder */}
+                <div className="w-16 h-16"></div>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Showcase Your Work</h3>
+            </div>
+            <div className="bg-white p-8 rounded-xl text-center text-gray-800">
+              <div className="bg-blue-100 p-4 rounded-xl inline-block mb-4">
+                {/* Folder icon placeholder */}
+                <div className="w-16 h-16"></div>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Impress Employers</h3>
+            </div>
+            <div className="bg-white p-8 rounded-xl text-center text-gray-800">
+              <div className="bg-blue-100 p-4 rounded-xl inline-block mb-4">
+                {/* Puzzle pieces icon placeholder */}
+                <div className="w-16 h-16"></div>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Collaborate and Grow</h3>
+            </div>
+          </div>
+        </section>
+
+        {/* AI-Powered Section */}
+        <section className="py-16 px-4 md:px-12 max-w-6xl mx-auto">
+          <div className="bg-white text-gray-800 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center">
+            <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+              <h2 className="text-3xl font-bold mb-4">AI-Powered Portfolio Assistance</h2>
+              <p className="mb-4">
+                Creating a compelling portfolio can be challenging, but GearFolio makes it effortless with AI-driven suggestions and automation. From project highlights to skills visualization, our AI helps ensure your portfolio showcases your skills and experience in the best possible way.
+              </p>
+            </div>
+            <div className="md:w-1/2 flex justify-center">
+              {/* Robot illustration placeholder */}
+              <div className="w-64 h-64"></div>
+            </div>
+          </div>
+        </section>
+
+        {/* Ready to Take Section */}
+        <section className="py-16 px-4 md:px-12 max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-white">Ready to Take Your Portfolio to the Next Level?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-white rounded-xl overflow-hidden">
+              {/* Professional image placeholder */}
+              <div className="w-full h-48 bg-gray-200"></div>
+            </div>
+            <div className="bg-white rounded-xl overflow-hidden">
+              {/* Creator image placeholder */}
+              <div className="w-full h-48 bg-gray-200"></div>
+            </div>
+            <div className="bg-white rounded-xl overflow-hidden">
+              {/* Business image placeholder */}
+              <div className="w-full h-48 bg-gray-200"></div>
+            </div>
+          </div>
+          <button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-md uppercase font-bold">
+            GET STARTED!
+          </button>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-white text-gray-800 py-12 px-4 md:px-12">
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <div className="text-xl font-bold text-blue-600 mb-4">GEARFOLIO</div>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">Social</h4>
+              <div className="space-y-2">
+                <p>LinkedIn</p>
+                <p>Twitter</p>
+                <p>Instagram</p>
+                <p>Facebook</p>
+              </div>
+            </div>
+            <div></div>
+            <div>
+              <div className="space-y-2 text-sm">
+                <p>About</p>
+                <p>Help</p>
+                <p>Privacy Policy</p>
+                <p>Terms of Service</p>
+                <p>Help & Support</p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  );
 };
 
 export default LandingPage;
