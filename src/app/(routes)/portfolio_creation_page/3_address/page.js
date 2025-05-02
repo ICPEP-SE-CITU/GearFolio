@@ -6,15 +6,16 @@ import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import { FcLeft } from "react-icons/fc";
 import { motion, AnimatePresence } from "framer-motion";
+import useFormStore from "@/stores/useFormCreatePortfolio";
 
 export default function PortfolioCreationPage() {
-  const [progress, setProgress] = useState(31);
-  const [targetProgress, setTargetProgress] = useState(31);
-  const [country, setCountry] = useState("");
-  const [province, setProvince] = useState("");
-  const [city, setCity] = useState("");
-  const [postal, setPostal] = useState("");
-  const [isAnimating, setIsAnimating] = useState(false);
+  // Use Zustand store for form state
+  const { country, province, city, postal, setCountry, setProvince, setCity, setPostal } =
+    useFormStore();
+
+  const [progress, setProgress] = useState(31); // Local state for progress animation
+  const [targetProgress, setTargetProgress] = useState(31); // Local state for progress target
+  const [isAnimating, setIsAnimating] = useState(false); // Local state for animation control
 
   useEffect(() => {
     const baseProgress = 31;

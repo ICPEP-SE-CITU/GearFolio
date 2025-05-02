@@ -6,33 +6,43 @@ import { Progress } from "@/components/ui/progress";
 import { IoIosPerson } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import useFormStore from "@/stores/useFormCreatePortfolio";
 
 export default function NameInputPage() {
-  const [userImage, setUserImage] = useState(null);
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [suffix, setSuffix] = useState("");
-  const [progress, setProgress] = useState(0);
-  const [targetProgress, setTargetProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
+  // Use Zustand store for form state
+  const {
+    firstName,
+    middleName,
+    surname,
+    suffix,
+    userImage,
+    setFirstName,
+    setMiddleName,
+    setSurname,
+    setSuffix,
+    setUserImage,
+  } = useFormStore();
+
+  const [progress, setProgress] = useState(0); // Keep local state for progress animation
+  const [targetProgress, setTargetProgress] = useState(0); // Keep local state for progress target
+  const [isUploading, setIsUploading] = useState(false); // Keep local state for upload status
   const fileInputRef = useRef(null);
   const router = useRouter();
-  
+
   const MAX_PAGE_PROGRESS = 17;
 
   const handleFileChange = (event) => {
     setIsUploading(true);
     const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith("image/")) {
       setTimeout(() => {
         const imageUrl = URL.createObjectURL(file);
-        setUserImage(imageUrl);
+        setUserImage(imageUrl); // Update Zustand store
         setIsUploading(false);
       }, 800); // Simulate upload delay
     }
   };
-  
+
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };

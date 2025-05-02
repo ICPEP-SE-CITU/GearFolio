@@ -7,21 +7,34 @@ import { FcLeft } from "react-icons/fc";
 import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
+import useFormStore from "@/stores/useFormCreatePortfolio";
 
 export default function TemplatePage() {
+  // const router = useRouter();
+  // const [selectedTemplate, setSelectedTemplate] = useState(null);
+  // const [progress, setProgress] = useState(83);
+  // const [targetProgress, setTargetProgress] = useState(83);
+  // const [isNavigating, setIsNavigating] = useState(false);
+
+  // const handleTemplateSelect = (templateId) => {
+  //   setSelectedTemplate(prevSelected => {
+  //     if (prevSelected === templateId) {
+  //       return null;
+  //     }
+  //     return templateId;
+  //   });
+  // };
   const router = useRouter();
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [progress, setProgress] = useState(83);
-  const [targetProgress, setTargetProgress] = useState(83);
-  const [isNavigating, setIsNavigating] = useState(false);
+
+  // Use Zustand store for form state
+  const { selectedTemplate, toggleTemplate } = useFormStore();
+
+  const [progress, setProgress] = useState(83); // Local state for progress animation
+  const [targetProgress, setTargetProgress] = useState(83); // Local state for progress target
+  const [isNavigating, setIsNavigating] = useState(false); // Local state for navigation animation
 
   const handleTemplateSelect = (templateId) => {
-    setSelectedTemplate(prevSelected => {
-      if (prevSelected === templateId) {
-        return null;
-      }
-      return templateId;
-    });
+    toggleTemplate(templateId);
   };
 
   const handleNextClick = (e) => {

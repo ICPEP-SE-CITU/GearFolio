@@ -7,90 +7,184 @@ import Link from "next/link";
 import { FcLeft } from "react-icons/fc";
 import { FaTrashAlt } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import useFormStore from "@/stores/useFormCreatePortfolio";
 
 export default function CertificatesPage() {
-  const [progress, setProgress] = useState(55);
-  const [targetProgress, setTargetProgress] = useState(55);
-  const [certificates, setCertificates] = useState([]);
-  const [description, setDescription] = useState("");
-  const [stagedFiles, setStagedFiles] = useState([]);
-  const fileInputRef = useRef(null);
-  const [isAnimating, setIsAnimating] = useState(false);
+  // const [progress, setProgress] = useState(55);
+  // const [targetProgress, setTargetProgress] = useState(55);
+  // const [certificates, setCertificates] = useState([]);
+  // const [description, setDescription] = useState("");
+  // const [stagedFiles, setStagedFiles] = useState([]);
+  // const fileInputRef = useRef(null);
+  // const [isAnimating, setIsAnimating] = useState(false);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    const baseProgress = 55;
-    const maxProgress = 69;
-    let addedProgress = 0;
+  // useEffect(() => {
+  //   const baseProgress = 55;
+  //   const maxProgress = 69;
+  //   let addedProgress = 0;
 
-    if (certificates.length > 0) {
+  //   if (certificates.length > 0) {
+  //     addedProgress += 7;
+  //     if (certificates.some(cert => cert.description.trim() !== "")) {
+  //       addedProgress += 7;
+  //     }
+  //   }
+
+  //   const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+  //   setTargetProgress(newTargetProgress);
+  // }, [certificates]);
+
+  // useEffect(() => {
+  //   if (Math.abs(progress - targetProgress) < 0.1) {
+  //     setProgress(targetProgress);
+  //     return;
+  //   }
+
+  //   const animationFrame = requestAnimationFrame(() => {
+  //     const diff = targetProgress - progress;
+  //     const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
+  //     setProgress(prev => Math.round((prev + step) * 10) / 10);
+  //   });
+
+  //   return () => cancelAnimationFrame(animationFrame);
+  // }, [progress, targetProgress]);
+
+  // const handleFileSelect = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   setStagedFiles(files);
+  // };
+
+  // const handleUploadConfirm = () => {
+  //   if (stagedFiles.length === 0) {
+  //     alert("Please choose a file.");
+  //     return;
+  //   }
+
+  //   const newEntries = stagedFiles.map(file => ({
+  //     file: file,
+  //     description: description
+  //   }));
+
+  //   setCertificates(prev => [...prev, ...newEntries]);
+  //   setStagedFiles([]);
+  //   setDescription("");
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.value = null;
+  //   }
+  // };
+
+  // const handleRemoveCertificate = (indexToRemove) => {
+  //   setCertificates(prev => prev.filter((_, index) => index !== indexToRemove));
+  // };
+
+  // const canProceed = certificates.length > 0;
+
+  // const openModal = (cert) => {
+  //   setSelectedImage(cert);
+  //   setIsModalOpen(true);
+  // };
+
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  //   setSelectedImage(null);
+  // };
+// Use Zustand store for form state
+const {
+  certificates,
+  description,
+  stagedFiles,
+  setDescription,
+  setStagedFiles,
+  addCertificates,
+  removeCertificate,
+} = useFormStore();
+
+const [progress, setProgress] = useState(55); // Local state for progress animation
+const [targetProgress, setTargetProgress] = useState(55); // Local state for progress target
+const [isAnimating, setIsAnimating] = useState(false); // Local state for animation control
+const [isModalOpen, setIsModalOpen] = useState(false); // Local state for modal visibility
+const [selectedImage, setSelectedImage] = useState(null); // Local state for selected image in modal
+const fileInputRef = useRef(null);
+
+useEffect(() => {
+  const baseProgress = 55;
+  const maxProgress = 69;
+  let addedProgress = 0;
+
+  if (certificates.length > 0) {
+    addedProgress += 7;
+    if (certificates.some((cert) => cert.description?.trim() !== "")) {
       addedProgress += 7;
-      if (certificates.some(cert => cert.description.trim() !== "")) {
-        addedProgress += 7;
-      }
     }
+  }
 
-    const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
-    setTargetProgress(newTargetProgress);
-  }, [certificates]);
+  const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+  setTargetProgress(newTargetProgress);
+}, [certificates]);
 
-  useEffect(() => {
-    if (Math.abs(progress - targetProgress) < 0.1) {
-      setProgress(targetProgress);
-      return;
-    }
+useEffect(() => {
+  if (Math.abs(progress - targetProgress) < 0.1) {
+    setProgress(targetProgress);
+    return;
+  }
 
-    const animationFrame = requestAnimationFrame(() => {
-      const diff = targetProgress - progress;
-      const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-      setProgress(prev => Math.round((prev + step) * 10) / 10);
-    });
+  const animationFrame = requestAnimationFrame(() => {
+    const diff = targetProgress - progress;
+    const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
+    setProgress((prev) => Math.round((prev + step) * 10) / 10);
+  });
 
-    return () => cancelAnimationFrame(animationFrame);
-  }, [progress, targetProgress]);
+  return () => cancelAnimationFrame(animationFrame);
+}, [progress, targetProgress]);
 
-  const handleFileSelect = (e) => {
-    const files = Array.from(e.target.files);
-    setStagedFiles(files);
-  };
+const handleFileSelect = (e) => {
+  const files = Array.from(e.target.files);
+  setStagedFiles(files);
+};
 
-  const handleUploadConfirm = () => {
-    if (stagedFiles.length === 0) {
-      alert("Please choose a file.");
-      return;
-    }
+const handleUploadConfirm = () => {
+  if (stagedFiles.length === 0) {
+    alert("Please choose a file.");
+    return;
+  }
 
-    const newEntries = stagedFiles.map(file => ({
-      file: file,
-      description: description
-    }));
+  const newEntries = stagedFiles.map((file) => ({
+    file: file,
+    description: description,
+    fileName: file.name, // Store file name for persistence
+    fileType: file.type, // Store file type for rendering
+  }));
 
-    setCertificates(prev => [...prev, ...newEntries]);
-    setStagedFiles([]);
-    setDescription("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = null;
-    }
-  };
+  addCertificates(newEntries); // Use the store's action
+  setStagedFiles([]);
+  setDescription("");
+  if (fileInputRef.current) {
+    fileInputRef.current.value = null;
+  }
+};
 
-  const handleRemoveCertificate = (indexToRemove) => {
-    setCertificates(prev => prev.filter((_, index) => index !== indexToRemove));
-  };
+const handleRemoveCertificate = (index) => {
+  removeCertificate(index); // Use the store's action
+};
 
-  const canProceed = certificates.length > 0;
+const canProceed = certificates.length > 0;
 
-  const openModal = (cert) => {
-    setSelectedImage(cert);
-    setIsModalOpen(true);
-  };
+const openModal = (cert) => {
+  if (!cert.file) {
+    alert("File preview is not available. Please re-upload the file.");
+    return;
+  }
+  setSelectedImage(cert);
+  setIsModalOpen(true);
+};
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedImage(null);
-  };
-
+const closeModal = () => {
+  setIsModalOpen(false);
+  setSelectedImage(null);
+};
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
       {/* Background gear logo */}
