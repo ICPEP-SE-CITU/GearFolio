@@ -31,18 +31,48 @@ export default function NameInputPage() {
 
   const MAX_PAGE_PROGRESS = 17;
 
+
+  // const handleFileChange = (event) => {
+  //   setIsUploading(true);
+  //   const file = event.target.files[0];
+  //   if (file && file.type.startsWith("image/")) {
+  //     console.log("Selected file:", file); // Debug log
+  //     setTimeout(() => {
+  //       const imageUrl = URL.createObjectURL(file);
+  //       console.log("Generated image URL:", imageUrl); // Debug log
+  //       setUserImage(imageUrl, file); // Update both userImage and userImageFile
+  //       setIsUploading(false);
+  //       console.log("Store updated with userImage and userImageFile"); 
+  //     }, 800); y
+  //   } else {
+  //     console.warn("No file selected or file is not an image"); 
+  //     setIsUploading(false);
+  //   }
+  // };
   const handleFileChange = (event) => {
     setIsUploading(true);
     const file = event.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      setTimeout(() => {
-        const imageUrl = URL.createObjectURL(file);
-        setUserImage(imageUrl); // Update Zustand store
+    console.log("Selected file:", file); // Debug log
+    try {
+      if (file && file.type.startsWith("image/")) {
+        setTimeout(() => {
+          const imageUrl = URL.createObjectURL(file);
+          console.log("Generated image URL:", imageUrl); // Debug log
+          setUserImage(imageUrl, file); // Update both userImage and userImageFile
+          console.log("Store updated with userImage and userImageFile"); // Debug log
+          setIsUploading(false);
+        }, 800); // Simulate upload delay
+      } else {
+        console.warn("No file selected or file is not an image"); // Debug log
         setIsUploading(false);
-      }, 800); // Simulate upload delay
+        alert("Please select a valid image file.");
+      }
+    } catch (error) {
+      console.error("Error in handleFileChange:", error); // Debug log
+      setIsUploading(false);
+      alert("An error occurred while processing the image. Please try again.");
     }
   };
-
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };

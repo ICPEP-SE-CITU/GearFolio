@@ -20,13 +20,12 @@ export const savePortfolioToAppwrite = async (formData) => {
     seniorHigh,
     degreeLevel = [],
     certificates = [],
-    certificateFiles = [],
     jobs = [],
     skills = [],
     projects = [],
     selectedTemplate,
   } = formData;
-
+  console.log("Received formData:", { userImage, userImageFile }); // Debug log
   try {
     // Step 1: Validate environment variables
     if (!process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID) {
@@ -40,9 +39,13 @@ export const savePortfolioToAppwrite = async (formData) => {
     }
 
     // Step 2: Prepare the document data
-    // Convert degreeLevel array to a single string, truncate to 100 chars if needed
-    const degreeLevelString = Array.isArray(degreeLevel) && degreeLevel.length > 0
-      ? degreeLevel.join(", ").slice(0, 100)
+    console.log("degreeLevel input:", degreeLevel); // Debug log
+    const degreeLevelString = typeof degreeLevel === "object" && degreeLevel !== null
+      ? Object.entries(degreeLevel)
+          .filter(([_, value]) => value.checked)
+          .map(([key, value]) => `${key}: ${value.university || "Unknown"}`)
+          .join(", ")
+          .slice(0, 100)
       : "";
 
     // Ensure portfolioTemp is a string and no longer than 10 chars (updated schema limit)
@@ -50,6 +53,7 @@ export const savePortfolioToAppwrite = async (formData) => {
       ? selectedTemplate.slice(0, 10)
       : String(selectedTemplate || "").slice(0, 10);
 
+    const jobsString = JSON.stringify(jobs.filter(job => job.trim() !== "") || []);
     const documentData = {
       firstName: firstName?.trim() || "",
       middleName: middleName?.trim() || null,
@@ -67,6 +71,7 @@ export const savePortfolioToAppwrite = async (formData) => {
       seniorHigh: seniorHigh?.trim() || null,
       degreeLevel: degreeLevelString,
       skills: JSON.stringify(skills || []),
+      job: jobsString,
       portfolioTemp: portfolioTempString,
     };
 
@@ -83,23 +88,33 @@ export const savePortfolioToAppwrite = async (formData) => {
       documentData.userImage = imageFileId;
       console.log("User image uploaded successfully:", imageFileId);
     }
-
     // Step 4: Upload certificates to Appwrite Storage
-    let certificateFileIds = [];
-    if (Array.isArray(certificates) && certificates.length > 0 && Array.isArray(certificateFiles) && certificateFiles.length > 0) {
-      console.log("Uploading certificates...");
-      for (const file of certificateFiles) {
-        if (file instanceof File) {
+    let certificateData = Array.isArray(certificates) ? certificates.map((cert) => ({ ...cert })) : [];
+    if (certificateData.length > 0) {
+      console.log("Uploading certificate images...");
+      for (let i = 0; i < certificateData.length; i++) {
+        if (certificateData[i].imageFile instanceof File && certificateData[i].imageFile.type.startsWith("image/")) {
           const response = await storage.createFile(
             process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID,
             "unique()",
-            file
+            certificateData[i].imageFile
           );
-          certificateFileIds.push(response.$id);
+          certificateData[i].imageId = response.$id;
+        } else {
+          certificateData[i].imageId = null;
+          console.log(`Certificate image is not a valid File object or not an image at index ${i}:`, certificateData[i].imageFile);
         }
+        // Ensure only description and imageId are stored
+        certificateData[i] = {
+          description: certificateData[i].description || "",
+          imageId: certificateData[i].imageId || null,
+        };
       }
-      documentData.certificates = JSON.stringify(certificateFileIds);
-      console.log("Certificates uploaded successfully:", certificateFileIds);
+      documentData.certificates = JSON.stringify(certificateData);
+      console.log("Certificates processed:", certificateData);
+    } else {
+      documentData.certificates = "[]";
+      console.log("No certificates to process");
     }
 
     // Step 5: Upload project logos to Appwrite Storage
@@ -107,22 +122,30 @@ export const savePortfolioToAppwrite = async (formData) => {
     if (projectData.length > 0) {
       console.log("Uploading project logos...");
       for (let i = 0; i < projectData.length; i++) {
-        const logoFile = projectData[i].logoFile;
-        if (logoFile instanceof File) {
-          const response = await storage.createFile(
-            process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID,
-            "unique()",
-            logoFile
-          );
-          projectData[i].logo = response.$id;
+        if (projectData[i].logo instanceof File) {
+          try {
+            const response = await storage.createFile(
+              process.env.NEXT_PUBLIC_APPWRITE_STORAGE_BUCKET_ID,
+              "unique()",
+              projectData[i].logo
+            );
+            projectData[i].logo = response.$id;
+            console.log(`Project logo uploaded successfully for project ${i}:`, response.$id);
+          } catch (error) {
+            console.error(`Failed to upload project logo for project ${i}:`, error);
+            throw error;
+          }
         } else {
           projectData[i].logo = null;
+          console.log(`Project logo is not a File object at index ${i}:`, projectData[i].logo);
         }
       }
       documentData.projects = JSON.stringify(projectData);
-      console.log("Project logos uploaded successfully:", projectData);
+      console.log("Projects processed:", projectData);
+    } else {
+      documentData.projects = "[]";
+      console.log("No projects to process");
     }
-
     // Step 6: Save the document to Appwrite Database
     console.log("Saving document to database...");
     const response = await databases.createDocument(

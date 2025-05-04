@@ -19,7 +19,7 @@ export default function TemplatePage() {
     surname,
     suffix,
     userImage,
-    userImageFile,
+    userImageFile, // Add this
     email,
     contactNumber,
     socials,
@@ -32,11 +32,9 @@ export default function TemplatePage() {
     seniorHigh,
     degreeLevel,
     certificates,
-    certificateFiles,
     jobs,
     skills,
     projects,
-    projectLinkErrors, // Not used in save, but retrieved for completeness
     selectedTemplate,
     toggleTemplate,
   } = useFormStore();
@@ -56,52 +54,52 @@ export default function TemplatePage() {
     }
     setIsNavigating(true);
     e.preventDefault();
-        // Prepare the form data to pass to savePortfolioToAppwrite
-        const formData = {
-          firstName,
-          middleName,
-          surname,
-          suffix,
-          userImage,
-          userImageFile,
-          email,
-          contactNumber,
-          socials,
-          country,
-          province,
-          city,
-          postal,
-          elementary,
-          juniorHigh,
-          seniorHigh,
-          degreeLevel,
-          certificates,
-          certificateFiles,
-          jobs,
-          skills,
-          projects,
-          selectedTemplate,
-        };
-    
-        // Log the formData for debugging
-        console.log("Form data being sent to savePortfolioToAppwrite:", formData);
-    
-        // Save to Appwrite
-        setIsSaving(true);
-        setErrorMessage(null); // Reset error message
-        try {
-          await savePortfolioToAppwrite(formData);
-          setTimeout(() => {
-            router.push("/portfolio_creation_page/8_generate_portfolio");
-          }, 500);
-        } catch (error) {
-          console.error("Error in handleNextClick:", error);
-          setErrorMessage(error.message); // Display the specific error message
-          setIsNavigating(false); // Allow retry if save fails
-        } finally {
-          setIsSaving(false);
-        }
-      };
+       // Prepare the form data
+    const formData = {
+      firstName,
+      middleName,
+      surname,
+      suffix,
+      userImage,
+      userImageFile, // Add this
+      email,
+      contactNumber,
+      socials,
+      country,
+      province,
+      city,
+      postal,
+      elementary,
+      juniorHigh,
+      seniorHigh,
+      degreeLevel,
+      certificates,
+      jobs,
+      skills,
+      projects,
+      selectedTemplate,
+    };
+    // Log the formData for debugging
+    console.log("Form data being sent to savePortfolioToAppwrite:", formData);
+    console.log("Certificates details:", certificates);
+    console.log("Projects details:", projects);
+
+    // Save to Appwrite
+    setIsSaving(true);
+    setErrorMessage(null);
+    try {
+      await savePortfolioToAppwrite(formData);
+      console.log("Data saved successfully to Appwrite");
+      router.push("/portfolio_creation_page/8_generate_portfolio");
+    } catch (error) {
+      console.error("Error in handleNextClick:", error);
+      setErrorMessage(error.message);
+      setIsNavigating(false);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
       useEffect(() => {
         if (selectedTemplate !== null) {
           setTargetProgress(100);

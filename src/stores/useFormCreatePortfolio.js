@@ -7,14 +7,18 @@ const useFormStore = create((set) => ({
   surname: "",
   suffix: "",
   userImage: null,
+  userImageFile: null, 
 
   // Actions to update form state
   setFirstName: (value) => set({ firstName: value }),
   setMiddleName: (value) => set({ middleName: value }),
   setSurname: (value) => set({ surname: value }),
   setSuffix: (value) => set({ suffix: value }),
-  setUserImage: (value) => set({ userImage: value }),
-
+  setUserImage: (imageUrl, file) =>
+    set({
+      userImage: imageUrl,
+      userImageFile: file,
+    }),
   // Personal Information Page State
   email: "",
   contactNumber: "",
@@ -83,10 +87,22 @@ postal: "",
   setCertificates: (value) => set({ certificates: value }),
   setDescription: (value) => set({ description: value }),
   setStagedFiles: (value) => set({ stagedFiles: value }),
+  // addCertificates: (newEntries) =>
+  //   set((state) => ({
+  //     certificates: [...state.certificates, ...newEntries],
+  //   })),
   addCertificates: (newEntries) =>
-    set((state) => ({
-      certificates: [...state.certificates, ...newEntries],
-    })),
+    set((state) => {
+      const validatedEntries = (Array.isArray(newEntries) ? newEntries : [newEntries]).map((entry) => ({
+        imageFile: entry.imageFile || null,
+        description: entry.description || "",
+        fileName: entry.fileName || "",
+        fileType: entry.fileType || "",
+      }));
+      return {
+        certificates: [...state.certificates, ...validatedEntries],
+      };
+    }),
   removeCertificate: (index) =>
     set((state) => ({
       certificates: state.certificates.filter((_, i) => i !== index),

@@ -10,181 +10,100 @@ import { motion, AnimatePresence } from "framer-motion";
 import useFormStore from "@/stores/useFormCreatePortfolio";
 
 export default function CertificatesPage() {
-  // const [progress, setProgress] = useState(55);
-  // const [targetProgress, setTargetProgress] = useState(55);
-  // const [certificates, setCertificates] = useState([]);
-  // const [description, setDescription] = useState("");
-  // const [stagedFiles, setStagedFiles] = useState([]);
-  // const fileInputRef = useRef(null);
-  // const [isAnimating, setIsAnimating] = useState(false);
+  const {
+    certificates,
+    description,
+    stagedFiles,
+    setDescription,
+    setStagedFiles,
+    addCertificates,
+    removeCertificate,
+  } = useFormStore();
 
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [selectedImage, setSelectedImage] = useState(null);
+  const [progress, setProgress] = useState(55);
+  const [targetProgress, setTargetProgress] = useState(55);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const fileInputRef = useRef(null);
 
-  // useEffect(() => {
-  //   const baseProgress = 55;
-  //   const maxProgress = 69;
-  //   let addedProgress = 0;
+  useEffect(() => {
+    const baseProgress = 55;
+    const maxProgress = 69;
+    let addedProgress = 0;
 
-  //   if (certificates.length > 0) {
-  //     addedProgress += 7;
-  //     if (certificates.some(cert => cert.description.trim() !== "")) {
-  //       addedProgress += 7;
-  //     }
-  //   }
-
-  //   const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
-  //   setTargetProgress(newTargetProgress);
-  // }, [certificates]);
-
-  // useEffect(() => {
-  //   if (Math.abs(progress - targetProgress) < 0.1) {
-  //     setProgress(targetProgress);
-  //     return;
-  //   }
-
-  //   const animationFrame = requestAnimationFrame(() => {
-  //     const diff = targetProgress - progress;
-  //     const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-  //     setProgress(prev => Math.round((prev + step) * 10) / 10);
-  //   });
-
-  //   return () => cancelAnimationFrame(animationFrame);
-  // }, [progress, targetProgress]);
-
-  // const handleFileSelect = (e) => {
-  //   const files = Array.from(e.target.files);
-  //   setStagedFiles(files);
-  // };
-
-  // const handleUploadConfirm = () => {
-  //   if (stagedFiles.length === 0) {
-  //     alert("Please choose a file.");
-  //     return;
-  //   }
-
-  //   const newEntries = stagedFiles.map(file => ({
-  //     file: file,
-  //     description: description
-  //   }));
-
-  //   setCertificates(prev => [...prev, ...newEntries]);
-  //   setStagedFiles([]);
-  //   setDescription("");
-  //   if (fileInputRef.current) {
-  //     fileInputRef.current.value = null;
-  //   }
-  // };
-
-  // const handleRemoveCertificate = (indexToRemove) => {
-  //   setCertificates(prev => prev.filter((_, index) => index !== indexToRemove));
-  // };
-
-  // const canProceed = certificates.length > 0;
-
-  // const openModal = (cert) => {
-  //   setSelectedImage(cert);
-  //   setIsModalOpen(true);
-  // };
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  //   setSelectedImage(null);
-  // };
-// Use Zustand store for form state
-const {
-  certificates,
-  description,
-  stagedFiles,
-  setDescription,
-  setStagedFiles,
-  addCertificates,
-  removeCertificate,
-} = useFormStore();
-
-const [progress, setProgress] = useState(55); // Local state for progress animation
-const [targetProgress, setTargetProgress] = useState(55); // Local state for progress target
-const [isAnimating, setIsAnimating] = useState(false); // Local state for animation control
-const [isModalOpen, setIsModalOpen] = useState(false); // Local state for modal visibility
-const [selectedImage, setSelectedImage] = useState(null); // Local state for selected image in modal
-const fileInputRef = useRef(null);
-
-useEffect(() => {
-  const baseProgress = 55;
-  const maxProgress = 69;
-  let addedProgress = 0;
-
-  if (certificates.length > 0) {
-    addedProgress += 7;
-    if (certificates.some((cert) => cert.description?.trim() !== "")) {
+    if (certificates.length > 0) {
       addedProgress += 7;
+      if (certificates.some((cert) => cert.description?.trim() !== "")) {
+        addedProgress += 7;
+      }
     }
-  }
 
-  const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
-  setTargetProgress(newTargetProgress);
-}, [certificates]);
+    const newTargetProgress = Math.min(maxProgress, baseProgress + addedProgress);
+    setTargetProgress(newTargetProgress);
+  }, [certificates]);
 
-useEffect(() => {
-  if (Math.abs(progress - targetProgress) < 0.1) {
-    setProgress(targetProgress);
-    return;
-  }
+  useEffect(() => {
+    if (Math.abs(progress - targetProgress) < 0.1) {
+      setProgress(targetProgress);
+      return;
+    }
 
-  const animationFrame = requestAnimationFrame(() => {
-    const diff = targetProgress - progress;
-    const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-    setProgress((prev) => Math.round((prev + step) * 10) / 10);
-  });
+    const animationFrame = requestAnimationFrame(() => {
+      const diff = targetProgress - progress;
+      const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
+      setProgress((prev) => Math.round((prev + step) * 10) / 10);
+    });
 
-  return () => cancelAnimationFrame(animationFrame);
-}, [progress, targetProgress]);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [progress, targetProgress]);
 
-const handleFileSelect = (e) => {
-  const files = Array.from(e.target.files);
-  setStagedFiles(files);
-};
+  const handleFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    setStagedFiles(files);
+  };
 
-const handleUploadConfirm = () => {
-  if (stagedFiles.length === 0) {
-    alert("Please choose a file.");
-    return;
-  }
+  const handleUploadConfirm = () => {
+    if (stagedFiles.length === 0) {
+      alert("Please choose a file.");
+      return;
+    }
 
-  const newEntries = stagedFiles.map((file) => ({
-    file: file,
-    description: description,
-    fileName: file.name, // Store file name for persistence
-    fileType: file.type, // Store file type for rendering
-  }));
+    const newEntries = stagedFiles.map((file) => ({
+      imageFile: file, // Use imageFile to match savePortfolioToAppwrite
+      description: description,
+      fileName: file.name,
+      fileType: file.type,
+    }));
 
-  addCertificates(newEntries); // Use the store's action
-  setStagedFiles([]);
-  setDescription("");
-  if (fileInputRef.current) {
-    fileInputRef.current.value = null;
-  }
-};
+    addCertificates(newEntries);
+    setStagedFiles([]);
+    setDescription("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = null;
+    }
+  };
 
-const handleRemoveCertificate = (index) => {
-  removeCertificate(index); // Use the store's action
-};
+  const handleRemoveCertificate = (index) => {
+    removeCertificate(index);
+  };
 
-const canProceed = certificates.length > 0;
+  const canProceed = certificates.length > 0;
 
-const openModal = (cert) => {
-  if (!cert.file) {
-    alert("File preview is not available. Please re-upload the file.");
-    return;
-  }
-  setSelectedImage(cert);
-  setIsModalOpen(true);
-};
+  const openModal = (cert) => {
+    if (!cert.imageFile) {
+      alert("File preview is not available. Please re-upload the file.");
+      return;
+    }
+    setSelectedImage(cert);
+    setIsModalOpen(true);
+  };
 
-const closeModal = () => {
-  setIsModalOpen(false);
-  setSelectedImage(null);
-};
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedImage(null);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 relative overflow-hidden">
       {/* Background gear logo */}
@@ -313,9 +232,9 @@ const closeModal = () => {
                           className="w-full h-[150px] bg-white border rounded flex items-center justify-center overflow-hidden mb-2 cursor-pointer"
                           onClick={() => openModal(certData)}
                         >
-                          {certData.file.type.startsWith("image/") ? (
+                          {certData.fileType.startsWith("image/") ? (
                             <Image
-                              src={URL.createObjectURL(certData.file)}
+                              src={URL.createObjectURL(certData.imageFile)}
                               alt={`Certificate ${index + 1}`}
                               width={150}
                               height={150}
@@ -323,12 +242,12 @@ const closeModal = () => {
                             />
                           ) : (
                             <span className="text-gray-500 text-center text-sm p-2">
-                              Preview not available ({certData.file.type})
+                              Preview not available ({certData.fileType})
                             </span>
                           )}
                         </div>
-                        <p className="font-semibold text-center text-sm truncate w-full px-1" title={certData.file.name}>
-                          {certData.file.name}
+                        <p className="font-semibold text-center text-sm truncate w-full px-1" title={certData.fileName}>
+                          {certData.fileName}
                         </p>
                         <p className="text-xs text-gray-600 text-center mt-1 px-1 break-words w-full" title={certData.description || "No description"}>
                           {certData.description || "(No description)"}
@@ -349,7 +268,7 @@ const closeModal = () => {
           </AnimatePresence>
         </div>
 
-        {/* Navigation Buttons OUTSIDE glass container */}
+        {/* Navigation Buttons */}
         <div className="flex justify-between items-center mt-6 px-2 sm:px-4">
           <Link
             href="/portfolio_creation_page/4_education"
@@ -359,10 +278,11 @@ const closeModal = () => {
           </Link>
           <Link
             href="/portfolio_creation_page/6_work_experience"
-            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${canProceed
+            className={`py-2 px-8 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
+              canProceed
                 ? "bg-blue-600 text-white hover:bg-blue-700"
                 : "bg-gray-400 text-gray-100 cursor-not-allowed"
-              }`}
+            }`}
             onClick={(e) => !canProceed && e.preventDefault()}
           >
             Next
