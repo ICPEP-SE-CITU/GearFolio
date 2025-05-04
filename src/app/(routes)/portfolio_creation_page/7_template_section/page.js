@@ -8,75 +8,124 @@ import Image from "next/image";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import useFormStore from "@/stores/useFormCreatePortfolio";
+import { savePortfolioToAppwrite } from "@/stores/savePortfolioToAppwrite";
 
 export default function TemplatePage() {
-  // const router = useRouter();
-  // const [selectedTemplate, setSelectedTemplate] = useState(null);
-  // const [progress, setProgress] = useState(83);
-  // const [targetProgress, setTargetProgress] = useState(83);
-  // const [isNavigating, setIsNavigating] = useState(false);
-
-  // const handleTemplateSelect = (templateId) => {
-  //   setSelectedTemplate(prevSelected => {
-  //     if (prevSelected === templateId) {
-  //       return null;
-  //     }
-  //     return templateId;
-  //   });
-  // };
+  
   const router = useRouter();
-
-  // Use Zustand store for form state
-  const { selectedTemplate, toggleTemplate } = useFormStore();
-
-  const [progress, setProgress] = useState(83); // Local state for progress animation
-  const [targetProgress, setTargetProgress] = useState(83); // Local state for progress target
-  const [isNavigating, setIsNavigating] = useState(false); // Local state for navigation animation
-
+  const {
+    firstName,
+    middleName,
+    surname,
+    suffix,
+    userImage,
+    userImageFile,
+    email,
+    contactNumber,
+    socials,
+    country,
+    province,
+    city,
+    postal,
+    elementary,
+    juniorHigh,
+    seniorHigh,
+    degreeLevel,
+    certificates,
+    certificateFiles,
+    jobs,
+    skills,
+    projects,
+    projectLinkErrors, // Not used in save, but retrieved for completeness
+    selectedTemplate,
+    toggleTemplate,
+  } = useFormStore();
+  const [progress, setProgress] = useState(83);
+  const [targetProgress, setTargetProgress] = useState(83);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null); // Add state for error message
   const handleTemplateSelect = (templateId) => {
     toggleTemplate(templateId);
   };
 
-  const handleNextClick = (e) => {
+  const handleNextClick = async (e) => {
     if (!canProceed) {
       e.preventDefault();
       return;
     }
-    
     setIsNavigating(true);
     e.preventDefault();
+        // Prepare the form data to pass to savePortfolioToAppwrite
+        const formData = {
+          firstName,
+          middleName,
+          surname,
+          suffix,
+          userImage,
+          userImageFile,
+          email,
+          contactNumber,
+          socials,
+          country,
+          province,
+          city,
+          postal,
+          elementary,
+          juniorHigh,
+          seniorHigh,
+          degreeLevel,
+          certificates,
+          certificateFiles,
+          jobs,
+          skills,
+          projects,
+          selectedTemplate,
+        };
     
-    setTimeout(() => {
-      router.push("/portfolio_creation_page/8_generate_portfolio");
-    }, 500);
-  };
+        // Log the formData for debugging
+        console.log("Form data being sent to savePortfolioToAppwrite:", formData);
+    
+        // Save to Appwrite
+        setIsSaving(true);
+        setErrorMessage(null); // Reset error message
+        try {
+          await savePortfolioToAppwrite(formData);
+          setTimeout(() => {
+            router.push("/portfolio_creation_page/8_generate_portfolio");
+          }, 500);
+        } catch (error) {
+          console.error("Error in handleNextClick:", error);
+          setErrorMessage(error.message); // Display the specific error message
+          setIsNavigating(false); // Allow retry if save fails
+        } finally {
+          setIsSaving(false);
+        }
+      };
+      useEffect(() => {
+        if (selectedTemplate !== null) {
+          setTargetProgress(100);
+        } else {
+          setTargetProgress(83);
+        }
+      }, [selectedTemplate]);
+    
+      useEffect(() => {
+        if (Math.abs(progress - targetProgress) < 0.1) {
+          setProgress(targetProgress);
+          return;
+        }
+    
+        const animationFrame = requestAnimationFrame(() => {
+          const diff = targetProgress - progress;
+          const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
+          setProgress((prev) => Math.round((prev + step) * 10) / 10);
+        });
 
-  useEffect(() => {
-    if (selectedTemplate !== null) {
-      setTargetProgress(100);
-    } else {
-      setTargetProgress(83);
-    }
-  }, [selectedTemplate]);
-
-  useEffect(() => {
-    if (Math.abs(progress - targetProgress) < 0.1) {
-      setProgress(targetProgress);
-      return;
-    }
-
-    const animationFrame = requestAnimationFrame(() => {
-      const diff = targetProgress - progress;
-      const step = Math.abs(diff) < 0.5 ? diff : diff * 0.1;
-
-      setProgress((prev) => Math.round((prev + step) * 10) / 10);
-    });
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [progress, targetProgress]);
-
-  const canProceed = selectedTemplate != null;
-
+      return () => cancelAnimationFrame(animationFrame);
+      }, [progress, targetProgress]);
+    
+      const canProceed = selectedTemplate != null;
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-12 flex flex-col items-center justify-center">
       {/* Background logo */}
