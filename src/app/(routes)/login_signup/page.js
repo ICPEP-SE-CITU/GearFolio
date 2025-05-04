@@ -1,7 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect  } from "react";
+import { account, ID ,databases} from "@/appwrite/browser";
+import { useRouter } from "next/navigation";
 
-// Icons (existing icons remain the same)
+
+import { Query } from "appwrite";
+
+
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-7.5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -42,6 +47,20 @@ function AuthForm() {
   const [errors, setErrors] = useState({});
   const [resetEmailSent, setResetEmailSent] = useState(false);
 
+  const router = useRouter();
+
+useEffect(() => {
+  const checkSession = async () => {
+    try {
+      await account.get(); // throws error if no session
+      router.push("/dashboard"); // if session exists, redirect
+    } catch (error) {
+      // No session found — do nothing, stay on login/signup
+    }
+  };
+
+  checkSession();
+}, []);
   const validate = () => {
     const newErrors = {};
 
@@ -84,12 +103,18 @@ function AuthForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      alert(isSignUp ? "Sign up successful!" : "Sign in successful!");
-    }
+    if (!validate()) return;
+  
+    await handleAuth({
+      email,
+      password,
+      username,
+      isSignUp,
+    });
   };
+  
 
   const handleForgotPasswordSubmit = (e) => {
     e.preventDefault();
@@ -108,6 +133,7 @@ function AuthForm() {
     setErrors({});
     setEmail("");
   };
+  
 
   if (showForgotPassword) {
     return (
@@ -180,6 +206,81 @@ function AuthForm() {
     );
   }
 
+ 
+
+  async function handleAuth({ username, email, password, isSignUp }) {
+    try {
+      if (isSignUp) {
+        // Check if username already exists
+        const existing = await databases.listDocuments(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          "6813f062002741c63f67", // Your collection ID for username mapping
+          [Query.equal("username", username)]
+        );
+  
+        if (existing.documents.length > 0) {
+          throw new Error("Username already taken.");
+        }
+  
+        // 1. Create the Appwrite user
+        const newUser = await account.create(ID.unique(), email, password, username); // `username` goes into `name`
+  
+        // 2. Save the username mapping
+        await databases.createDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          process.env.NEXT_PUBLIC_COLLECTION_USERNAME,
+          ID.unique(),
+          {
+            userId: newUser.$id,
+            username: username,
+            email: email,
+          }
+        );
+  
+        // Check if there's an active session and delete it if necessary
+        try {
+          await account.get();
+          await account.deleteSession('current');
+        } catch (error) {
+          // No active session, proceed with creating a new one
+        }
+  
+        // 3. Log in the user
+        await account.createEmailPasswordSession(email, password);
+      } else {
+        // LOGIN FLOW
+        const res = await databases.listDocuments(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          process.env.NEXT_PUBLIC_COLLECTION_USERNAME,
+          [Query.equal("username", username)]
+        );
+  
+        if (res.documents.length === 0) {
+          throw new Error("Username not found.");
+        }
+  
+        const userEmail = res.documents[0].email;
+  
+        // Check if there's an active session and delete it if necessary
+        try {
+          await account.get();
+          await account.deleteSession('current');
+        } catch (error) {
+          // No active session, proceed with creating a new one
+        }
+  
+        await account.createEmailPasswordSession(userEmail, password);
+      }
+  
+      // Redirect to dashboard
+      window.location.href = "/dashboard";
+    } catch (err) {
+      // ... (error handling)
+    }
+  }
+
+
+  
   return (
     <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-b from-blue-100 to-white">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-md border border-gray-300 relative">
@@ -220,6 +321,7 @@ function AuthForm() {
               <input
                 type="email"
                 value={email}
+                name= "email"
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 mt-1 bg-white border border-zinc-300 rounded-md outline-none focus:ring-2 focus:ring-blue-300"
               />
