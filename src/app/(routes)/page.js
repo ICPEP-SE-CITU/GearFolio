@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import AIRecomm from '@/components/features/aiRecomm/aiRecommButton';
 
 export default function Home() {
   return (
