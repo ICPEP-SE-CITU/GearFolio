@@ -1,24 +1,11 @@
-"use server";
-import {request} from "next/server";
-import { createSessionClient } from "@/appwrite/config";
-import { NextResponse } from "next/server";
+import { appwrite } from "@/appwrite/config";
 
-
-
-const deleteSession = async (request) => {
+export async function deleteSession() {
   try {
-    const { account } = await createSessionClient();
+    const account = await appwrite.getAccount();
     await account.deleteSession('current');
+    console.log('Session deleted successfully');
   } catch (error) {
-    console.error("Error deleting session in Appwrite:", error.message);
+    console.error('Error deleting session:', error.message);
   }
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const redirectUrl = new URL("/login_signup", baseUrl);
-  return NextResponse.redirect(redirectUrl, {
-    headers: {
-      "Set-Cookie": "session=; Max-Age=0; Secure; SameSite=Strict",
-    },
-  });
-};
-
-export default deleteSession;
+}

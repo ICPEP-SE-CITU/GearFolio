@@ -36,5 +36,10 @@ const createSessionClient = async (session) => {
         },
     };
 };
+const deleteSession = async () => {
+    const client = await createSessionClient();
+    const account = client.account;
+    await account.deleteSession('current');
+  };
 
-export { createAdminClient, createSessionClient };
+export { createAdminClient, createSessionClient, deleteSession };

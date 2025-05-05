@@ -1,4 +1,4 @@
-"use server";
+
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { createAdminClient, createSessionClient } from "@/appwrite/config";
@@ -39,10 +39,10 @@ const auth = {
             sameSite: "strict",
             secure: true,
             expires: new Date(session.expire),
-            path: "/",
+            path: "/dashboard",
         });
 
-        redirect("/");
+        redirect("/dashboard");
     },
 
     deleteSession: deleteSession,
