@@ -143,8 +143,6 @@ const LandingPage = () => {
 
           </div>
         </div>
-
-
           <PortfolioAssistant />
           <NextLevel />
           <Footer />
