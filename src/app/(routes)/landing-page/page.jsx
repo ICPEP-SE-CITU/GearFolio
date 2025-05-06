@@ -7,6 +7,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import PortfolioAssistant from '../../../components/landing-page/portfolioAssistance';
 import NextLevel from '../../../components/landing-page/nextLevel'
+import Footer from '../../../components/layout/Footer';
 
 const LandingPage = () => {
   return (
@@ -112,6 +113,7 @@ const LandingPage = () => {
         </div>
           <PortfolioAssistant />
           <NextLevel />
+          <Footer />
       </div>
     </div>
   );
