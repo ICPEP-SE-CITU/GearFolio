@@ -1,75 +1,123 @@
-// src/components/layout/Footer.js
-import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-
-const GearLogoFooter = () => (
-  <div className="flex items-center">
-    <Image
-      src="/image/logo.svg"
-      alt="GearFolio Logo"
-      width={50}
-      height={50}
-    />
-    <div className="ml-3">
-      <span className="block text-xl font-bold text-blue-700">GEAR</span>
-      <span className="block text-xl font-bold text-blue-500 -mt-1">FOLIO</span>
-    </div>
-  </div>
-);
+import Link from 'next/link';
+import { useState } from 'react';
+import styles from '../../styles/footer.module.css';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const brandImages = [
+    {
+      src: "/image/logo.svg",
+      alt: "GearFolio Logo"
+    },
+    {
+      src: "/image/phoebeFront.jpg",
+      alt: "Phoebe Character"
+    },
+    {
+      src: "/image/assitBot.png",
+      alt: "Super Book Illustration"
+    }
+  ];
+
+  const handleImageClick = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % brandImages.length);
+  };
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-0"> {/* mt-auto helps with sticky footer */}
-      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          <div className="md:col-span-1 lg:col-span-1">
-            <GearLogoFooter />
-            <p className="mt-4 text-gray-500 text-sm">
-              Discover, Build, and Showcase Portfolios with AI Assistance.
-            </p>
-            <p className="mt-4 text-gray-400 text-xs">
-              © {currentYear} GearFolio. All rights reserved.
-            </p>
+    <footer className={styles.footer}>
+      <div className={styles.footerContainer}>
+        {/* Logo and Brand Info */}
+        <div className={styles.brandColumn}>
+          <div 
+            className={styles.logoWrapper}
+            onClick={handleImageClick}
+            title="Click to change image"
+          >
+            <div className={styles.logoContainer}>
+              <Image 
+                src={brandImages[currentImageIndex].src}
+                alt={brandImages[currentImageIndex].alt}
+                width={60}
+                height={60}
+                className={styles.logo}
+                priority
+              />
+            </div>
+            <span className={styles.brandName}>GearFolio</span>
           </div>
+          <p className={styles.tagline}>
+            Elevate your portfolio with AI-powered tools and professional templates.
+          </p>
+          <div className={styles.socialLinks}>
+            <Link href="#" aria-label="Twitter">
+              <span className={styles.socialIcon}>𝕏</span>
+            </Link>
+            <Link href="#" aria-label="LinkedIn">
+              <span className={styles.socialIcon}>in</span>
+            </Link>
+            <Link href="#" aria-label="Instagram">
+              <span className={styles.socialIcon}>📷</span>
+            </Link>
+            <Link href="#" aria-label="GitHub">
+              <span className={styles.socialIcon}>💻</span>
+            </Link>
+          </div>
+        </div>
 
-          <div className="mt-8 md:mt-0">
-            <h3 className="text-sm font-semibold text-gray-700 tracking-wider uppercase">
-              Social
-            </h3>
-            <ul role="list" className="mt-4 space-y-2">
-              <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-blue-600">Facebook</a></li>
-              <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-blue-600">Instagram</a></li>
-              <li><a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-blue-600">TikTok</a></li>
-              <li><a href="https://www.youtube.com/watch?v=MRavjoPpmgM" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-500 hover:text-blue-600">YouTube</a></li>
+        {/* Navigation Links */}
+        <div className={styles.linksContainer}>
+          <div className={styles.linkColumn}>
+            <h3 className={styles.columnTitle}>Company</h3>
+            <ul className={styles.linkList}>
+              <li><Link href="/about">About Us</Link></li>
+              <li><Link href="/careers">Careers</Link></li>
+              <li><Link href="/blog">Blog</Link></li>
+              <li><Link href="/press">Press</Link></li>
             </ul>
           </div>
 
-          <div className="mt-8 md:mt-0 md:col-span-2 lg:col-span-1 lg:col-start-4 flex flex-col md:items-end">
-            <div className="grid grid-cols-2 md:grid-cols-1 gap-y-2 gap-x-8 md:gap-y-4">
-                <div>
-                    <h3 className="text-sm font-semibold text-gray-700 tracking-wider uppercase opacity-0 md:opacity-100">
-                        Company
-                    </h3>
-                    <ul role="list" className="mt-0 md:mt-4 space-y-2">
-                        <li><Link href="/about" className="text-sm text-gray-500 hover:text-blue-600">About</Link></li>
-                        <li><Link href="/faq" className="text-sm text-gray-500 hover:text-blue-600">FAQ</Link></li>
-                    </ul>
-                </div>
-                <div className="mt-0 md:mt-8">
-                    <h3 className="text-sm font-semibold text-gray-700 tracking-wider uppercase opacity-0 md:opacity-100">
-                        Legal
-                    </h3>
-                    <ul role="list" className="mt-0 md:mt-4 space-y-2">
-                        <li><Link href="/privacy" className="text-sm text-gray-500 hover:text-blue-600">Privacy Policy</Link></li>
-                        <li><Link href="/terms" className="text-sm text-gray-500 hover:text-blue-600">Terms of Service</Link></li>
-                        <li><Link href="/support" className="text-sm text-gray-500 hover:text-blue-600">Help & Support</Link></li>
-                    </ul>
-                </div>
-            </div>
+          <div className={styles.linkColumn}>
+            <h3 className={styles.columnTitle}>Resources</h3>
+            <ul className={styles.linkList}>
+              <li><Link href="/help">Help & Support</Link></li>
+              <li><Link href="/faq">FAQ</Link></li>
+              <li><Link href="/templates">Templates</Link></li>
+              <li><Link href="/examples">Examples</Link></li>
+            </ul>
           </div>
+
+          <div className={styles.linkColumn}>
+            <h3 className={styles.columnTitle}>Legal</h3>
+            <ul className={styles.linkList}>
+              <li><Link href="/privacy">Privacy Policy</Link></li>
+              <li><Link href="/terms">Terms of Service</Link></li>
+              <li><Link href="/cookies">Cookie Policy</Link></li>
+              <li><Link href="/gdpr">GDPR</Link></li>
+            </ul>
+          </div>
+
+          <div className={styles.linkColumn}>
+            <h3 className={styles.columnTitle}>Contact</h3>
+            <ul className={styles.linkList}>
+              <li>icpepseofficial256@gmail.com</li>
+              <li>+63 123 1234 123</li>
+              <li>123 Mervin St.</li>
+              <li>Cebu, Philippines</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Copyright and Bottom Bar */}
+      <div className={styles.bottomBar}>
+        <div className={styles.copyright}>
+          © {new Date().getFullYear()} GearFolio. All rights reserved.
+        </div>
+        <div className={styles.legalLinks}>
+          <Link href="/accessibility">Accessibility</Link>
+          <span className={styles.divider}>|</span>
+          <Link href="/sitemap">Sitemap</Link>
         </div>
       </div>
     </footer>
