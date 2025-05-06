@@ -127,7 +127,6 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
- 1-Landing-Page
 
         <div className="relative w-full h-screen py-10 h-[1090px]">
           <Image
