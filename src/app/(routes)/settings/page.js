@@ -1,4 +1,3 @@
-// src/app/(routes)/settings/page.js
 'use client';
 
 import React, { useState, useEffect } from 'react'; // Import useEffect
