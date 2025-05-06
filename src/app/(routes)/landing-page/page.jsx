@@ -6,6 +6,8 @@ import { IoSearchSharp } from "react-icons/io5";
 import { LuArrowUpRight } from "react-icons/lu";
 import Head from 'next/head';
 import Link from 'next/link';
+import PortfolioAssistant from '../../../components/landing-page/portfolioAssistance';
+import NextLevel from '../../../components/landing-page/nextLevel'
 
 const LandingPage = () => {
   return (
@@ -124,6 +126,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
+ 1-Landing-Page
 
         <div className="relative w-full h-screen py-10 h-[1090px]">
           <Image
@@ -141,6 +144,10 @@ const LandingPage = () => {
           </div>
         </div>
 
+
+          <PortfolioAssistant />
+          <NextLevel />
+ main
       </div>
 
     </div>
