@@ -4,6 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getPortfolioById, getLatestPortfolio } from '@/lib/api/portfolio';
 import Image from 'next/image';
+// Import icons for better UI
+import { 
+  FaEnvelope, FaPhone, FaLinkedin, FaMapMarkerAlt, 
+  FaGraduationCap, FaBriefcase, FaTools, FaProjectDiagram, 
+  FaCertificate, FaChevronLeft, FaChevronRight, FaExternalLinkAlt,
+  FaUser
+} from 'react-icons/fa';
 
 function PortfolioPreviewPage() {
   const searchParams = useSearchParams();
@@ -12,6 +19,7 @@ function PortfolioPreviewPage() {
   const [error, setError] = useState(null);
   const [portfolioData, setPortfolioData] = useState(null);
   const [currentEducationIndex, setCurrentEducationIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState(null);
 
   // Education levels in order
   const educationLevels = ["Elementary", "Junior High", "Senior High", "Undergraduate", "Masters", "Doctoral"];
@@ -43,6 +51,27 @@ function PortfolioPreviewPage() {
     };
 
     fetchPortfolioData();
+
+    // Add scroll effect for section highlighting
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('[data-section]');
+      let current = '';
+      
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= sectionTop - 200 && window.scrollY < sectionTop + sectionHeight - 200) {
+          current = section.getAttribute('data-section');
+        }
+      });
+      
+      setActiveSection(current);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [searchParams]);
 
   const handleProfileClick = () => {
@@ -170,52 +199,89 @@ function PortfolioPreviewPage() {
   
   return (
     <div className={styles.container}>
-
       <div className={styles.profileinfo}>
-
         {/* Profile DIV */}
         <div className={styles.profilediv}>
-          <div onClick={handleProfileClick} className={styles.profilecircle} >
+          <div onClick={handleProfileClick} className={styles.profilecircle} title="View Profile">
             <img 
               src={portfolioData.userImageUrl || "/wapanchman.jpg"} 
               alt={`${fullName}'s profile`} 
             />
           </div>
           <div className={styles.profilename}>
-            <h3 className={styles.profiletext}>{fullName}</h3>
+            <h3 className={styles.profiletext}>{fullName || "Portfolio Owner"}</h3>
           </div>
           <div>
-
           </div>
         </div>
         {/* END of Profile DIV */}
 
         {/* CONTACT INFO  DIV */}
-        <div className={styles.infodiv}>
+        <div className={styles.infodiv} data-section="contact">
+          <FaEnvelope size={24} style={{ marginRight: '10px' }} />
           <h1>Contact Info</h1>
         </div>
         
         <div className={styles.contactinfo}>
           <div className={styles.contactinfobox}>
-            <div className={styles.contactmedia}>Email</div>
-            <div className={styles.contactmedialink}>{portfolioData.email || "Not specified"}</div>
+            <div className={styles.contactmedia}>
+              <FaEnvelope size={20} style={{ marginRight: '10px' }} />
+              Email
+            </div>
+            <div className={styles.contactmedialink}>
+              {portfolioData.email ? (
+                <a href={`mailto:${portfolioData.email}`} style={{ color: 'white', textDecoration: 'none' }}>
+                  {portfolioData.email}
+                </a>
+              ) : (
+                "Not specified"
+              )}
+            </div>
           </div>
 
           <div className={styles.contactinfobox}>
-            <div className={styles.contactmedia}>Phone</div>
-            <div className={styles.contactmedialink}>{portfolioData.contactNumber || "Not specified"}</div>
+            <div className={styles.contactmedia}>
+              <FaPhone size={20} style={{ marginRight: '10px' }} />
+              Phone
+            </div>
+            <div className={styles.contactmedialink}>
+              {portfolioData.contactNumber ? (
+                <a href={`tel:${portfolioData.contactNumber}`} style={{ color: 'white', textDecoration: 'none' }}>
+                  {portfolioData.contactNumber}
+                </a>
+              ) : (
+                "Not specified"
+              )}
+            </div>
           </div>
 
           {portfolioData.socialsArray && portfolioData.socialsArray.length > 0 ? (
             portfolioData.socialsArray.map((social, index) => (
               <div key={index} className={styles.contactinfobox}>
-                <div className={styles.contactmedia}>{social.platform || "Social Media"}</div>
-                <div className={styles.contactmedialink}>{social.url || "Not specified"}</div>
+                <div className={styles.contactmedia}>
+                  <FaLinkedin size={20} style={{ marginRight: '10px' }} />
+                  {social.platform || "Social Media"}
+                </div>
+                <div className={styles.contactmedialink}>
+                  {social.url ? (
+                    <a href={social.url.startsWith('http') ? social.url : `https://${social.url}`} 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       style={{ color: 'white', textDecoration: 'none' }}>
+                      {social.url}
+                    </a>
+                  ) : (
+                    "Not specified"
+                  )}
+                </div>
               </div>
             ))
           ) : (
             <div className={styles.contactinfobox}>
-              <div className={styles.contactmedia}>LinkedIn</div>
+              <div className={styles.contactmedia}>
+                <FaLinkedin size={20} style={{ marginRight: '10px' }} />
+                LinkedIn
+              </div>
               <div className={styles.contactmedialink}>Not specified</div>
             </div>
           )}
@@ -223,7 +289,8 @@ function PortfolioPreviewPage() {
         {/* END OF CONTACT INFO DIV */}
 
         {/* ADDRESS INFO DIV */}
-        <div className={styles.infodiv}>
+        <div className={styles.infodiv} data-section="address">
+          <FaMapMarkerAlt size={24} style={{ marginRight: '10px' }} />
           <h1>Address</h1>
         </div>
         <div className={styles.addressinfo}>
@@ -244,9 +311,9 @@ function PortfolioPreviewPage() {
         </div>
         {/* END OF ADDRESS INFO DIV */}
 
-
         {/* WORK INFO TEXT DIV */}
-        <div className={styles.infodiv}>
+        <div className={styles.infodiv} data-section="work">
+          <FaBriefcase size={24} style={{ marginRight: '10px' }} />
           <h1>Work Experience</h1>
         </div>
         <div className={styles.workinfo}>
@@ -265,7 +332,8 @@ function PortfolioPreviewPage() {
         {/* END WORK INFO DIV */}
 
         {/* SKILLS INFO DIV */}
-        <div className={styles.infodiv}>
+        <div className={styles.infodiv} data-section="skills">
+          <FaTools size={24} style={{ marginRight: '10px' }} />
           <h1>Skills</h1>
         </div>
         <div className={styles.skillsinfo}>
@@ -282,26 +350,27 @@ function PortfolioPreviewPage() {
           )}
         </div>
         {/* END OF SKILLS INFO  DIV */}
-
       </div>
 
       <div className={styles.porfoliodescription}>
         {/* DESCRIPTION DIV */}
-        <div className={styles.descriptiondiv}>
+        <div className={styles.descriptiondiv} data-section="description">
+          <FaUser size={24} style={{ marginBottom: '15px' }} />
           <h3>{`${portfolioData.firstName || ''} is a professional in ${portfolioData.city || ''}, ${portfolioData.country || ''}`}</h3>
           <h3>{portfolioData.jobsArray && portfolioData.jobsArray.length > 0 ? portfolioData.jobsArray[0] : "Professional"}</h3>
         </div>
         {/* END OF DESCRIPTION DIV */}
 
         {/* EDUCATION DIV */}
-        <div className={styles.biginfodiv}>
+        <div className={styles.biginfodiv} data-section="education">
+          <FaGraduationCap size={30} style={{ marginRight: '15px' }} />
           <h1>Education</h1>
         </div>
 
         <div className={styles.educationdiv}>
-          <div className={styles.buttons1}> 
+          <div className={styles.buttons1} title="Previous Education Level"> 
             <div className={styles.button} onClick={handlePrevEducation}>
-              &lt;
+              <FaChevronLeft size={20} />
             </div>
           </div>
 
@@ -320,16 +389,17 @@ function PortfolioPreviewPage() {
             </div>
           </div>
 
-          <div className={styles.buttons2}>
+          <div className={styles.buttons2} title="Next Education Level">
             <div className={styles.button} onClick={handleNextEducation}>
-              &gt;
+              <FaChevronRight size={20} />
             </div>
           </div>
         </div>
         {/* END OF Education DIV */}
 
         {/* PROJECT DIV */}
-        <div className={styles.biginfodiv}>
+        <div className={styles.biginfodiv} data-section="projects">
+          <FaProjectDiagram size={30} style={{ marginRight: '15px' }} />
           <h1>Projects</h1>
         </div>
 
@@ -347,8 +417,14 @@ function PortfolioPreviewPage() {
               </div>
 
               <div className={styles.projectlink}>
-                <a href={project.projectLink} target="_blank" rel="noopener noreferrer">
+                <a 
+                  href={project.projectLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                >
                   {project.projectLink}
+                  <FaExternalLinkAlt size={14} />
                 </a>
               </div>
             </div>
@@ -357,7 +433,8 @@ function PortfolioPreviewPage() {
         {/* END OF PROJECT DIV */}
 
         {/* CERTIFICATE DIV */}
-        <div className={styles.biginfodiv}>
+        <div className={styles.biginfodiv} data-section="certificates">
+          <FaCertificate size={30} style={{ marginRight: '15px' }} />
           <h1>Certificates</h1>
         </div>
 
@@ -381,7 +458,6 @@ function PortfolioPreviewPage() {
         </div>
         {/* END OF CERTIFICATE DIV */}
       </div>
-
     </div>
   );
 }
