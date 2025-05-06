@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { IoSearchSharp } from "react-icons/io5";
 import Head from 'next/head';
 import Link from 'next/link';
+import PortfolioAssistant from '../../../components/landing-page/portfolioAssistance';
+import NextLevel from '../../../components/landing-page/nextLevel'
 
 const LandingPage = () => {
   return (
@@ -108,6 +110,8 @@ const LandingPage = () => {
             </div>
           </section>
         </div>
+          <PortfolioAssistant />
+          <NextLevel />
       </div>
     </div>
   );
