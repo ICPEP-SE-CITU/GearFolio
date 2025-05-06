@@ -2,14 +2,14 @@
 
 // components/features/aiRecomm/AiRecommButton.js
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function AiRecommButton() {
+  const router = useRouter();
   // Function name must match the import
   // Function is defined within the component
   const handleClick = () => {
-    console.log('Button clicked');
-    // Add any functionality you need here
-    // Example: open a modal, toggle a menu, etc.
+    router.push('/AIRecommendation-1');
   };
 
   return (
