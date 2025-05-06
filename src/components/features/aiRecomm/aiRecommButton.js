@@ -15,7 +15,7 @@ export default function AiRecommButton() {
   return (
     <button
       onClick={handleClick}
-      className="p-2 bg-white rounded hover:bg-gray-200 hover:rounded-3xl transition duration-300 hover:cursor-pointer"
+      className="hover:scale-115 hover:rounded-3xl transition duration-300 hover:cursor-pointer z-50"
     >
       <Image
         src="/aiRecommButton.svg"
