@@ -100,10 +100,10 @@ const Footer = () => {
           <div className={styles.linkColumn}>
             <h3 className={styles.columnTitle}>Contact</h3>
             <ul className={styles.linkList}>
-              <li>hello@gearfoglio.com</li>
-              <li>+1 (555) 123-4567</li>
-              <li>123 Portfolio St.</li>
-              <li>San Francisco, CA</li>
+              <li>icpepseofficial256@gmail.com</li>
+              <li>+63 123 1234 123</li>
+              <li>123 Mervin St.</li>
+              <li>Cebu, Philippines</li>
             </ul>
           </div>
         </div>
