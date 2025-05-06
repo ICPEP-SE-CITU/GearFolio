@@ -8,6 +8,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import PortfolioAssistant from '../../../components/landing-page/portfolioAssistance';
 import NextLevel from '../../../components/landing-page/nextLevel'
+import Footer from '../../../components/layout/Footer';
 
 const LandingPage = () => {
   return (
@@ -126,7 +127,6 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
- 1-Landing-Page
 
         <div className="relative w-full h-screen py-10 h-[1090px]">
           <Image
@@ -147,7 +147,7 @@ const LandingPage = () => {
 
           <PortfolioAssistant />
           <NextLevel />
- main
+          <Footer />
       </div>
 
     </div>
