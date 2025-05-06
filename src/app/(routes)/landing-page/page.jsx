@@ -96,7 +96,7 @@ const LandingPage = () => {
             </h2>
             <p className="text-center max-w-3xl mx-auto mb-8">
               GearFolio is designed to empower students by showcasing their projects, skills, and achievements in a dynamic, professional portfolio.
-              Whether you are pursuing a job, internship, or further studies, GearFolio helps you stand out in today's competitive tech landscape.
+              Whether you are pursuing a job, internship, or further studies, GearFolio helps you stand out in todays competitive tech landscape.
             </p>
             <div className="flex justify-center mt-8">
               <Link href="/try">
