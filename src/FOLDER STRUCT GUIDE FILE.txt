@@ -1,4 +1,4 @@
-my-nextjs-app/
+GEARFOLIO/
 │
 ├── public/                 # Static assets served directly by Next.js
 │   ├── images/             # Static image files (logos, backgrounds, etc.)
