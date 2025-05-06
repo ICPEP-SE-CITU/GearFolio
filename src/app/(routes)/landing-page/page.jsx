@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { IoSearchSharp } from "react-icons/io5";
+import { LuArrowUpRight } from "react-icons/lu";
 import Head from 'next/head';
 import Link from 'next/link';
 import PortfolioAssistant from '../../../components/landing-page/portfolioAssistance';
@@ -19,12 +20,12 @@ const LandingPage = () => {
       {/* Background Image */}
       <div className="w-full h-screen z-0 fixed">
         <div className="relative w-full h-full">
-          <Image 
+          <Image
             src="/image/Homepage-1.svg"
             alt="Background"
             fill
             priority
-            className="absolute inset-0 w-full h-screen object-cover select-none pointer-events-none z-0" 
+            className="absolute inset-0 w-full h-screen object-cover select-none pointer-events-none z-0"
           />
         </div>
       </div>
@@ -54,16 +55,21 @@ const LandingPage = () => {
                 <Link href="/testimonials" className="hover:text-blue-600 transition-colors">Testimonials</Link>
                 <Link href="/about-us" className="hover:text-blue-600 transition-colors">About us</Link>
               </div>
-              <Link href="/signup" className="px-[80px] text-xl ml-[30px] font-regular hover:text-blue-600 transition-colors">Sign up</Link>
+
             </div>
             <div>
-              <Link 
-                href="/login" 
+              <Link href="/signup" className="px-[40px] text-xl ml-[20px] font-regular hover:text-blue-600 transition-colors"
+              >
+                Sign up
+              </Link>
+              <Link
+                href="/login"
                 className="px-[45px] py-[13px] bg-[#2E8BC0] text-xl text-white rounded-[25px] hover:bg-[#145DA0] transition-colors"
               >
                 Login
               </Link>
             </div>
+
           </nav>
 
           {/* Hero Section */}
@@ -80,39 +86,70 @@ const LandingPage = () => {
                 placeholder="Search for student portfolios by name or skills..."
                 className="px-6 py-4 w-full bg-white rounded-md text-gray-800 pr-16"
               />
-              <button 
-                className="absolute right-0 mr-2 bg-blue-800 rounded-md p-1 hover:bg-blue-900 transition-colors"
+              <button
+                className="absolute right-0 bg-blue-800  rounded-md p-2 hover:bg-blue-900 transition-colors"
                 aria-label="Search"
               >
-                <IoSearchSharp className="w-[52px] h-[52px] text-white" />
+                <IoSearchSharp className="w-[45px] h-[45px] text-white" />
               </button>
             </div>
           </div>
         </div>
 
         {/* Features Section */}
-        <div className="bg-white py-16">
-          <section className="text-gray-800 p-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
+        <div className="relative w-full h-screen py-10 h-[1090px]">
+          {/* Background Image */}
+          <Image
+            src="/image/Homepage-2.svg"
+            alt="Background"
+            fill
+            priority
+            className="absolute inset-0 object-cover -z-10"
+          />
+
+          {/* Content */}
+          <div className="relative z-10 text-gray-800 p-10 rounded-lg max-w-[1600px] mx-auto">
+            <h1 className="pt-[250px] max-w-[1600px] text-6xl md:text-7xl lg:text-[75px] text-6xl md:text-6xl font-bold text-center mb-6">
               What Makes Our Platform Unique?
-            </h2>
-            <p className="text-center max-w-3xl mx-auto mb-8">
-              GearFolio is designed to empower students by showcasing their projects, skills, and achievements in a dynamic, professional portfolio.
-              Whether you are pursuing a job, internship, or further studies, GearFolio helps you stand out in todays competitive tech landscape.
+            </h1>
+            <p className="text-center max-w-[1600px] mx-auto mb-1">
+              GearFolio is designed to empower students by showcasing their projects, skills, and achievements in a dynamic, professional portfolio.<br />
+              Whether you are pursuing a job, internship, or further studies, GearFolio helps you stand out in today’s competitive tech landscape.
             </p>
             <div className="flex justify-center mt-8">
               <Link href="/try">
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-md flex items-center transition-colors text-lg font-medium">
+                <button className="bg-[#2E8BC0] hover:bg-[#0C7AB9] text-white px-8 py-4 rounded-md flex items-center transition-colors text-xl font-medium">
                   Try GEARFOLIO
-                  <span className="ml-2">→</span>
+                  <LuArrowUpRight className="w-[45px] h-[45px] text-white" />
                 </button>
               </Link>
             </div>
-          </section>
+          </div>
         </div>
+ 1-Landing-Page
+
+        <div className="relative w-full h-screen py-10 h-[1090px]">
+          <Image
+            src="/image/Homepage-3.svg"
+            alt="Background"
+            fill
+            priority
+            className="absolute inset-0 object-cover -z-10"
+          />
+          <div className="relative z-10 text-gray-800 p-10 rounded-lg max-w-[1600px] mx-auto">
+            <h1 className="pt-[250px] max-w-[1600px] text-6xl md:text-7xl lg:text-[75px] text-6xl md:text-6xl font-bold text-center mb-6">
+              Why Choose GearFolio
+            </h1>
+
+          </div>
+        </div>
+
+
           <PortfolioAssistant />
           <NextLevel />
+ main
       </div>
+
     </div>
   );
 };
