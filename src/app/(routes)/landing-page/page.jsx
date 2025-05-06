@@ -122,13 +122,13 @@ const LandingPage = () => {
                   Try GEARFOLIO
                   <LuArrowUpRight className="w-[45px] h-[45px] text-white" />
                 </button>
-              </Link>
+              </Link> 
             </div>
           </div>
         </div>
- 1-Landing-Page
 
-        <div className="relative w-full h-screen py-10 h-[1090px]">
+
+        <div className="relative w-full py-10 min-h-screen ">
           <Image
             src="/image/Homepage-3.svg"
             alt="Background"
@@ -136,18 +136,58 @@ const LandingPage = () => {
             priority
             className="absolute inset-0 object-cover -z-10"
           />
-          <div className="relative z-10 text-gray-800 p-10 rounded-lg max-w-[1600px] mx-auto">
-            <h1 className="pt-[250px] max-w-[1600px] text-6xl md:text-7xl lg:text-[75px] text-6xl md:text-6xl font-bold text-center mb-6">
+
+          <div className="relative z-10 text-gray-800 px-6 md:px-10 lg:px-20 max-w-[1600px] mx-auto">
+            <h1 className="pt-40 text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-16 text-gray-900">
               Why Choose GearFolio
             </h1>
 
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Card 1 */}
+              <div className="bg-white shadow-lg rounded-2xl p-8 text-center hover:shadow-xl transition">
+                <img
+                  src="/image/showcase.svg"
+                  alt="Showcase Your Work"
+                  className="mx-auto mb-6 w-20 h-20"
+                />
+                <h3 className="text-xl font-semibold mb-2">Showcase Your Work</h3>
+                <p className="text-gray-600">
+                  Present your projects and skills in a professional, compelling way.
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div className="bg-white shadow-lg rounded-2xl p-8 text-center hover:shadow-xl transition">
+                <img
+                  src="/image/impress.svg"
+                  alt="Impress Employers"
+                  className="mx-auto mb-6 w-20 h-20"
+                />
+                <h3 className="text-xl font-semibold mb-2">Impress Employers</h3>
+                <p className="text-gray-600">
+                  Create a strong impression with clean, impactful portfolios.
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="bg-white shadow-lg rounded-2xl p-8 text-center hover:shadow-xl transition">
+                <img
+                  src="/image/collaborate.svg"
+                  alt="Collaborate and Grow"
+                  className="mx-auto mb-6 w-20 h-20"
+                />
+                <h3 className="text-xl font-semibold mb-2">Collaborate and Grow</h3>
+                <p className="text-gray-600">
+                  Connect with peers and professionals to level up your career.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
 
-          <PortfolioAssistant />
-          <NextLevel />
- main
+        <PortfolioAssistant />
+        <NextLevel />
       </div>
 
     </div>
