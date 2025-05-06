@@ -1,0 +1,424 @@
+.container {
+    background-color: #FFFFFF;
+    height: 3421px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 30px; 
+    padding: 30px;
+    box-sizing: border-box;
+  }
+  
+.profileinfo {
+    background: linear-gradient(to right, #89C1F4, #145DA0);
+    width: calc(634px - 30px * 2); 
+    height: calc(3421px - 30px * 2); 
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.profilediv{
+    height: 681px;
+    width: 100%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:7px;
+}
+.profilecircle {
+    width: 502px;
+    height: 473px;
+    background-color: black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+.profilecircle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.profilename{
+    width: 378px;
+    height: 57px;
+    background-color: white;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profiletext{
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #12518A;
+}
+
+.infodiv{
+    height: 80px;
+    width: 100%;
+    background-color: #12518A;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 36px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
+    padding-left: 35px;
+}
+.contactinfo{
+    height: 360px;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.contactinfobox{
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.contactmedia, .contactmedialink{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+.contactmedia{
+    padding-left: 20px;
+}
+.contactmedialink{
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 40px;
+}
+
+.addressinfo{
+    height: 344px;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.workinfo{
+    height: 330px;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+    flex-direction: column;
+    display: flex;
+}
+.workinfobox{
+    height: 80px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    font-size: 32px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #FFFFFF;
+    padding-left: 20px;
+}
+
+.skillsinfo{
+    height: 1389px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 10px;
+    gap: 10px;
+    flex-direction: column;
+    display: flex;
+}
+
+.porfoliodescription {
+    width: calc(1195px - 30px * 2); 
+    height: calc(3421px - 30px * 2); 
+    border-radius: 20px;
+    overflow: hidden;
+    border-width: 1px;
+    border-color: black;
+  }
+.descriptiondiv{
+    height: 213px;
+    width: 100%;
+    background-color: rgba(244, 240, 240, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-family: Arial, Helvetica, sans-serif;
+    border-bottom: 1px solid black;
+
+}
+.biginfodiv{
+    height: 81px;
+    width: 100%;
+    background-color: #FFFFFF;
+    padding-left: 51px;
+    display: flex;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    color: black;
+    font-weight: bold;
+    border-width: 1px;
+    border-color: black;
+}
+.educationdiv{
+    width: 100%;
+    height: 380px;
+    background-color: rgba(244, 240, 240, 0.5);
+    border-radius: 15px;
+    border-width: 1px;
+    border-color: black;
+    display: flex;
+    overflow: hidden;
+}
+.buttons1, .buttons2{
+    width: 8%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+.button{
+    width: 50px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.educationcontent{
+    width: 84%;
+    height: 100%;
+    display: flex;
+}
+.educationlevel{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 64px;
+    font-weight: bold;
+}
+.educational{
+    width: 60%;
+    height: 100%;
+    display: flexbox;
+}
+.firstbox,.secondbox {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+    padding-left: 10px;
+}
+
+
+.projectdiv {
+    width: 100%;
+    height: 1732px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 49%);
+    grid-template-rows: repeat(10, 350px);
+    grid-column-gap: 2%;
+    grid-row-gap: 15px;
+    background-color: rgba(244, 240, 240, 0.5);
+    scrollbar-width: auto;
+    overflow: auto;
+}
+  
+.div1, .div2, .div3, .div4, .div5, .div6,
+.div7, .div8, .div9, .div10, .div11, .div12,
+.div13, .div14, .div15, .div16, .div17, .div18,
+.div19, .div20 {
+    background-color: #FFFFFF;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    border-radius: 20px;
+    padding: 5px;
+    display: flexbox;
+    overflow: hidden;
+  }
+
+.parentprojectdiv{
+    width: 100%;
+    height: 80%;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.projectimage{
+    height: 90%;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    object-fit: contain;
+}
+
+
+.projectname, .projectlink{
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+}
+.projectlink{
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.certdiv {
+    width: 100%;
+    height: 847px;
+    background-color: rgba(244, 240, 240, 0.5);
+    padding: 10px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    scrollbar-width: auto;
+    align-items: center;
+}
+
+.certificatebox{
+    width: 100%;
+    height: 360px;
+    background-color: #FFFFFF;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    border-radius: 20px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    gap:10px;
+    padding: 10px;
+}
+
+.certificateimagediv, .certificateinfodiv {
+    width: 50%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+  
+.certimagecontainer {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+  
+.certimagecontainer img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.certificateinfodiv{
+    display: flex;
+    flex-direction: column;
+}
+.certificatetitle, .certificaterole{
+    height: auto;
+    width: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24;
+    font-weight: bold;
+}
+.certificaterole{
+    font-weight: normal;
+}
+
+/* Loading and Error States */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f5f7ff;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.loadingSpinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #fff5f5;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+  color: #e53e3e;
+  text-align: center;
+}
+
+.errorContainer h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.retryButton {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retryButton:hover {
+  background-color: #2563eb;
+}
