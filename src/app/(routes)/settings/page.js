@@ -1,16 +1,10 @@
 // src/app/(routes)/settings/page.js
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useEffect
 
-// OPTION 1: Using path alias (Preferred)
-// Ensure your jsconfig.json is configured for this (see explanation above)
-// Example: import Header from '@/components/layout/Header.js';
-
-// OPTION 2: Using relative path (Current and functional)
 import Header from '../../../components/layout/Header.js';
-
-// Footer is NOT imported here, as it's handled by the root src/app/layout.js
+import SettingsFooter from '../../../components/layout/settings/settingsfooter.js'; // Your simple, light-themed footer
 
 function SettingsPage() {
   const [activeTab, setActiveTab] = useState('account');
@@ -24,7 +18,7 @@ function SettingsPage() {
 
   const [securitySettings, setSecuritySettings] = useState({
     email: 'juan.delacruz@example.com',
-    password: '', // It's good practice to not pre-fill password fields, even in state
+    password: '',
     theme: 'System Default',
     privacy: 'Public',
   });
@@ -36,6 +30,24 @@ function SettingsPage() {
     instagram: 'instagram.com/juandelacruz',
     microsoft: 'live:juandelacruz',
   });
+
+  // This useEffect hook will run on the client-side
+  useEffect(() => {
+    const globalFooter = document.getElementById('global-footer');
+    let originalDisplay = '';
+
+    if (globalFooter) {
+      originalDisplay = globalFooter.style.display; // Store original display style
+      globalFooter.style.display = 'none'; // Hide it on the settings page
+    }
+
+    // Cleanup function: This runs when the component unmounts (e.g., navigating away)
+    return () => {
+      if (globalFooter) {
+        globalFooter.style.display = originalDisplay; // Restore original display style
+      }
+    };
+  }, []); // Empty dependency array means this runs once on mount and cleanup on unmount
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -60,48 +72,37 @@ function SettingsPage() {
     e.preventDefault();
     console.log('Saving account details:', accountDetails);
     alert('Account details saved (simulated)!');
-    // TODO: Implement actual API call to save account details
   };
 
   const handleSecuritySave = (e) => {
     e.preventDefault();
     console.log('Saving security settings:', securitySettings);
     alert('Security settings saved (simulated)!');
-    // TODO: Implement actual API call to save security settings
   };
 
   const handleConnectedSave = (e) => {
     e.preventDefault();
     console.log('Saving connected experiences:', connectedExperiences);
     alert('Connected experiences saved (simulated)!');
-    // TODO: Implement actual API call to save connected experiences
   };
 
   const handleEditProfile = () => {
     alert('Edit Profile clicked (implement functionality)!');
-    // TODO: Implement profile editing functionality (e.g., open a modal, navigate to an edit page)
   };
 
   const handleLogout = () => {
     alert('Logout successful (simulated)!');
-    // TODO: Implement actual logout logic (e.g., clear session, redirect to login)
   };
 
   const handleDeleteAccount = () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       alert('Account deleted (simulated)!');
-      // TODO: Implement actual account deletion logic
     }
   };
 
   return (
     <>
-      <Header activePage="settings" userProfileSrc={undefined /* Replace with actual user profile image URL */} />
-      {/*
-        The main container for the settings page content.
-        - `flex-grow` allows this section to take up available vertical space if the parent is a flex container.
-        - The background gradient is applied here.
-      */}
+      <Header activePage="settings" userProfileSrc={undefined} />
       <main
         className="py-6 flex justify-center flex-grow bg-gradient-to-b from-[#F7F7FF] to-[#C0DDF7]"
       >
@@ -120,6 +121,7 @@ function SettingsPage() {
               </div>
             </div>
             <nav className="mt-4 space-y-1">
+              {/* ... your navigation buttons ... */}
               <button
                 onClick={() => handleTabClick('account')}
                 className={`w-full text-left flex items-center mt-5 py-3 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-150 ${activeTab === 'account' ? 'bg-gray-100 font-semibold text-blue-600' : 'text-gray-600'}`}
@@ -148,7 +150,6 @@ function SettingsPage() {
                 Connected Experiences
               </button>
             </nav>
-            {/* Ensures logout is at the bottom */}
             <div className="mt-auto pt-6">
               <button
                 type="button"
@@ -163,7 +164,7 @@ function SettingsPage() {
             </div>
           </div>
 
-          {/* Right Content Panel */}
+          {/* Right Content Panel (Full content) */}
           <div className="w-3/4 p-8 overflow-y-auto bg-white">
             {activeTab === 'account' && (
               <form onSubmit={handleAccountSave}>
@@ -274,6 +275,7 @@ function SettingsPage() {
                 <p className="text-gray-600 mb-8">Link or unlink accounts from services like Google, Facebook, and GitHub for a seamless experience.</p>
                 <h3 className="text-xl font-semibold text-gray-700 mb-4">Link your social accounts</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-8">
+                  {/* ... All your social link input fields ... */}
                   <div>
                     <label htmlFor="linkedin" className="text-sm font-medium text-gray-700 mb-1 flex items-center">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-700 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -330,7 +332,10 @@ function SettingsPage() {
           </div>
         </div>
       </main>
-      {/* Footer is correctly rendered by the RootLayout, so it's not needed here. */}
+      {/* The SettingsFooter (simple, light-themed) is rendered directly by this page component.
+          The global dark purple footer from src/app/layout.js will also be rendered by default.
+          The useEffect hook above will hide the global one when this page is active. */}
+      <SettingsFooter />
     </>
   );
 }
