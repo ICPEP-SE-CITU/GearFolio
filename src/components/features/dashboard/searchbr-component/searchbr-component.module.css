@@ -1,0 +1,71 @@
+/* components/features/dashboard/searchbar-component/SearchBar.module.css */
+.searchBarContainer {
+    position: relative;
+    top: 70px;
+    display: flex;
+    justify-content: center; /* Center the inner container */
+    width: 100%;
+    margin: 1rem auto; /* Add vertical margin and allow horizontal centering */
+  }
+  
+  .searchInner {
+    position: relative; /* For absolute positioning of elements within */
+    width: 90%; /* Make it responsive within its centered container */
+    max-width: 1504.09px; /* Match Figma width for larger screens */
+    height: 85px; /* From Figma */
+  }
+  
+  .searchInput {
+    position: absolute;
+    left: 0;
+    top: 0.33px; /* From Figma */
+    width: calc(100% - 70px - 85.67px - 20px); /* Adjust width for icons and spacing */
+    height: 85px; /* From Figma */
+    background-color: white;
+    border-radius: 10px; /* From Figma */
+    border: none;
+    outline: none;
+    padding-left: 40.63px; /* Indent for the placeholder */
+    font-size: 1.5rem; /* Adjust for responsiveness (was 36px) */
+    font-family: 'Inter', sans-serif; /* From Figma */
+    font-weight: 600; /* From Figma */
+    color: rgba(0, 0, 0, 0.8); /* From Figma */
+    opacity: 0.5; /* From Figma */
+    box-shadow: inset 0 5px 20px -3px rgba(0, 0, 0, 0.1), /* Subtle top inner shadow */
+                inset 0 10px 5px rgba(0, 0, 0, 0.06);   /* Another subtle top inner shadow for definition */
+  }
+  
+  .searchInput::placeholder {
+    color: rgba(0, 0, 0, 0.8);
+    opacity: 0.5;
+  }
+  
+  .dropdownPlaceholder {
+    position: absolute;
+    right: calc(170.67px + 10px); /*  85.67px Position before the search button */
+    top: 9px; /* From Figma */
+    width: 70px; /* From Figma */
+    height: 70px; /* From Figma */
+    background-color: #D9D9D9; /* From Figma (Grey1) */
+    border-radius: 5px; /* From Figma */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .searchButton {
+    position: absolute;
+    right: calc(69.67px + 10px);
+    top: 0; /* From Figma */
+    width: 85.67px; /* From Figma */
+    height: 85.67px; /* From Figma */
+    background-color: #1F509A; /* From Figma (Primary) */
+    border-radius: 5px; /* From Figma */
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }

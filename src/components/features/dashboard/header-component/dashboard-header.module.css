@@ -1,0 +1,99 @@
+/*dashboard-header.module.css*/
+
+.header {
+  width: 100%;
+  height: 6rem;
+  background-color: white;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); 
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  padding-left: 2rem; 
+  padding-right: 2rem; 
+}
+
+@media (min-width: 768px) { /* md: */
+  .header {
+    padding-left: 4rem; /* Equivalent to md:px-16 */
+    padding-right: 4rem; /* Equivalent to md:px-16 */
+  }
+}
+
+@media (min-width: 1024px) { /* lg: */
+  .header {
+    padding-left: 6rem; /* Equivalent to lg:px-24 */
+    padding-right: 6rem; /* Equivalent to lg:px-24 */
+  }
+}
+
+.leftSection { /* New container for logo and nav */
+  display: flex;
+  align-items: center;
+  gap: 2rem; /* Adjust spacing between logo and nav */
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+}
+
+.logoImage {
+  width: 4rem; /* Equivalent to w-16 */
+  height: 4rem; /* Equivalent to h-16 */
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; /* Equivalent to gap-10 */
+}
+
+.homeLink {
+  position: relative;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); /* Tailwind's shadow-md */
+  border-radius: 0.625rem; /* Equivalent to rounded-md */
+  overflow: hidden;
+  width: 4.8125rem; /* Equivalent to 77px */
+  height: 2.5rem; /* Equivalent to 40px */
+}
+
+.homeLinkInner {
+  position: absolute;
+  inset: 0;
+  background-color: #156AB4; /* var(--Color-Primary-Primary---600) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem; /* Equivalent to text-xl (Next.js default) or adjust to 20px */
+  font-family: 'Inter', sans-serif; /* Ensure 'Inter' is available */
+  font-weight: 600;
+  text-align: center;
+}
+
+.otherLink {
+  color: black;
+  font-weight: 500; /* Equivalent to font-medium */
+  text-decoration: none; /* Remove default link underline */
+}
+
+.otherLink:hover {
+  text-decoration: underline;
+}
+
+.profileContainer {
+  border-radius: 50%; /* Equivalent to rounded-full */
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25); /* Tailwind's shadow */
+}
+
+.profileImage {
+  width: 3.75rem; /* Equivalent to w-15 (adjust if needed, might be slightly off) or 60px */
+  height: 3.75rem; /* Equivalent to h-15 (adjust if needed) or 60px */
+  border-radius: 50%; /* Equivalent to rounded-full */
+  object-fit: cover; /* Ensure image fills the circle */
+}
