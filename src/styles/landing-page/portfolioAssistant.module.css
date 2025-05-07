@@ -1,0 +1,316 @@
+.section {
+    background-color: #eff6ff;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating tech shapes */
+.techCircle, .techSquare, .techTriangle {
+    position: absolute;
+    opacity: 0.1;
+    z-index: 0;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.techCircle {
+    width: 150px;
+    height: 150px;
+    border: 2px dashed #3b82f6;
+    border-radius: 50%;
+    top: 15%;
+    right: 10%;
+    animation-name: rotate;
+}
+
+.techSquare {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #60a5fa;
+    top: 70%;
+    left: 10%;
+    animation-name: rotateReverse;
+}
+
+.techTriangle {
+    width: 0;
+    height: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 100px solid rgba(59, 130, 246, 0.1);
+    bottom: 10%;
+    right: 15%;
+    animation-name: float;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes rotateReverse {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-30px) rotate(10deg); }
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    width: 100%;
+}
+
+.textContent {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+}
+
+.title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.highlight {
+    color: #3b82f6;
+    position: relative;
+    z-index: 1;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background-color: #bfdbfe;
+    z-index: -1;
+    border-radius: 4px;
+    animation: highlightPulse 2s infinite alternate;
+}
+
+@keyframes highlightPulse {
+    0% { opacity: 0.6; transform: scaleX(0.95); }
+    100% { opacity: 1; transform: scaleX(1.05); }
+}
+
+.description {
+    color: #4b5563;
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.sparkleContainer {
+    position: relative;
+    height: 30px;
+    margin-top: 1.5rem;
+}
+
+.sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #3b82f6;
+    border-radius: 50%;
+    opacity: 0;
+    animation: sparkle 2s infinite ease-in-out;
+}
+
+.sparkle:nth-child(1) {
+    left: 0%;
+    animation-delay: 0s;
+}
+.sparkle:nth-child(2) {
+    left: 25%;
+    animation-delay: 0.4s;
+}
+.sparkle:nth-child(3) {
+    left: 50%;
+    animation-delay: 0.8s;
+}
+.sparkle:nth-child(4) {
+    left: 75%;
+    animation-delay: 1.2s;
+}
+.sparkle:nth-child(5) {
+    left: 100%;
+    animation-delay: 1.6s;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-10px); }
+}
+
+.visualContent {
+    flex: 1;
+    position: relative;
+    min-width: 300px;
+}
+
+.bubbleContainer {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1/1;
+  margin: 0 auto;
+}
+
+.mainImage {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 15px rgba(59, 130, 246, 0.2));
+    transition: transform 0.5s ease;
+}
+
+.bubbleContainer:hover .mainImage {
+    transform: scale(1.05) rotate(2deg);
+}
+
+.glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent 60%);
+    border-radius: 50%;
+    z-index: 5;
+    animation: glowPulse 3s infinite alternate;
+}
+
+@keyframes glowPulse {
+    0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.95); }
+    100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+.bubble1, .bubble2, .bubble3 {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(191, 219, 254, 0.4);
+    z-index: 1;
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+.bubble1 {
+    width: 25%;
+    height: 25%;
+    top: -5%;
+    left: -5%;
+    animation-name: bubbleFloat1;
+}
+
+.bubble2 {
+    width: 15%;
+    height: 15%;
+    bottom: 10%;
+    left: -5%;
+    animation-name: bubbleFloat2;
+}
+
+.bubble3 {
+    width: 12%;
+    height: 12%;
+    top: 15%;
+    right: -5%;
+    animation-name: bubbleFloat3;
+}
+
+@keyframes bubbleFloat1 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(10px, -15px); }
+}
+
+@keyframes bubbleFloat2 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-10px, 15px); }
+}
+
+@keyframes bubbleFloat3 {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(15px, 10px); }
+}
+
+@media (max-width: 1024px) {
+    .content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .textContent {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .visualContent {
+        width: 100%;
+        max-width: 500px;
+        margin-top: 3rem;
+    }
+    
+    .techCircle, .techSquare, .techTriangle {
+        opacity: 0.08;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .techCircle, .techSquare, .techTriangle {
+        display: none;
+    }
+}
+
+/* Clickable image container */
+.clickableImageContainer {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    z-index: 10;
+  }
+  
+  .clickableImageContainer:hover {
+    transform: scale(1.05);
+  }
+
+  .clickableImageContainer:hover .mainImage {
+    transform: scale(1.05) rotate(2deg);
+    z-index: 30; 
+  }
