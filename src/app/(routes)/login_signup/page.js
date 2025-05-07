@@ -414,18 +414,16 @@ handleAuth = async ({ username, email, password, isSignUp }) => {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                                  className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition mt-4 mb-4"
+                    className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 transition mt-4 mb-4"
             >
               {isSignUp ? "Sign Up" : "Sign In"}
             </button>
-
-            {/* OR Divider */}
+{/* OR Divider */}
             <div className="flex items-center my-8 mt-4">
               <hr className="flex-grow border-gray-300" />
               <span className="mx-3 text-gray-500 font-['Geist']">or</span>
               <hr className="flex-grow border-gray-300" />
             </div>
-
             {/* Google Button */}
             <button
               type="button"
@@ -437,7 +435,6 @@ handleAuth = async ({ username, email, password, isSignUp }) => {
               </span>
             </button>
           </form>
-
           {/* Toggle between Sign Up and Sign In */}
           <p className="mt-6 text-center text-gray-600 text-lg font-['Geist']">
             {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
@@ -453,5 +450,4 @@ handleAuth = async ({ username, email, password, isSignUp }) => {
     );
   }
 }
-
 export default AuthForm;
