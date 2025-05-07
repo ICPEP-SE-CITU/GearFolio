@@ -1,8 +1,7 @@
 'use client';
 
+import Footer from '../../../components/layout/Footer';
 import { useState } from 'react';
-import footer from '../../layout';
-import header from '../../layout';
 
 function FAQItem({ question, answer, activeIndex, index, setActiveIndex }) {
   const isOpen = activeIndex === index;
@@ -80,10 +79,7 @@ export default function FAQPage() {
           </div>
         </div>
       </main>
-
-      <footer className="bg-gray-800 p-6 text-center">
-        
-      </footer>
+      <Footer/>
     </div>
   );
 }
