@@ -1,12 +1,13 @@
-// src/components/layout/Footer.js
-"use client"; // Make sure this is at the top if you're using useState
+// src/components/layout/settings/settingsfooter.js
+"use client";
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react'; // Assuming this is your dark purple footer that uses state
-import styles from '../../styles/footer.module.css'; // Assuming this is the CSS for the dark purple footer
+import { useState } from 'react';
+// CHANGED: Import from the new light-themed CSS module
+import styles from '../../../styles/settingsfooter.module.css';
 
-const Footer = () => {
+const SettingsFooter = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const brandImages = [
     {
@@ -28,10 +29,9 @@ const Footer = () => {
   };
 
   return (
-    // Add id="global-footer" here
-    <footer id="global-footer" className={styles.footer}>
+    // The root className now solely comes from the new CSS module
+    <footer className={styles.footer}>
       <div className={styles.footerContainer}>
-        {/* Logo and Brand Info */}
         <div className={styles.brandColumn}>
           <div
             className={styles.logoWrapper}
@@ -42,9 +42,9 @@ const Footer = () => {
               <Image
                 src={brandImages[currentImageIndex].src}
                 alt={brandImages[currentImageIndex].alt}
-                width={60} // Ensure these dimensions are appropriate
+                width={60}
                 height={60}
-                className={styles.logo}
+                className={styles.logo} // This class should be defined in your CSS module
                 priority
               />
             </div>
@@ -69,41 +69,44 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Navigation Links */}
         <div className={styles.linksContainer}>
           <div className={styles.linkColumn}>
             <h3 className={styles.columnTitle}>Company</h3>
             <ul className={styles.linkList}>
-              <li><Link href="/about">About Us</Link></li>
-              <li><Link href="/careers">Careers</Link></li>
-              <li><Link href="/blog">Blog</Link></li>
-              <li><Link href="/press">Press</Link></li>
+              {/* Apply Tailwind for link colors directly here for simplicity,
+                  or define these in settingsfooter.module.css under .linkList li a */ }
+              <li><Link href="/about" className="text-gray-600 hover:text-blue-600">About Us</Link></li>
+              <li><Link href="/careers" className="text-gray-600 hover:text-blue-600">Careers</Link></li>
+              <li><Link href="/blog" className="text-gray-600 hover:text-blue-600">Blog</Link></li>
+              <li><Link href="/press" className="text-gray-600 hover:text-blue-600">Press</Link></li>
             </ul>
           </div>
 
           <div className={styles.linkColumn}>
             <h3 className={styles.columnTitle}>Resources</h3>
             <ul className={styles.linkList}>
-              <li><Link href="/help">Help & Support</Link></li>
-              <li><Link href="/faq">FAQ</Link></li>
-              <li><Link href="/templates">Templates</Link></li>
-              <li><Link href="/examples">Examples</Link></li>
+              <li><Link href="/help" className="text-gray-600 hover:text-blue-600">Help & Support</Link></li>
+              <li><Link href="/faq" className="text-gray-600 hover:text-blue-600">FAQ</Link></li>
+              <li><Link href="/templates" className="text-gray-600 hover:text-blue-600">Templates</Link></li>
+              <li><Link href="/examples" className="text-gray-600 hover:text-blue-600">Examples</Link></li>
             </ul>
           </div>
 
           <div className={styles.linkColumn}>
             <h3 className={styles.columnTitle}>Legal</h3>
             <ul className={styles.linkList}>
-              <li><Link href="/privacy">Privacy Policy</Link></li>
-              <li><Link href="/terms">Terms of Service</Link></li>
-              <li><Link href="/cookies">Cookie Policy</Link></li>
-              <li><Link href="/gdpr">GDPR</Link></li>
+              <li><Link href="/privacy" className="text-gray-600 hover:text-blue-600">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="text-gray-600 hover:text-blue-600">Terms of Service</Link></li>
+              <li><Link href="/cookies" className="text-gray-600 hover:text-blue-600">Cookie Policy</Link></li>
+              <li><Link href="/gdpr" className="text-gray-600 hover:text-blue-600">GDPR</Link></li>
             </ul>
           </div>
 
           <div className={styles.linkColumn}>
             <h3 className={styles.columnTitle}>Contact</h3>
             <ul className={styles.linkList}>
+              {/* Text color for these li elements will be inherited from .footer or .linkList
+                  as defined in settingsfooter.module.css */}
               <li>icpepseofficial256@gmail.com</li>
               <li>+63 123 1234 123</li>
               <li>123 Mervin St.</li>
@@ -113,19 +116,18 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright and Bottom Bar */}
       <div className={styles.bottomBar}>
         <div className={styles.copyright}>
           © {new Date().getFullYear()} GearFolio. All rights reserved.
         </div>
         <div className={styles.legalLinks}>
-          <Link href="/accessibility">Accessibility</Link>
+          <Link href="/accessibility" className="text-gray-500 hover:text-blue-600">Accessibility</Link>
           <span className={styles.divider}>|</span>
-          <Link href="/sitemap">Sitemap</Link>
+          <Link href="/sitemap" className="text-gray-500 hover:text-blue-600">Sitemap</Link>
         </div>
       </div>
     </footer>
   );
 };
 
-export default Footer;
+export default SettingsFooter;
