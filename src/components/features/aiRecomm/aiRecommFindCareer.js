@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import MapView from './MapView';
 
 export default function aiRecommFindCareer() {
   const [searchQuery, setSearchQuery] = useState('');
   const [mapSearchQuery, setMapSearchQuery] = useState('');
+const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -96,6 +98,7 @@ export default function aiRecommFindCareer() {
 
   const handleClearSearch = () => {
     setSearchQuery('');
+    setMapSearchQuery('');  
   };
 
   const toggleFilter = () => {
@@ -135,8 +138,21 @@ export default function aiRecommFindCareer() {
     return stars;
   };
 
+  const filteredJobListings = jobListings.filter((job) => {
+    const matchesSearch = job.company.toLowerCase().includes(searchQuery.toLowerCase());
+  
+    const matchesFilters =
+      (!selectedFilters.fullTime || job.type === 'Full-time') &&
+      (!selectedFilters.partTime || job.type === 'Part-time') &&
+      (!selectedFilters.remote || job.type === 'Remote') &&
+      (!selectedFilters.onSite || (job.type !== 'Remote' && job.type !== 'Contract')); // assuming 'on-site' means not remote/contract
+  
+    return matchesSearch && matchesFilters;
+  });
+  
+
   const renderJobListings = () => {
-    return jobListings.map((job) => (
+    return filteredJobListings.map((job) => (
       <div
         key={job.id}
         className={`p-3 hover:bg-blue-50 transition-colors duration-150 border-b border-gray-100 cursor-pointer ${
@@ -281,13 +297,13 @@ export default function aiRecommFindCareer() {
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
             </div>
-            <input
-              type="text"
-              placeholder="Job title, company, or keyword"
-              className="w-full pl-10 pr-10 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+              <input
+                type="text"
+                placeholder="Job title, company, or keyword"
+                className="w-full pl-10 pr-10 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             {searchQuery && (
               <div className="absolute right-3 top-3">
                 <button
@@ -337,7 +353,7 @@ export default function aiRecommFindCareer() {
               </svg>
               Filters
               {Object.values(selectedFilters).some((filter) => filter) && (
-                <span className="ml-2 w-5 h-5 bg-blue-600 rounded-full text-white text-xs flex items-center justify-center">
+                <span className="ml-2 w-5 h-5 bg-blue-600 rounded-full text-white text-xs flex items-center justify-center ">
                   {
                     Object.values(selectedFilters).filter((filter) => filter)
                       .length
@@ -348,7 +364,7 @@ export default function aiRecommFindCareer() {
 
             <div className="flex items-center">
               <span className="text-sm text-gray-500 mr-2">Sort by:</span>
-              <select className="text-sm border-none bg-transparent text-gray-700 focus:outline-none focus:ring-0">
+              <select className="text-sm border-none bg-transparent text-gray-700 focus:outline-none focus:ring-0 ">
                 <option>Relevance</option>
                 <option>Distance</option>
                 <option>Rating</option>
@@ -360,11 +376,11 @@ export default function aiRecommFindCareer() {
           {/* Filter Options */}
           {filterOpen && (
             <div className="mt-3 bg-gray-50 p-3 rounded-lg">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">
+              <h4 className="text-sm font-medium text-gray-700 mb-2 ">
                 Job Type
               </h4>
               <div className="grid grid-cols-2 gap-2">
-                <label className="flex items-center space-x-2 text-sm">
+                <label className="flex items-center space-x-2 text-sm text-black">
                   <input
                     type="checkbox"
                     className="rounded text-blue-600"
@@ -373,7 +389,7 @@ export default function aiRecommFindCareer() {
                   />
                   <span>Full-time</span>
                 </label>
-                <label className="flex items-center space-x-2 text-sm">
+                <label className="flex items-center space-x-2 text-sm text-black">
                   <input
                     type="checkbox"
                     className="rounded text-blue-600"
@@ -382,7 +398,7 @@ export default function aiRecommFindCareer() {
                   />
                   <span>Part-time</span>
                 </label>
-                <label className="flex items-center space-x-2 text-sm">
+                <label className="flex items-center space-x-2 text-sm text-black">
                   <input
                     type="checkbox"
                     className="rounded text-blue-600"
@@ -391,7 +407,7 @@ export default function aiRecommFindCareer() {
                   />
                   <span>Remote</span>
                 </label>
-                <label className="flex items-center space-x-2 text-sm">
+                <label className="flex items-center space-x-2 text-sm text-black">
                   <input
                     type="checkbox"
                     className="rounded text-blue-600"
@@ -613,7 +629,7 @@ export default function aiRecommFindCareer() {
             {/* Map Search Bar */}
             <div className="absolute top-4 left-0 right-0 flex justify-center z-10">
               <div className="relative w-96">
-                <div className="absolute left-3 top-3 text-gray-400">
+                <div className="absolute left-3 top-3 text-gray-400 ">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -632,7 +648,7 @@ export default function aiRecommFindCareer() {
                 <input
                   type="text"
                   placeholder="Search this area"
-                  className="w-full pl-10 pr-10 py-2 rounded-full border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md"
+                  className="w-full pl-10 pr-10 py-2 rounded-full border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-md text-black"
                   value={mapSearchQuery}
                   onChange={(e) => setMapSearchQuery(e.target.value)}
                 />
@@ -663,30 +679,7 @@ export default function aiRecommFindCareer() {
             </div>
 
             {/* Map View */}
-            <div className="w-full h-full bg-white flex flex-col items-center justify-center">
-              <div className="text-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#4A56E2"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mx-auto mb-4"
-                >
-                  <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-                  <line x1="8" y1="2" x2="8" y2="18"></line>
-                  <line x1="16" y1="6" x2="16" y2="22"></line>
-                </svg>
-                <p className="text-gray-700 mb-2">Map View</p>
-                <p className="text-sm text-gray-500">
-                  Select a location to see job listings
-                </p>
-              </div>
-            </div>
+            <MapView />
 
             {/* Map Controls */}
             <div className="absolute bottom-6 right-6 flex flex-col space-y-3">
