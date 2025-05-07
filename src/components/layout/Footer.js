@@ -84,8 +84,7 @@ const Footer = () => {
           <div className={styles.linkColumn}>
             <h3 className={styles.columnTitle}>Resources</h3>
             <ul className={styles.linkList}>
-              <li><Link href="/help">Help & Support</Link></li>
-              <li><Link href="/faq">FAQ</Link></li>
+              <li><Link href="/help-support">Help & Support</Link></li>
               <li><Link href="/templates">Templates</Link></li>
               <li><Link href="/examples">Examples</Link></li>
             </ul>
