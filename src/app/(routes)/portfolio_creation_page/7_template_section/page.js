@@ -54,50 +54,31 @@ export default function TemplatePage() {
     }
     setIsNavigating(true);
     e.preventDefault();
-       // Prepare the form data
-    const formData = {
-      firstName,
-      middleName,
-      surname,
-      suffix,
-      userImage,
-      userImageFile, // Add this
+
+    // Map to preview structure
+    const portfolioData = {
+      name: [firstName, middleName, surname, suffix].filter(Boolean).join(' '),
+      profileImage: userImage, // or userImageFile if that's the actual image URL/base64
       email,
-      contactNumber,
-      socials,
-      country,
-      province,
-      city,
-      postal,
-      elementary,
-      juniorHigh,
-      seniorHigh,
-      degreeLevel,
+      phone: contactNumber,
+      address: [city, province, country].filter(Boolean).join(', '),
+      education: [
+        elementary ? { school: elementary, degree: '', field: '', startDate: '', endDate: '', location: '' } : null,
+        juniorHigh ? { school: juniorHigh, degree: '', field: '', startDate: '', endDate: '', location: '' } : null,
+        seniorHigh ? { school: seniorHigh, degree: '', field: '', startDate: '', endDate: '', location: '' } : null,
+        // You can add more if you have degreeLevel, etc.
+      ].filter(Boolean),
       certificates,
-      jobs,
       skills,
       projects,
+      jobs: jobs, // Using the correct key that the preview page is looking for
+      workExperience: jobs, // Keep this for backward compatibility
+      socials,
       selectedTemplate,
     };
-    // Log the formData for debugging
-    console.log("Form data being sent to savePortfolioToAppwrite:", formData);
-    console.log("Certificates details:", certificates);
-    console.log("Projects details:", projects);
 
-    // Save to Appwrite
-    setIsSaving(true);
-    setErrorMessage(null);
-    try {
-      await savePortfolioToAppwrite(formData);
-      console.log("Data saved successfully to Appwrite");
-      router.push("/portfolio_creation_page/8_generate_portfolio");
-    } catch (error) {
-      console.error("Error in handleNextClick:", error);
-      setErrorMessage(error.message);
-      setIsNavigating(false);
-    } finally {
-      setIsSaving(false);
-    }
+    localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+    router.push('/portfolio_preview');
   };
 
       useEffect(() => {

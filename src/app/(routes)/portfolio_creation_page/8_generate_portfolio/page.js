@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FcLeft } from "react-icons/fc";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,9 +11,38 @@ export default function GeneratePortfolioPage() {
   const [isGenerating, setIsGenerating] = useState(true);
   const [progress, setProgress] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (isGenerating) {
+      // Collect all portfolio data from localStorage
+      const portfolioData = {
+        // Personal Information
+        name: localStorage.getItem('name'),
+        email: localStorage.getItem('email'),
+        phone: localStorage.getItem('phone'),
+        address: localStorage.getItem('address'),
+        website: localStorage.getItem('website'),
+        
+        // Education
+        education: JSON.parse(localStorage.getItem('education') || '[]'),
+        
+        // Work Experience
+        workExperience: JSON.parse(localStorage.getItem('workExperience') || '[]'),
+        
+        // Certificates
+        certificates: JSON.parse(localStorage.getItem('certificates') || '[]'),
+        
+        // Skills
+        skills: JSON.parse(localStorage.getItem('skills') || '[]'),
+        
+        // Template
+        template: localStorage.getItem('selectedTemplate')
+      };
+
+      // Store all data in a single object
+      localStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+
       const interval = setInterval(() => {
         setProgress(prev => {
           if (prev >= 100) {
@@ -30,6 +60,10 @@ export default function GeneratePortfolioPage() {
       return () => clearInterval(interval);
     }
   }, [isGenerating]);
+
+  const handleViewPortfolio = () => {
+    router.push('/portfolio_preview');
+  };
 
   return (
     <motion.div 
@@ -146,8 +180,8 @@ export default function GeneratePortfolioPage() {
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 className="inline-block"
               >
-                <Link
-                  href="/profile"
+                <button
+                  onClick={handleViewPortfolio}
                   className="relative inline-block px-8 py-3 text-white rounded-lg text-lg font-medium shadow-lg overflow-hidden group"
                 >
                   {/* Animated gradient background */}
@@ -181,7 +215,7 @@ export default function GeneratePortfolioPage() {
                       →
                     </motion.span>
                   </span>
-                </Link>
+                </button>
               </motion.div>
             </motion.div>
           </motion.div>
