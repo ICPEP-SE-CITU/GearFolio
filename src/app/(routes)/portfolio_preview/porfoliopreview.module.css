@@ -1,5 +1,5 @@
 .container {
-    background-color: #FFFFFF;
+    background-color: #f9fafc;
     height: 3421px;
     width: 100%;
     display: flex;
@@ -16,6 +16,7 @@
     border-radius: 20px;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 10px 30px rgba(20, 93, 160, 0.2);
 }
 .profilediv{
     height: 681px;
@@ -25,7 +26,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap:7px;
+    gap: 15px;
 }
 .profilecircle {
     width: 502px;
@@ -36,11 +37,22 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border: 4px solid rgba(255, 255, 255, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+.profilecircle:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
 .profilecircle img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.profilecircle:hover img {
+    transform: scale(1.05);
 }
 
 .profilename{
@@ -51,11 +63,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.profilename:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 .profiletext{
     font-size: 32px;
     font-family: Arial, Helvetica, sans-serif;
     color: #12518A;
+    font-weight: 600;
 }
 
 .infodiv{
@@ -70,21 +89,39 @@
     font-weight: bold;
     color: white;
     padding-left: 35px;
+    box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    margin-top: 25px;
 }
+.infodiv:first-of-type {
+    margin-top: 10px;
+}
+.infodiv:hover {
+    background-color: #0e4275;
+}
+
 .contactinfo{
-    height: 360px;
+    height: auto;
+    min-height: 360px;
     width: 100%;
-    padding: 10px;
-    gap: 10px;
+    padding: 20px 10px;
+    gap: 15px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
 }
+
 .contactinfobox{
     height: 100px;
     width: 100%;
     display: flex;
     flex-direction: column;
+    transition: transform 0.2s ease;
 }
+.contactinfobox:hover {
+    transform: translateX(5px);
+}
+
 .contactmedia, .contactmedialink{
     height: 50%;
     width: 100%;
@@ -102,24 +139,36 @@
     font-size: 24px;
     font-weight: normal;
     padding-left: 40px;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+.contactmedialink:hover {
+    opacity: 1;
+}
+.contactmedialink a:hover {
+    text-decoration: underline;
 }
 
 .addressinfo{
-    height: 344px;
+    height: auto;
+    min-height: 344px;
     width: 100%;
     padding: 10px;
     gap: 10px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 15px;
 }
 
 .workinfo{
-    height: 330px;
+    height: auto;
+    min-height: 330px;
     width: 100%;
     padding: 10px;
     gap: 10px;
     flex-direction: column;
     display: flex;
+    margin-bottom: 15px;
 }
 .workinfobox{
     height: 80px;
@@ -134,13 +183,33 @@
 }
 
 .skillsinfo{
-    height: 1389px;
+    height: auto;
+    min-height: 400px;
+    max-height: 1389px;
     width: 100%;
     border-radius: 20px;
     padding: 10px;
     gap: 10px;
     flex-direction: column;
     display: flex;
+    overflow-y: auto;
+}
+
+.skillsinfo::-webkit-scrollbar {
+    width: 8px;
+}
+
+.skillsinfo::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.skillsinfo::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.skillsinfo::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .porfoliodescription {
@@ -148,8 +217,8 @@
     height: calc(3421px - 30px * 2); 
     border-radius: 20px;
     overflow: hidden;
-    border-width: 1px;
-    border-color: black;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    background-color: white;
   }
 .descriptiondiv{
     height: 213px;
@@ -161,9 +230,30 @@
     align-items: center;
     font-size: 36px;
     font-family: Arial, Helvetica, sans-serif;
-    border-bottom: 1px solid black;
-
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
+.descriptiondiv:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #89C1F4, #145DA0);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s ease;
+}
+.descriptiondiv:hover:after {
+    transform: scaleX(1);
+}
+.descriptiondiv:hover {
+    background-color: rgba(244, 240, 240, 0.8);
+}
+
 .biginfodiv{
     height: 81px;
     width: 100%;
@@ -173,20 +263,42 @@
     align-items: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 40px;
-    color: black;
+    color: #12518A;
     font-weight: bold;
-    border-width: 1px;
-    border-color: black;
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+    position: relative;
 }
+.biginfodiv:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(to right, #89C1F4, #145DA0);
+    transition: width 0.3s ease;
+}
+.biginfodiv:hover:after {
+    width: 100%;
+}
+.biginfodiv:hover {
+    background-color: #f5f7ff;
+    padding-left: 55px;
+}
+
 .educationdiv{
     width: 100%;
     height: 380px;
     background-color: rgba(244, 240, 240, 0.5);
     border-radius: 15px;
-    border-width: 1px;
-    border-color: black;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     display: flex;
     overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+.educationdiv:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .buttons1, .buttons2{
     width: 8%;
@@ -246,8 +358,25 @@
     grid-column-gap: 2%;
     grid-row-gap: 15px;
     background-color: rgba(244, 240, 240, 0.5);
-    scrollbar-width: auto;
+    scrollbar-width: thin;
     overflow: auto;
+}
+
+.projectdiv::-webkit-scrollbar {
+    width: 8px;
+}
+
+.projectdiv::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.projectdiv::-webkit-scrollbar-thumb {
+    background: #89C1F4;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+.projectdiv::-webkit-scrollbar-thumb:hover {
+    background: #145DA0;
 }
   
 .div1, .div2, .div3, .div4, .div5, .div6,
@@ -255,13 +384,21 @@
 .div13, .div14, .div15, .div16, .div17, .div18,
 .div19, .div20 {
     background-color: #FFFFFF;
-    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     padding: 5px;
     display: flexbox;
     overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
+
+.div1:hover, .div2:hover, .div3:hover, .div4:hover, .div5:hover, 
+.div6:hover, .div7:hover, .div8:hover, .div9:hover, .div10:hover,
+.div11:hover, .div12:hover, .div13:hover, .div14:hover, .div15:hover,
+.div16:hover, .div17:hover, .div18:hover, .div19:hover, .div20:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
 
 .parentprojectdiv{
     width: 100%;
@@ -289,10 +426,52 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 32px;
     font-weight: bold;
+    transition: color 0.2s ease;
 }
 .projectlink{
     font-size: 24px;
     font-weight: normal;
+}
+.projectname:hover {
+    color: #145DA0;
+}
+
+.projectlink a {
+    color: #145DA0;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.projectlink a:hover {
+    color: #0e4275;
+    transform: translateY(-2px);
+}
+.projectlink a:hover svg {
+    transform: translateX(3px);
+}
+.projectlink svg {
+    transition: transform 0.2s ease;
+}
+
+.button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgba(137, 193, 244, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+.button:hover {
+    background-color: rgba(137, 193, 244, 0.4);
+    transform: scale(1.15);
+}
+.button:active {
+    transform: scale(0.95);
 }
 
 .certdiv {
@@ -304,22 +483,40 @@
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    scrollbar-width: auto;
+    scrollbar-width: thin;
     align-items: center;
+}
+
+.certdiv::-webkit-scrollbar {
+    width: 8px;
+}
+
+.certdiv::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.certdiv::-webkit-scrollbar-thumb {
+    background: #89C1F4;
+    border-radius: 4px;
 }
 
 .certificatebox{
     width: 100%;
     height: 360px;
     background-color: #FFFFFF;
-    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.2);
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     flex-shrink: 0;
     display: flex;
     justify-content: center;
     gap:10px;
     padding: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.certificatebox:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
 .certificateimagediv, .certificateinfodiv {
@@ -354,11 +551,16 @@
     height: auto;
     width: auto;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 24;
+    font-size: 24px;
     font-weight: bold;
+    transition: color 0.2s ease;
+}
+.certificatetitle:hover {
+    color: #145DA0;
 }
 .certificaterole{
     font-weight: normal;
+    opacity: 0.8;
 }
 
 /* Loading and Error States */
@@ -370,17 +572,17 @@
   min-height: 100vh;
   background-color: #f5f7ff;
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Arial', sans-serif;
 }
 
 .loadingSpinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid rgba(0, 0, 0, 0.1);
-  border-top-color: #3b82f6;
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(137, 193, 244, 0.2);
+  border-top-color: #145DA0;
   border-radius: 50%;
   animation: spin 1s ease-in-out infinite;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 @keyframes spin {
@@ -410,15 +612,18 @@
 .retryButton {
   margin-top: 1.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: #3b82f6;
+  background-color: #145DA0;
   color: white;
   border: none;
-  border-radius: 0.375rem;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(20, 93, 160, 0.2);
 }
 
 .retryButton:hover {
-  background-color: #2563eb;
+  background-color: #0e4275;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(20, 93, 160, 0.3);
 }
