@@ -32,7 +32,7 @@ const LandingPage = () => {
     if (stage === "main") {
       const handleScroll = () => {
         const currentScrollY = window.scrollY;
-        
+
         if (currentScrollY > lastScrollY) {
           // Scrolling down
           setNavVisible(false);
@@ -53,6 +53,10 @@ const LandingPage = () => {
       top: ref.current.offsetTop - 100,
       behavior: "smooth"
     });
+  };
+
+  const scrollToHome = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -109,7 +113,7 @@ const LandingPage = () => {
             <nav className="bg-white/70 max-w-[1800px] mx-auto text-gray-800 rounded-[20px] p-5 flex items-center justify-between m-4">
               <div className="flex flex-row gap-[90px] items-center">
                 <div className="flex items-center">
-                  <div className="flex flex-row text-4xl font-Montserrat font-bold items-center">
+                  <div className="flex flex-row text-4xl font-Montserrat font-bold items-center cursor-pointer" onClick={scrollToHome}>
                     <Image
                       src="/image/logo.svg"
                       alt="GearFolio Logo"
@@ -122,25 +126,25 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <div className="hidden md:flex gap-[85px] font-bold text-2xl">
-                  <button 
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  <button
+                    onClick={scrollToHome}
                     className="hover:text-blue-600 transition-colors"
                   >
                     Home
                   </button>
-                  <button 
+                  <button
                     onClick={() => scrollToSection(featuresRef)}
                     className="hover:text-blue-600 transition-colors"
                   >
                     Features
                   </button>
-                  <button 
+                  <button
                     onClick={() => scrollToSection(whyChooseRef)}
                     className="hover:text-blue-600 transition-colors"
                   >
                     Why Choose
                   </button>
-                  <button 
+                  <button
                     onClick={() => scrollToSection(portfolioAssistantRef)}
                     className="hover:text-blue-600 transition-colors"
                   >
@@ -247,17 +251,17 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          
+
           <div ref={portfolioAssistantRef}>
             <PortfolioAssistant />
           </div>
-          
+
           <div ref={nextLevelRef}>
             <NextLevel />
           </div>
-          
+
           <Footer />
-        </div>     
+        </div>
       )}
     </div>
   );
