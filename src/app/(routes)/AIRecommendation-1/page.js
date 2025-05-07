@@ -2,7 +2,7 @@ import AIRecomm from '../../../components/features/aiRecomm/AiRecomm';
 
 function AIRecommendation() {
   return (
-    <div>
+    <div className="bg-white">
       <AIRecomm />
     </div>
   );

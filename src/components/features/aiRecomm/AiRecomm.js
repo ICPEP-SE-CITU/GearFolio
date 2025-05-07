@@ -1,8 +1,16 @@
+'use client';
+
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 function AiRecomm() {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/AIRecommFindCareer');
+  };
   return (
-    <div className="flex flex-col w-full md:w-1/2 relative">
+    <div className="flex flex-col w-full md:w-1/2 relative bg-white">
       <div className="absolute w-[1046px] h-[822px] left-[704px] top-[129px] bg-white shadow-[2px_2px_30px_1px_rgba(0,_0,_0,_0.25)] rounded-[12px]" />
       <Image
         className="absolute w-[95.95px] h-[70.07px] left-[1645.78px] top-[862.51px] filter-blur-[1.5px]"
@@ -14,6 +22,14 @@ function AiRecomm() {
       />
       <div className="absolute w-[501px] h-[26px] left-[976px] top-[509px] text-[#2E8BC0] text-[35px] font-[Roboto_Condensed] font-medium leading-[30px]">
         Your career path will be shown here
+        <div>
+          <button
+            onClick={handleClick}
+            className="text-white p-4 mt-8 hover:scale-115 rounded-3xl transition duration-300 hover:cursor-pointer z-50 bg-[#2E8BC0]"
+          >
+            Locate Career
+          </button>
+        </div>
       </div>
 
       {/* Left Section */}
