@@ -192,11 +192,10 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-
           <PortfolioAssistant />
           <NextLevel />
           <Footer />
-        </div>
+        </div>     
       )}
     </div>
   );
