@@ -248,7 +248,7 @@ export default function TemplatePage() {
               Loading...
             </motion.span>
           ) : (
-            "Next"
+            "Finish"
           )}
         </motion.button>
       </div>
