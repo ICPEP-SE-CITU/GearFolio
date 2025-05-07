@@ -1,10 +1,8 @@
 'use client';
-import AIFindCareer from '@/components/features/aiRecomm/aiRecommFindCareer';
+import AIFindCareer from '../../../components/features/aiRecomm/aiRecommFindCareer';
 
 function AIFindCareerPage() {
-  return (
-    <AIFindCareer/>
-  );
+  return <AIFindCareer />;
 }
 
 export default AIFindCareerPage;
