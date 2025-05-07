@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react'; // Import useEffect
-
+import React, { useState, useEffect } from 'react';
 import Header from '../../../components/layout/Header.js';
-import SettingsFooter from '../../../components/layout/settings/settingsfooter.js'; // Your simple, light-themed footer
+import SettingsFooter from '../../../components/layout/settings/settingsfooter.js';
 
 function SettingsPage() {
   const [activeTab, setActiveTab] = useState('account');
@@ -30,23 +29,21 @@ function SettingsPage() {
     microsoft: 'live:juandelacruz',
   });
 
-  // This useEffect hook will run on the client-side
   useEffect(() => {
     const globalFooter = document.getElementById('global-footer');
     let originalDisplay = '';
 
     if (globalFooter) {
-      originalDisplay = globalFooter.style.display; // Store original display style
-      globalFooter.style.display = 'none'; // Hide it on the settings page
+      originalDisplay = globalFooter.style.display;
+      globalFooter.style.display = 'none';
     }
 
-    // Cleanup function: This runs when the component unmounts (e.g., navigating away)
     return () => {
       if (globalFooter) {
-        globalFooter.style.display = originalDisplay; // Restore original display style
+        globalFooter.style.display = originalDisplay;
       }
     };
-  }, []); // Empty dependency array means this runs once on mount and cleanup on unmount
+  }, []);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -120,7 +117,6 @@ function SettingsPage() {
               </div>
             </div>
             <nav className="mt-4 space-y-1">
-              {/* ... your navigation buttons ... */}
               <button
                 onClick={() => handleTabClick('account')}
                 className={`w-full text-left flex items-center mt-5 py-3 px-4 text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-150 ${activeTab === 'account' ? 'bg-gray-100 font-semibold text-blue-600' : 'text-gray-600'}`}
@@ -170,10 +166,11 @@ function SettingsPage() {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6">Account Settings</h2>
                 <p className="text-gray-600 mb-8">Update your name, phone number, and profile picture to keep your account up to date.</p>
                 <div className="mb-8">
-                  <h3 className="text-xl font-semibold text-gray-700 mb-4">Edit account details</h3>
-                  <div className="flex items-center mb-6">
-                    <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center mr-6 flex-shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <h3 className="text-xl font-semibold text-gray-700 mb-4 text-left">Edit account details</h3> {/* Added text-center here if you want the heading centered too */}
+                  {/* MODIFICATION START: Wrapper for profile picture and edit button */}
+                  <div className="flex flex-col items-center mb-8"> {/* Centering container */}
+                    <div className="w-30 h-30 rounded-full bg-gray-200 flex items-center justify-center mb-4 flex-shrink-0"> {/* Added mb-4 for spacing */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-15 w-15 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                       </svg>
                     </div>
@@ -184,6 +181,7 @@ function SettingsPage() {
                       Edit Profile
                     </button>
                   </div>
+                  {/* MODIFICATION END */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
@@ -274,7 +272,6 @@ function SettingsPage() {
                 <p className="text-gray-600 mb-8">Link or unlink accounts from services like Google, Facebook, and GitHub for a seamless experience.</p>
                 <h3 className="text-xl font-semibold text-gray-700 mb-4">Link your social accounts</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 mb-8">
-                  {/* ... All your social link input fields ... */}
                   <div>
                     <label htmlFor="linkedin" className="text-sm font-medium text-gray-700 mb-1 flex items-center">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-700 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -286,9 +283,9 @@ function SettingsPage() {
                   </div>
                   <div>
                     <label htmlFor="facebook" className="text-sm font-medium text-gray-700 mb-1 flex items-center">
-                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-                      </svg>
+                        </svg>
                       Facebook Profile URL
                     </label>
                     <input type="text" id="facebook" name="facebook" value={connectedExperiences.facebook} onChange={handleConnectedExperiencesChange} className="shadow-sm appearance-none border border-gray-300 rounded-md w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="https://facebook.com/yourprofile"/>
@@ -331,9 +328,6 @@ function SettingsPage() {
           </div>
         </div>
       </main>
-      {/* The SettingsFooter (simple, light-themed) is rendered directly by this page component.
-          The global dark purple footer from src/app/layout.js will also be rendered by default.
-          The useEffect hook above will hide the global one when this page is active. */}
       <SettingsFooter />
     </>
   );
