@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { IoSearchSharp } from "react-icons/io5";
 import { LuArrowUpRight } from "react-icons/lu";
@@ -12,6 +12,12 @@ import Footer from "../../../components/layout/Footer";
 
 const LandingPage = () => {
   const [stage, setStage] = useState("splash");
+  const [navVisible, setNavVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const featuresRef = useRef(null);
+  const whyChooseRef = useRef(null);
+  const portfolioAssistantRef = useRef(null);
+  const nextLevelRef = useRef(null);
 
   useEffect(() => {
     const splashTimer = setTimeout(() => setStage("transition1"), 2000);
@@ -21,6 +27,33 @@ const LandingPage = () => {
       clearTimeout(transitionTimer);
     };
   }, []);
+
+  useEffect(() => {
+    if (stage === "main") {
+      const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > lastScrollY) {
+          // Scrolling down
+          setNavVisible(false);
+        } else {
+          // Scrolling up
+          setNavVisible(true);
+        }
+        setLastScrollY(currentScrollY);
+      };
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [lastScrollY, stage]);
+
+  const scrollToSection = (ref) => {
+    window.scrollTo({
+      top: ref.current.offsetTop - 100,
+      behavior: "smooth"
+    });
+  };
 
   return (
     <div className="min-h-screen bg-[#F7F7FF] relative overflow-hidden">
@@ -72,8 +105,8 @@ const LandingPage = () => {
       {stage === "main" && (
         <div className="relative z-10">
           {/* Navigation Bar */}
-          <div className="h-screen py-10">
-            <nav className="bg-white/70 max-w-[1800px] mx-auto text-gray-800 rounded-[20px] p-5 flex items-center justify-between">
+          <div className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${navVisible ? "translate-y-0" : "-translate-y-full"}`}>
+            <nav className="bg-white/70 max-w-[1800px] mx-auto text-gray-800 rounded-[20px] p-5 flex items-center justify-between m-4">
               <div className="flex flex-row gap-[90px] items-center">
                 <div className="flex items-center">
                   <div className="flex flex-row text-4xl font-Montserrat font-bold items-center">
@@ -89,10 +122,30 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <div className="hidden md:flex gap-[85px] font-bold text-2xl">
-                  <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-                  <Link href="/features" className="hover:text-blue-600 transition-colors">Features</Link>
-                  <Link href="/testimonials" className="hover:text-blue-600 transition-colors">Testimonials</Link>
-                  <Link href="/about-us" className="hover:text-blue-600 transition-colors">About us</Link>
+                  <button 
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="hover:text-blue-600 transition-colors"
+                  >
+                    Home
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection(featuresRef)}
+                    className="hover:text-blue-600 transition-colors"
+                  >
+                    Features
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection(whyChooseRef)}
+                    className="hover:text-blue-600 transition-colors"
+                  >
+                    Why Choose
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection(portfolioAssistantRef)}
+                    className="hover:text-blue-600 transition-colors"
+                  >
+                    Portfolio Assistant
+                  </button>
                 </div>
               </div>
               <div>
@@ -107,8 +160,10 @@ const LandingPage = () => {
                 </Link>
               </div>
             </nav>
+          </div>
 
-            {/* Hero Section */}
+          {/* Hero Section */}
+          <div className="h-screen py-10 pt-24">
             <div className="pt-[200px] max-w-[1600px] mx-auto text-white">
               <h1 className="text-6xl md:text-8xl lg:text-[95px] font-bold mb-4">
                 Discover, Build, and Showcase <br /> Portfolios with AI Assistance
@@ -133,7 +188,7 @@ const LandingPage = () => {
           </div>
 
           {/* Features Section */}
-          <div className="relative w-full py-10 h-[1090px]">
+          <div ref={featuresRef} className="relative w-full py-10 h-[1090px]">
             <Image
               src="/image/Homepage-2.svg"
               alt="Background"
@@ -161,7 +216,7 @@ const LandingPage = () => {
           </div>
 
           {/* Why Choose Section */}
-          <div className="relative w-full py-10 min-h-screen">
+          <div ref={whyChooseRef} className="relative w-full py-10 min-h-screen">
             <Image
               src="/image/Homepage-3.svg"
               alt="Background"
@@ -192,8 +247,15 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          <PortfolioAssistant />
-          <NextLevel />
+          
+          <div ref={portfolioAssistantRef}>
+            <PortfolioAssistant />
+          </div>
+          
+          <div ref={nextLevelRef}>
+            <NextLevel />
+          </div>
+          
           <Footer />
         </div>     
       )}
