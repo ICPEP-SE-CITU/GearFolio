@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import footer from '../../layout/Footer';
+import footer from '../../layout';
+import header from '../../layout';
 
 function FAQItem({ question, answer, activeIndex, index, setActiveIndex }) {
   const isOpen = activeIndex === index;
