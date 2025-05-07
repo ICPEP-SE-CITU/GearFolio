@@ -2,133 +2,176 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+// Define InputField OUTSIDE the AiRecomm component
+const InputField = ({ label, placeholder, value, onChange, helpText }) => (
+  <div className="w-full">
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      {label}
+      {helpText && (
+        <span className="text-xs text-gray-500 ml-1">{helpText}</span>
+      )}
+    </label>
+    <input
+      type="text"
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#2E8BC0] focus:border-[#2E8BC0] transition-colors duration-150"
+    />
+  </div>
+);
 
 function AiRecomm() {
   const router = useRouter();
 
-  const handleClick = () => {
+  // State for form inputs
+  const [skills, setSkills] = useState('');
+  const [interests, setInterests] = useState('');
+  const [currentPosition, setCurrentPosition] = useState(''); // Mapped to 'Current Education'
+  const [desiredRole, setDesiredRole] = useState('');
+  const [currentSkillLevel, setCurrentSkillLevel] = useState('');
+  const [presentLocation, setPresentLocation] = useState('');
+
+  const handleFormSubmit = () => {
+    // This function is for the "Find My Career Path" button.
+    // Its primary purpose should be to process/submit the form data.
+    // Navigation is removed from here.
+    console.log('Form Data Processed/Submitted:', {
+      skills: skills
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s),
+      interests: interests
+        .split(',')
+        .map((i) => i.trim())
+        .filter((i) => i),
+      current_position: currentPosition,
+      desired_role: desiredRole,
+      current_skill_level: currentSkillLevel,
+      present_location: presentLocation,
+    });
+    // Add your API call logic or other processing here.
+    // For example:
+    // alert('Career path data submitted for processing!');
+  };
+
+  const handleLocateCareerClick = () => {
+    // This function is for the "Locate Career Now" button.
+    // Its primary purpose is to navigate.
+    console.log('Locate Career Now Clicked - Navigating...');
+    // You could pass some state or query params if needed, e.g., based on the form,
+    // but the core action here is navigation.
     router.push('/AIRecommFindCareer');
   };
+
   return (
-    <div className="flex flex-col w-full md:w-1/2 relative bg-white">
-      <div className="absolute w-[1046px] h-[822px] left-[704px] top-[129px] bg-white shadow-[2px_2px_30px_1px_rgba(0,_0,_0,_0.25)] rounded-[12px]" />
-      <Image
-        className="absolute w-[95.95px] h-[70.07px] left-[1645.78px] top-[862.51px] filter-blur-[1.5px]"
-        src="/gearfolio.svg"
-        alt="Image"
-        width={50}
-        height={50}
-        objectFit="contain"
-      />
-      <div className="absolute w-[501px] h-[26px] left-[976px] top-[509px] text-[#2E8BC0] text-[35px] font-[Roboto_Condensed] font-medium leading-[30px]">
-        Your career path will be shown here
-        <div>
-          <button
-            onClick={handleClick}
-            className="text-white p-4 mt-8 hover:scale-115 rounded-3xl transition duration-300 hover:cursor-pointer z-50 bg-[#2E8BC0]"
-          >
-            Locate Career
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="container mx-auto max-w-6xl">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Left Section: Form */}
+          <div className="w-full md:w-1/2 bg-white p-6 sm:p-8 rounded-xl shadow-2xl">
+            <div className="flex items-center mb-6">
+              <Image
+                src="/aiRecommButton.svg" // Assuming this is the icon for AI Recommendation
+                alt="AI Recommendation Icon"
+                width={48}
+                height={48}
+                className="mr-3"
+              />
+              <h1 className="text-3xl font-bold text-[#2E8BC0] text-shadow-[0px_2px_2px_rgba(0,_0,_0,_0.1)]">
+                AI Recommendation
+              </h1>
+            </div>
+            <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+              Get personalized career recommendations based on your skills,
+              interests, and current education level. Fill in the details below
+              to receive AI-driven insights tailored to your learning journey
+              and professional aspirations.
+            </p>
 
-      {/* Left Section */}
-      <div className="absolute w-[527px] h-[822px] left-[142px] top-[129px]">
-        <div className="absolute w-[527px] h-[822px] bg-white shadow-[2px_2px_30px_1px_rgba(0,_0,_0,_0.25)] rounded-[12px]" />
-        <div className="absolute w-[353px] h-[45px] left-[83px] top-[121px] text-center text-[#616161] text-[9px] font-[Anek_Gujarati] font-medium leading-[8px]">
-          Get personalized career recommendations based on your skills,
-          interests, and current
-          <br />
-          education level. Fill in the details below to receive AI-driven
-          insights tailored to your
-          <br />
-          learning journey and professional aspirations
-        </div>
-        <div className="absolute w-[377px] h-[30px] left-[107px] top-[64px] text-[#2E8BC0] text-[43px] font-[Anek_Gujarati] font-medium leading-[33px] text-shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)]">
-          AI Recommendation
-        </div>
-        <Image
-          className="absolute w-[64px] h-[64px] left-[35px] top-[47px]"
-          src="/aiRecommButton.svg"
-          alt="Image"
-          width={50}
-          height={50}
-          objectFit="contain"
-        />
-        <div className="absolute w-[427px] h-[56px] left-[57px] top-[688px] bg-[#2E8BC0] rounded-[12px]" />
-        <div className="absolute w-[145px] h-[11px] left-[187px] top-[711px] text-white text-[16px] font-[Roboto] font-medium leading-[10px]">
-          Find My Career Path
-        </div>
-        <Image
-          className="absolute w-[18.99px] h-[19px] left-[342px] top-[706px]"
-          src="/pencil.svg"
-          alt="Image"
-          width={50}
-          height={50}
-          objectFit="contain"
-        />
+            <div className="space-y-5 text-black">
+              <InputField
+                label="Skills"
+                helpText="(e.g., Python, JavaScript, SQL)"
+                placeholder="Enter comma-separated skills"
+                value={skills}
+                onChange={(e) => setSkills(e.target.value)}
+              />
+              <InputField
+                label="Interests"
+                helpText="(e.g., AI, Web Development, Data Science)"
+                placeholder="Enter comma-separated interests"
+                value={interests}
+                onChange={(e) => setInterests(e.target.value)}
+              />
+              <InputField
+                label="Current Education / Position"
+                placeholder="Enter your current education or position"
+                value={currentPosition}
+                onChange={(e) => setCurrentPosition(e.target.value)}
+              />
+              <InputField
+                label="Current Skill Level"
+                placeholder="e.g., Beginner, Intermediate, Advanced"
+                value={currentSkillLevel}
+                onChange={(e) => setCurrentSkillLevel(e.target.value)}
+              />
+              <InputField
+                label="Present Location"
+                placeholder="e.g., Cebu City, Philippines"
+                value={presentLocation}
+                onChange={(e) => setPresentLocation(e.target.value)}
+              />
+              <InputField
+                label="Desired Position / Job Role"
+                placeholder="e.g., Software Engineer, UX Designer"
+                value={desiredRole}
+                onChange={(e) => setDesiredRole(e.target.value)}
+              />
 
-        {/* Form Inputs */}
-        <div className="absolute left-[50px] top-[213px] text-[#4A4B4C] text-[16px] font-[Roboto] font-medium leading-[10px]">
-          Skills
-        </div>
-        <div className="absolute w-[427px] h-[35px] left-[50px] top-[231px]  border border-black rounded-tl-[5px] rounded-bl-[20px] rounded-tr-[20px] rounded-br-[5px] bg-white">
-          <input
-            className="w-full h-full border-none bg-transparent text-[14px] font-['Roboto'] px-4 py-2 rounded-tl-[20px] rounded-bl-[20px] rounded-tr-[5px] rounded-br-[5px] outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Enter skills e.g., [Python, JavaScript, SQL, HTML/CSS]"
-          />
-        </div>
+              <button
+                onClick={handleFormSubmit} // Calls the updated handleFormSubmit
+                className="w-full mt-6 bg-[#2E8BC0] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#2474A5] transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center shadow-md hover:shadow-lg"
+              >
+                <span className="mr-2">Find My Career Path</span>
+                <Image
+                  src="/pencil.svg"
+                  alt="Find Career Icon"
+                  width={18}
+                  height={18}
+                />
+              </button>
+            </div>
+          </div>
 
-        <div className="absolute left-[50px] top-[363px] text-[#4A4B4C] text-[16px] font-[Roboto] font-medium leading-[10px]">
-          Current Education
-        </div>
-        <div className="absolute w-[427px] h-[35px] left-[50px] top-[381px] border border-black rounded-tl-[5px] rounded-bl-[20px] rounded-tr-[20px] rounded-br-[5px] bg-white">
-          <input
-            className="w-full h-full border-none bg-transparent text-[14px] font-['Roboto'] px-4 py-2 rounded-tl-[20px] rounded-bl-[20px] rounded-tr-[5px] rounded-br-[5px] outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Enter your education"
-          />
-        </div>
-        <div className="absolute left-[50px] top-[513px] text-[#4A4B4C] text-[16px] font-[Roboto] font-medium leading-[10px]">
-          Present Location
-        </div>
-        <div className="absolute w-[427px] h-[35px] left-[50px] top-[531px] border border-black rounded-tl-[5px] rounded-bl-[20px] rounded-tr-[20px] rounded-br-[5px] bg-white">
-          <input
-            className="w-full h-full border-none bg-transparent text-[14px] font-['Roboto'] px-4 py-2 rounded-tl-[20px] rounded-bl-[20px] rounded-tr-[5px] rounded-br-[5px] outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Enter your location"
-          />
-        </div>
-        <div className="absolute left-[50px] top-[588px] text-[#4A4B4C] text-[16px] font-[Roboto] font-medium leading-[10px]">
-          Desired Position / job
-        </div>
-        <div className="absolute w-[427px] h-[35px] left-[50px] top-[606px] border border-black rounded-tl-[5px] rounded-bl-[20px] rounded-tr-[20px] rounded-br-[5px] bg-white">
-          <input
-            className="w-full h-full border-none bg-transparent text-[14px] font-['Roboto'] px-4 py-2 rounded-tl-[20px] rounded-bl-[20px] rounded-tr-[5px] rounded-br-[5px] outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Enter desired position"
-          />
-        </div>
-        <div className="absolute left-[50px] top-[438px] text-[#4A4B4C] text-[16px] font-[Roboto] font-medium leading-[10px]">
-          Current Skill Level
-        </div>
-        <div className="absolute w-[427px] h-[35px] left-[50px] top-[456px] border border-black rounded-tl-[5px] rounded-bl-[20px] rounded-tr-[20px] rounded-br-[5px] bg-white">
-          <input
-            className="w-full h-full border-none bg-transparent text-[14px] font-['Roboto'] px-4 py-2 rounded-tl-[20px] rounded-bl-[20px] rounded-tr-[5px] rounded-br-[5px] outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Enter current skill level"
-          />
-        </div>
-        <div className="absolute left-[50px] top-[288px] text-[#4A4B4C] text-[16px] font-[Roboto] font-medium leading-[10px]">
-          Interest
-        </div>
-        <div className="absolute w-[427px] h-[35px] left-[50px] top-[306px] border border-black rounded-tl-[5px] rounded-bl-[20px] rounded-tr-[20px] rounded-br-[5px] bg-white">
-          <input
-            className="w-full h-full border-none bg-transparent text-[14px] font-['Roboto'] px-4 py-2 rounded-tl-[20px] rounded-bl-[20px] rounded-tr-[5px] rounded-br-[5px] outline-none placeholder-gray-500"
-            type="text"
-            placeholder="Enter your interests e.g., [AI, Web Development, Data Science, Cybersecurity]"
-          />
+          {/* Right Section: Output/Placeholder */}
+          <div className="w-full md:w-1/2 bg-white p-6 sm:p-8 rounded-xl shadow-2xl flex flex-col items-center justify-center text-center min-h-[400px] md:min-h-0">
+            <div className="flex flex-col items-center justify-center my-auto">
+              <h2 className="text-3xl font-semibold text-[#2E8BC0] mb-6">
+                Your Career Path
+              </h2>
+              <p className="text-gray-600 mb-8 text-lg">
+                Recommendations based on your input will be shown here.
+              </p>
+              <button
+                onClick={handleLocateCareerClick} // Calls the updated handleLocateCareerClick for navigation
+                className="bg-[#2E8BC0] text-white py-3 px-8 rounded-lg font-semibold hover:bg-[#2474A5] transition duration-300 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg"
+              >
+                Locate Career Now
+              </button>
+            </div>
+            <div className="ml-auto pt-8">
+              <Image
+                src="/gearfolio.svg"
+                alt="Gearfolio Logo"
+                width={80}
+                height={58}
+                className="opacity-70"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
