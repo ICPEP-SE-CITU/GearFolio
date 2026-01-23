@@ -16,11 +16,12 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+/*
 export const metadata = {
   title: 'GearFolio',
   description: 'Discover, Build, and Showcase Portfolios with AI Assistance.',
 };
-
+*/
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full">
@@ -33,7 +34,6 @@ export default function RootLayout({ children }) {
         <div className="fixed bottom-4 right-4 z-50">
           <AiRecommButton />
         </div>
-        <Footer />
       </body>
     </html>
   );

@@ -33,12 +33,59 @@ function AiRecomm() {
   const [desiredRole, setDesiredRole] = useState('');
   const [currentSkillLevel, setCurrentSkillLevel] = useState('');
   const [presentLocation, setPresentLocation] = useState('');
+  const [recommendationResult, setRecommendationResult] = useState(null); // To store the AI recommendation
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const getAIRecommendation = async () => {
+    setLoading(true);
+    setError(null);
+
+    const processedSkills = skills
+      .split(',')
+      .map((s) => s.trim())
+      .filter((s) => s);
+    const processedInterests = interests
+      .split(',')
+      .map((i) => i.trim())
+      .filter((i) => i);
+
+    const AIPrompt = {
+      skills: processedSkills,
+      interests: processedInterests,
+      currentPosition,
+      desiredRole,
+      // Consider whether to include these based on your backend model
+      // currentSkillLevel,
+      // presentLocation,
+    };
+
+    try {
+      const response = await fetch("https://gearfolio-ai.onrender.com/recommend", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ AIPrompt }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to fetch recommendation: ${response.status} - ${JSON.stringify(errorData)}`);
+      }
+
+      const data = await response.json();
+      setRecommendationResult(data);
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching AI recommendation:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFormSubmit = () => {
-    // This function is for the "Find My Career Path" button.
-    // Its primary purpose should be to process/submit the form data.
-    // Navigation is removed from here.
-    console.log('Form Data Processed/Submitted:', {
+    console.log('Form Data Submitted for AI Recommendation:', {
       skills: skills
         .split(',')
         .map((s) => s.trim())
@@ -52,17 +99,11 @@ function AiRecomm() {
       current_skill_level: currentSkillLevel,
       present_location: presentLocation,
     });
-    // Add your API call logic or other processing here.
-    // For example:
-    // alert('Career path data submitted for processing!');
+    getAIRecommendation(); // Call the AI recommendation function on submit
   };
 
   const handleLocateCareerClick = () => {
-    // This function is for the "Locate Career Now" button.
-    // Its primary purpose is to navigate.
     console.log('Locate Career Now Clicked - Navigating...');
-    // You could pass some state or query params if needed, e.g., based on the form,
-    // but the core action here is navigation.
     router.push('/AIRecommFindCareer');
   };
 
@@ -132,8 +173,9 @@ function AiRecomm() {
               />
 
               <button
-                onClick={handleFormSubmit} // Calls the updated handleFormSubmit
+                onClick={handleFormSubmit}
                 className="w-full mt-6 bg-[#2E8BC0] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#2474A5] transition duration-300 ease-in-out transform hover:scale-105 flex items-center justify-center shadow-md hover:shadow-lg"
+                disabled={loading}
               >
                 <span className="mr-2">Find My Career Path</span>
                 <Image
@@ -143,25 +185,40 @@ function AiRecomm() {
                   height={18}
                 />
               </button>
+
+              {loading && <p className="text-center text-gray-500">Loading recommendation...</p>}
+              {error && <p className="text-center text-red-500">{error}</p>}
             </div>
           </div>
 
           {/* Right Section: Output/Placeholder */}
           <div className="w-full md:w-1/2 bg-white p-6 sm:p-8 rounded-xl shadow-2xl flex flex-col items-center justify-center text-center min-h-[400px] md:min-h-0">
-            <div className="flex flex-col items-center justify-center my-auto">
-              <h2 className="text-3xl font-semibold text-[#2E8BC0] mb-6">
-                Your Career Path
-              </h2>
-              <p className="text-gray-600 mb-8 text-lg">
-                Recommendations based on your input will be shown here.
-              </p>
-              <button
-                onClick={handleLocateCareerClick} // Calls the updated handleLocateCareerClick for navigation
-                className="bg-[#2E8BC0] text-white py-3 px-8 rounded-lg font-semibold hover:bg-[#2474A5] transition duration-300 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg"
-              >
-                Locate Career Now
-              </button>
-            </div>
+            {recommendationResult ? (
+              <div>
+                <h2 className="text-3xl font-semibold text-[#2E8BC0] mb-6">
+                  AI Recommendation
+                </h2>
+                <pre className="text-left text-gray-700 whitespace-pre-wrap">
+                  {JSON.stringify(recommendationResult, null, 2)}
+                </pre>
+                {/* You can format the recommendationResult more nicely here */}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center my-auto">
+                <h2 className="text-3xl font-semibold text-[#2E8BC0] mb-6">
+                  Your Career Path
+                </h2>
+                <p className="text-gray-600 mb-8 text-lg">
+                  Recommendations based on your input will be shown here.
+                </p>
+                <button
+                  onClick={handleLocateCareerClick}
+                  className="bg-[#2E8BC0] text-white py-3 px-8 rounded-lg font-semibold hover:bg-[#2474A5] transition duration-300 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg"
+                >
+                  Locate Career Now
+                </button>
+              </div>
+            )}
             <div className="ml-auto pt-8">
               <Image
                 src="/gearfolio.svg"
